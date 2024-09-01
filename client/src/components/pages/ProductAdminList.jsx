@@ -45,7 +45,6 @@ const ProductAdminList = () => {
             .get("http://localhost:8000/api/admin/products")
             .then((response) => {
                 setProducts(response.data);
-            
             })
             .catch(error => {
                 setError("Erreur lors de la récupération des produits !");
@@ -181,8 +180,8 @@ const ProductAdminList = () => {
                     const uniqueColors = getUniqueColors(product.models);
                     const availableSizes = filteredModel
                         ? product.models
-                              .filter((model) => model.color === selectedColor)
-                              .map((model) => model.size)
+                            .filter((model) => model.color === selectedColor)
+                            .map((model) => model.size)
                         : [];
 
                     const promotion = product.promotions.length > 0 ? product.promotions[0] : null;
@@ -225,7 +224,7 @@ const ProductAdminList = () => {
                                     {filteredModel.stock > 0 && filteredModel.stock <= 5 ? (
                                         <>
                                             <p>Stock : {filteredModel.stock}</p>
-                                            <p className="text-yellow-500">Réapprovisionnement</p>
+                                            <p className="text-yellow-500">Bientôt épuisé</p>
                                         </>
                                     ) : filteredModel.stock > 5 ? (
                                         <>
