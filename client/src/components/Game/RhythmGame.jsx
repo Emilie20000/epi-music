@@ -26,11 +26,11 @@ const RhythmGame = () => {
     const playerName = "Joueur 1";
 
     useEffect(() => {
-        fetch('/api/random-track')
+        fetch('http://localhost:8000/api/random-track')
             .then(response => response.json())
             .then(data => {
                 if (data && data.filePath) {
-                    const audioFile = new Audio(`${data.filePath}`);
+                    const audioFile = new Audio(`http://localhost:8000${data.filePath}`);
                     setAudio(audioFile);
 
                     audioFile.onloadedmetadata = () => {
