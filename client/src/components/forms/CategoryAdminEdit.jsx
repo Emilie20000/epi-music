@@ -14,7 +14,7 @@ const CategoryAdminEdit = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/admin/categories/${id}`); //localhost
+                const response = await axios.get(`http://localhost:8000/api/admin/categories/${id}`);
                 const categoryData = response.data;
                 setName(categoryData.name);
                 setExistingImagePath(categoryData.imagePath);
@@ -37,7 +37,7 @@ const CategoryAdminEdit = () => {
             formData.append("file", image);
 
             try {
-                const uploadResponse = await axios.post("http://localhost:8000/upload", formData, { //localhost
+                const uploadResponse = await axios.post("http://localhost:8000/upload", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -50,7 +50,7 @@ const CategoryAdminEdit = () => {
                     newPath: `/uploads/${newFileName}`,
                 };
 
-                await axios.post("http://localhost:8000/rename-upload", renameData, { //localhost
+                await axios.post("http://localhost:8000/rename-upload", renameData, {
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -70,7 +70,7 @@ const CategoryAdminEdit = () => {
         };
 
         try {
-            await axios.put(`http://localhost:8000/api/admin/categories/${id}`, updateData, { //localhost
+            await axios.put(`http://localhost:8000/api/admin/categories/${id}`, updateData, {
                 headers: {
                     "Content-Type": "application/json",
                 },

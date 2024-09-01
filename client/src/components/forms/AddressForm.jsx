@@ -35,7 +35,7 @@ const AddressForm = () => {
         };
 
         try {
-            await axios.post(`http://localhost:8000/api/user/${userId}/addresses`, newAddress, { //localhost
+            await axios.post(`http://localhost:8000/api/user/${userId}/addresses`, newAddress, {
                 headers: {
                     "Content-Type": "application/json",
                 },

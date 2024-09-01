@@ -25,7 +25,7 @@ const ProductAdminAddModel = () => {
     const getCategoryId = async (category) => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/admin/get/catergoryId?name=${category}` //localhost
+                `http://localhost:8000/api/admin/get/catergoryId?name=${category}`
             );
             if (!response.ok) {
                 setAlert({ type: "error", message: response.message });
@@ -44,7 +44,7 @@ const ProductAdminAddModel = () => {
     const getColors = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/admin/colors` //localhost
+                `http://localhost:8000/api/admin/colors`
             );
             if (!response.ok) {
                 setAlert({ type: "error", message: response.message });

@@ -31,7 +31,7 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
 
     const fetchModelData = useCallback(async (id) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/admin/model/${id}`); //localhost
+            const response = await fetch(`http://localhost:8000/api/admin/model/${id}`);
             const data = await response.json();
             
             if (data) {
