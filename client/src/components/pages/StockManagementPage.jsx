@@ -13,7 +13,7 @@ const StockManagementPage = () => {
     }, []);
 
     const fetchProducts = () => {
-        axios.get('/api/admin/products')
+        axios.get('http://localhost:8000/api/admin/products')
             .then(response => {
                 const filteredProducts = response.data.filter(product =>
                     product.models.some(model => model.stock === 0 || model.stock <= 5)
@@ -105,7 +105,7 @@ const StockManagementPage = () => {
                                 className="mr-2"
                             />
                             <img
-                                src={`${product.models[0]?.images?.find(image => image.is_main)?.path || '/default-image.jpg'}`}
+                                src={`http://localhost:8000${product.models[0]?.images?.find(image => image.is_main)?.path || '/default-image.jpg'}`}
                                 alt={`Image principale du produit ${product.name}`}
                                 className="w-32 h-32 object-cover mb-2 rounded"
                             />
