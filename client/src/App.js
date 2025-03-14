@@ -10,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ProductDetailsPage from './components/pages/ProductDetailsPage';
 import ProductCategoriesList from "./components/pages/ProductCategoriesList";
 import ProductList from "./components/pages/ProductList";
-import bgAuth from "./assets/bg-auth.png";
+import bgAuth from "./assets/bg-auth.webp";
 import FilteredArticles from './components/Filtered/FilteredArticles';
 import AdminPanel from './components/pages/AdminPanel';
 import UserProfile from './components/user/UserProfile';

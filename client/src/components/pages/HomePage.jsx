@@ -4,9 +4,9 @@ import axios from "axios";
 import "../../styles/ProductList.css";
 import CategoryCard from "../cards/CategoryCard";
 import HomeCarousel from "../carousel/HomeCarousel";
-import vinyles from "../../assets/vinyles.jpg";
-import instruments from "../../assets/instruments.jpg";
-import goodies from "../../assets/goodies.jpeg";
+import vinyles from "../../assets/vinyles.webp";
+import instruments from "../../assets/instruments.webp";
+import goodies from "../../assets/goodies.webp";
 
 const HomePage = () => {
     const [categories, setCategories] = useState([]);

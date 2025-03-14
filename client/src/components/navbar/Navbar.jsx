@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import NavbarItem from "./NavbarItem";
 import SearchBar from "./SearchBar";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import { useCart } from "../../context/CartContext"; 
