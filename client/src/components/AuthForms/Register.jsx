@@ -9,7 +9,6 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [message, setMessage] = useState("");
     const [alert, setAlert] = useState({ message: "", type: "error" });
     const navigate = useNavigate();
 
@@ -33,22 +32,23 @@ function Register() {
         event.preventDefault();
 
         if (password !== confirmPassword) {
-            setMessage(
-                "Le mot de passe et sa confirmation doivent être identiques"
-            );
-            return false;
+            setAlert({
+                message: "Le mot de passe et sa confirmation doivent être identiques",
+                type: "error",
+            });
+            return;
         }
 
         if (!validatePassword(password)) {
-            setMessage(
-                `Le mot de passe doit avoir une longueur minimum de 8 caractères et contenir les caractères suivants : 
-        une majuscule, une minuscule, un chiffre et un caractère spécial`
-            );
-            return false;
+            setAlert({
+                message: `Le mot de passe doit avoir une longueur minimum de 8 caractères et contenir les caractères suivants : une majuscule, une minuscule, un chiffre et un caractère spécial`,
+                type: "error",
+            });
+            return;
         }
 
         try {
-            const response = await fetch("http://localhost:8000/api/register", { //localhost
+            const response = await fetch("http://localhost:8000/api/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,8 +60,7 @@ function Register() {
 
             if (response.ok) {
                 setAlert({
-                    message:
-                        "Inscription réussie. Vous allez être redirigé vers la page de connexion",
+                    message: "Inscription réussie. Vous allez être redirigé vers la page de connexion",
                     type: "success",
                 });
                 setTimeout(() => {
@@ -69,16 +68,13 @@ function Register() {
                 }, 3000);
             } else {
                 setAlert({
-                    message:
-                        data.message ||
-                        "Une erreur s'est produite lors de l'inscription. Veuillez réessayer plus tard",
+                    message: data.message || "Une erreur s'est produite lors de l'inscription. Veuillez réessayer plus tard",
                     type: "error",
                 });
             }
         } catch (error) {
             setAlert({
-                message:
-                    "Une erreur s'est produite lors de l'inscription. Veuillez réessayer plus tard",
+                message: "Une erreur s'est produite lors de l'inscription. Veuillez réessayer plus tard",
                 type: "error",
             });
         }
@@ -194,7 +190,6 @@ function Register() {
                             </div>
                         </div>
                     </div>
-                    {message && <p className="text-red-600">{message}</p>}
                     <button
                         type="submit"
                         className="w-full bg-white text-[#EEB829] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
