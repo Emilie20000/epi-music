@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.png";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
     const location = useLocation();
@@ -16,6 +16,16 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("cart_price");
+        localStorage.removeItem("cart_promo_total");
+        localStorage.removeItem("cart_quantity");
+        localStorage.removeItem("cart_shipping_costs");
+        localStorage.removeItem("orderId");
+        navigate("/login");
+        window.location.reload();
+    };
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -44,7 +54,11 @@ const Navbar = () => {
             </div>
             {userRole === "ROLE_USER" && (
                 <div className="pt-2 ml-4 pl-4">
-                    <NavbarItem icon={<FaGamepad size={24} />} text="Jouer au jeu de rythme" href="/rhythm-game" />
+                    <NavbarItem
+                        icon={<FaGamepad size={24} />}
+                        text="Jouer au jeu de rythme"
+                        href="/rhythm-game"
+                    />
                 </div>
             )}
             <div className="block lg:hidden">
@@ -73,21 +87,40 @@ const Navbar = () => {
                         <NavbarItem text="Produits" href="/products" />
                     </div>
                     {userRole === "ROLE_ADMIN" && (
-                        <NavbarItem icon={<FaUserTie size={24}/>} href="/admin/user-card" />
+                        <NavbarItem
+                            icon={<FaUserTie size={24} />}
+                            href="/admin/user-card"
+                        />
                     )}
                     {userRole === "ROLE_USER" && (
-                        <NavbarItem icon={<FaUser size={24} />} href="/profile/user-card" />
+                        <NavbarItem
+                            icon={<FaUser size={24} />}
+                            href="/profile/user-card"
+                        />
                     )}
                     <div className="relative">
-                        <NavbarItem icon={<FaShoppingCart size={24} />} href="/cart" />
+                        <NavbarItem
+                            icon={<FaShoppingCart size={24} />}
+                            href="/cart"
+                        />
                         {itemCount > 0 && (
                             <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
                                 {itemCount}
                             </span>
                         )}
                     </div>
+                    {isLoggedIn && (
+                        <NavbarItem
+                            icon={<IoLogInOutline size={24} />}
+                            onClick={handleLogout}
+                            text="Se déconnecter"
+                        />
+                    )}
                     {!isLoggedIn && (
-                        <NavbarItem icon={<IoLogInOutline size={24} />} href="/login" />
+                        <>
+                            <NavbarItem text="Se connecter" href="/login" />
+                            <NavbarItem text="S'inscrire" href="/register" />
+                        </>
                     )}
                 </div>
             </div>
