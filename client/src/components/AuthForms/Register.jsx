@@ -87,11 +87,11 @@ function Register() {
                     <img src={logo} alt="Logo" className="w-64 h-64" />
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="flex flex-wrap -mx-24">
+                    <div className="flex flex-wrap -mx-6 md:-mx-24">
                         <div className="w-full md:w-1/2 px-2 mb-4">
                             <div className="relative">
                                 <svg
-                                    className="absolute top-4 ml-3"
+                                    className="absolute top-2 md:top-4 ml-3"
                                     width="24"
                                     viewBox="0 0 24 24"
                                 >
@@ -112,7 +112,7 @@ function Register() {
                         <div className="w-full md:w-1/2 px-2 mb-4">
                             <div className="relative">
                                 <svg
-                                    className="absolute top-4 ml-3"
+                                    className="absolute top-2 md:top-4 ml-3"
                                     width="24"
                                     viewBox="0 0 24 24"
                                 >
@@ -131,7 +131,7 @@ function Register() {
                         <div className="w-full px-2 mb-4">
                             <div className="relative">
                                 <svg
-                                    className="absolute top-5 ml-3"
+                                    className="absolute top-3 md:top-5 ml-3"
                                     width="24"
                                     viewBox="0 0 8 6"
                                 >
@@ -150,7 +150,7 @@ function Register() {
                         <div className="w-full md:w-1/2 px-2 mb-4">
                             <div className="relative">
                                 <svg
-                                    className="absolute top-4 ml-3"
+                                    className="absolute top-2 md:top-4 ml-3"
                                     width="24"
                                     viewBox="0 0 24 24"
                                 >
@@ -171,7 +171,7 @@ function Register() {
                         <div className="w-full md:w-1/2 px-2 mb-4">
                             <div className="relative">
                                 <svg
-                                    className="absolute ml-3 top-4"
+                                    className="absolute ml-3 top-2 md:top-4"
                                     width="24"
                                     viewBox="0 0 24 24"
                                 >
