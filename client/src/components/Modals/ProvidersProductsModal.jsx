@@ -38,12 +38,23 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
-            <div className="bg-white p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                <h2 className="text-xl font-bold mb-4">Produits éligibles</h2>
+            <div 
+                className="bg-white p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                role="dialog"
+                aria-labelledby="modal-title"
+                aria-describedby="modal-content"
+            >
+                <h2 id="modal-title" className="text-xl font-bold mb-4" role="heading">
+                    Produits éligibles
+                </h2>
+
                 {alert.message && <Alert message={alert.message} type={alert.type} />}
                 
                 {products.length > 0 ? (
-                    <table className="min-w-full bg-white border border-gray-200">
+                    <table 
+                        className="min-w-full bg-white border border-gray-200"
+                        aria-label="Liste des produits éligibles"
+                    >
                         <thead>
                             <tr>
                                 <th className="px-4 py-2 border border-gray-200 bg-gray-100">Nom du Produit</th>
@@ -60,7 +71,12 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
                         </tbody>
                     </table>
                 ) : (
-                    <p className="text-center text-red-500 font-bold">Aucun produit trouvé</p>
+                    <p 
+                        className="text-center text-red-500 font-bold"
+                        role="alert"
+                    >
+                        Aucun produit trouvé
+                    </p>
                 )}
     
                 <div className="flex justify-end mt-4">
@@ -68,6 +84,7 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
                         type="button"
                         onClick={onClose}
                         className="px-4 py-2 bg-blue-800 text-white rounded"
+                        aria-label="Fermer la fenêtre"
                     >
                         Fermer
                     </button>
@@ -75,7 +92,6 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
             </div>
         </div>
     );
-    
 };
 
 export default ProvidersProductsModal;

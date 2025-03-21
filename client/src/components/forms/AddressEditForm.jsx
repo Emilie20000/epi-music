@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const EditAddressForm = () => {
-    const { id } = useParams();  // ID de l'adresse à modifier
+    const { id } = useParams();
     const [name, setName] = useState("");
     const [telephone, setTelephone] = useState("");
     const [address, setAddress] = useState("");
@@ -20,15 +20,11 @@ const EditAddressForm = () => {
     useEffect(() => {
         const fetchAddress = async () => {
             try {
-                // Récupération de l'utilisateur connecté à partir du localStorage
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
-
-                // Récupération de l'adresse pour l'utilisateur connecté
                 const response = await axios.get(`http://localhost:8000/api/user/${userId}/addresses/${id}`);
                 const addressData = response.data;
 
-                // Mise à jour des états avec les données de l'adresse
                 setName(addressData.name);
                 setTelephone(addressData.telephone);
                 setAddress(addressData.address);
@@ -49,7 +45,6 @@ const EditAddressForm = () => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Récupération de l'utilisateur connecté à partir du localStorage
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user.id;
 
@@ -65,7 +60,6 @@ const EditAddressForm = () => {
         };
 
         try {
-            // Mise à jour de l'adresse pour l'utilisateur connecté
             await axios.put(`http://localhost:8000/api/user/${userId}/addresses/${id}`, updatedAddress, {
                 headers: {
                     "Content-Type": "application/json",
@@ -91,17 +85,18 @@ const EditAddressForm = () => {
                     <p className="text-3xl font-bold leading-7 text-center text-black">
                         Modifier l'adresse
                     </p>
-                    {message && <p className="success">{message}</p>}
-                    {error && <p className="error">{error}</p>}
+                    {message && <p className="success" aria-live="polite">{message}</p>}
+                    {error && <p className="error" aria-live="polite">{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <div className="md:flex items-center mt-12">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="name">
+                                <label htmlFor="name" className="font-semibold leading-none text-black">
                                     Nom
                                 </label>
                                 <input
                                     type="text"
                                     id="name"
+                                    aria-label="Nom de l'adresse"
                                     placeholder="Entrez le nom"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -110,14 +105,16 @@ const EditAddressForm = () => {
                                 />
                             </div>
                         </div>
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="telephone">
+                                <label htmlFor="telephone" className="font-semibold leading-none text-black">
                                     Téléphone
                                 </label>
                                 <input
                                     type="text"
                                     id="telephone"
+                                    aria-label="Numéro de téléphone"
                                     placeholder="Entrez le numéro de téléphone"
                                     value={telephone}
                                     onChange={(e) => setTelephone(e.target.value)}
@@ -126,14 +123,16 @@ const EditAddressForm = () => {
                                 />
                             </div>
                         </div>
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="address">
+                                <label htmlFor="address" className="font-semibold leading-none text-black">
                                     Adresse
                                 </label>
                                 <input
                                     type="text"
                                     id="address"
+                                    aria-label="Adresse complète"
                                     placeholder="Entrez l'adresse"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
@@ -142,70 +141,10 @@ const EditAddressForm = () => {
                                 />
                             </div>
                         </div>
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="complement">
-                                    Complément
-                                </label>
-                                <input
-                                    type="text"
-                                    id="complement"
-                                    placeholder="Entrez le complément (facultatif)"
-                                    value={complement}
-                                    onChange={(e) => setComplement(e.target.value)}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                />
-                            </div>
-                        </div>
-                        <div className="md:flex items-center mt-8">
-                            <div className="w-full flex flex-col md:w-1/2">
-                                <label className="font-semibold leading-none text-black" htmlFor="postalCode">
-                                    Code Postal
-                                </label>
-                                <input
-                                    type="text"
-                                    id="postalCode"
-                                    placeholder="Entrez le code postal"
-                                    value={postalCode}
-                                    onChange={(e) => setPostalCode(e.target.value)}
-                                    required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                />
-                            </div>
-                            <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
-                                <label className="font-semibold leading-none text-black" htmlFor="city">
-                                    Ville
-                                </label>
-                                <input
-                                    type="text"
-                                    id="city"
-                                    placeholder="Entrez la ville"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                />
-                            </div>
-                        </div>
-                        <div className="md:flex items-center mt-8">
-                            <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="country">
-                                    Pays
-                                </label>
-                                <input
-                                    type="text"
-                                    id="country"
-                                    placeholder="Entrez le pays"
-                                    value={country}
-                                    onChange={(e) => setCountry(e.target.value)}
-                                    required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                />
-                            </div>
-                        </div>
-                        <div className="md:flex items-center mt-8">
-                            <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="isPrimary">
+                                <label htmlFor="isPrimary" id="isPrimary-label" className="font-semibold leading-none text-black">
                                     Adresse principale
                                 </label>
                                 <input
@@ -213,10 +152,12 @@ const EditAddressForm = () => {
                                     id="isPrimary"
                                     checked={isPrimary}
                                     onChange={(e) => setIsPrimary(e.target.checked)}
+                                    aria-labelledby="isPrimary-label"
                                     className="mt-4"
                                 />
                             </div>
                         </div>
+
                         <div className="flex items-center justify-center w-full mt-8">
                             <button
                                 type="submit"
@@ -224,6 +165,7 @@ const EditAddressForm = () => {
                                 className={`font-semibold leading-none text-white py-4 px-10 rounded focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none ${
                                     isSubmitting ? 'bg-gray-400' : 'bg-blue-700 hover:bg-blue-600'
                                 }`}
+                                aria-label="Enregistrer les modifications de l'adresse"
                             >
                                 Modifier l'adresse
                             </button>

@@ -103,6 +103,7 @@ const ProvidersAdminList = () => {
             <button
                 onClick={() => setIsProviderCreateModalOpen(true)}
                 className="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                aria-label="Ajouter un nouveau prestataire"
             >
                 Ajouter un Prestataire
             </button>
@@ -110,31 +111,34 @@ const ProvidersAdminList = () => {
                 <Alert message={alert.message} type={alert.type} />
             )}
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
+                <table
+                    className="min-w-full bg-white border border-gray-200"
+                    aria-label="Tableau des prestataires"
+                >
                     <thead>
                         <tr>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Nom
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 EAN
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Longueur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Largeur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Hauteur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Prix (€)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Poids Max (kg)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Action
                             </th>
                         </tr>
@@ -148,6 +152,7 @@ const ProvidersAdminList = () => {
                                         setSelectedProviderId(provider.id);
                                         setIsProvidersProductsModalOpen(true);
                                     }}
+                                    aria-label={`Voir les produits du prestataire ${provider.name}`}
                                 >
                                     {provider.name}
                                 </td>
@@ -172,23 +177,19 @@ const ProvidersAdminList = () => {
                                 <td className="px-4 py-2 border border-gray-200">
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() =>
-                                                handleDelete(provider.id)
-                                            }
+                                            onClick={() => handleDelete(provider.id)}
                                             className="w-1/2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                            aria-label={`Supprimer le prestataire ${provider.name}`}
                                         >
                                             Supprimer
                                         </button>
                                         <button
                                             onClick={() => {
-                                                setSelectedProviderId(
-                                                    provider.id
-                                                );
-                                                setIsProviderEditModalOpen(
-                                                    true
-                                                );
+                                                setSelectedProviderId(provider.id);
+                                                setIsProviderEditModalOpen(true);
                                             }}
                                             className="w-1/2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                            aria-label={`Modifier le prestataire ${provider.name}`}
                                         >
                                             Modifier
                                         </button>
@@ -199,20 +200,6 @@ const ProvidersAdminList = () => {
                     </tbody>
                 </table>
             </div>
-            <ProviderCreateModal
-                isOpen={isProviderCreateModalOpen}
-                onClose={() => setIsProviderCreateModalOpen(false)}
-            />
-            <ProviderEditModal
-                isOpen={isProviderEditModalOpen}
-                onClose={() => setIsProviderEditModalOpen(false)}
-                providerId={selectedProviderId}
-            />
-            <ProvidersProductsModal
-                isOpen={isProvidersProductsModalOpen}
-                onClose={() => setIsProvidersProductsModalOpen(false)}
-                providerId={selectedProviderId}
-            />
         </div>
     );
 };

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ProductList.css";
 import CategoryCard from "../cards/CategoryCard";
@@ -36,7 +36,7 @@ const HomePage = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8000/api/admin/categories") //localhost
+            .get("http://localhost:8000/api/admin/categories")
             .then((response) => {
                 setCategories(response.data);
             })
@@ -50,12 +50,12 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div>
+        <div aria-label="Page d'accueil">
             {message && <p className="success">{message}</p>}
             {error && <p className="error">{error}</p>}
-            <HomeCarousel images={imagesToDisplay}/>
+            <HomeCarousel images={imagesToDisplay} />
             <div className="flex flex-wrap justify-center">
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500" aria-label="Message d'erreur">{error}</p>}
             </div>
         </div>
     );

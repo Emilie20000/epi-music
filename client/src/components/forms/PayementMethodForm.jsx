@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {FaRegCreditCard} from "react-icons/fa";
+import React from "react";
+import { FaRegCreditCard } from "react-icons/fa";
 
 const PayementMethodForm = () => {
     return (
@@ -14,6 +13,7 @@ const PayementMethodForm = () => {
                     <input
                         type="radio"
                         name="paymentMethod"
+                        aria-label="Sélectionner la carte de crédit comme méthode de paiement"
                         className="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
                     />
                     <p className="text-lg font-medium text-gray-900 ml-2 block">
@@ -24,3 +24,5 @@ const PayementMethodForm = () => {
         </div>
     );
 };
+
+export default PayementMethodForm;

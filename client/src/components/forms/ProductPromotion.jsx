@@ -46,31 +46,43 @@ const ProductPromotion = ({ productId, onClose }) => {
                 {error && <Alert message={error} type="error" />}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Prix promotionnel:</label>
+                        <label className="block text-sm font-medium mb-1" htmlFor="promoPrice">
+                            Prix promotionnel:
+                        </label>
                         <input
                             type="number"
+                            id="promoPrice"
                             step="0.01"
                             value={promoPrice}
                             onChange={(e) => setPromoPrice(e.target.value)}
+                            aria-label="Entrer le prix promotionnel"
                             className="w-full p-2 border border-gray-300 rounded"
                             placeholder="Prix promotionnel"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Date de début:</label>
+                        <label className="block text-sm font-medium mb-1" htmlFor="startDate">
+                            Date de début:
+                        </label>
                         <input
                             type="date"
+                            id="startDate"
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
+                            aria-label="Sélectionner la date de début de la promotion"
                             className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Date de fin:</label>
+                        <label className="block text-sm font-medium mb-1" htmlFor="endDate">
+                            Date de fin:
+                        </label>
                         <input
                             type="date"
+                            id="endDate"
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
+                            aria-label="Sélectionner la date de fin de la promotion"
                             className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -78,12 +90,14 @@ const ProductPromotion = ({ productId, onClose }) => {
                         <button
                             type="button"
                             onClick={onClose}
+                            aria-label="Annuler la promotion"
                             className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                         >
                             Annuler
                         </button>
                         <button
                             type="submit"
+                            aria-label="Appliquer la promotion"
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Appliquer la Promotion

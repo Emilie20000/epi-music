@@ -13,9 +13,12 @@ const UserCard = ({ user }) => {
     return (
         <div className="flex flex-col items-center p-6">
             {user && (
-                <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center">
+                <div 
+                    className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center"
+                    aria-label="Fiche utilisateur"
+                >
                     <div className="mb-4">
-                        <FaUserCircle size={100} className="text-gray-500" />
+                        <FaUserCircle size={100} className="text-gray-500" aria-hidden="true" />
                     </div>
                     <h2 className="text-xl font-bold mb-4">Informations utilisateur</h2>
                     <p className="text-center"><strong>Prénom :</strong> {user.firstname}</p>

@@ -50,25 +50,28 @@ const OrdersAdminList = () => {
                 <Alert message={alert.message} type={alert.type} />
             )}
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
+                <table
+                    className="min-w-full bg-white border border-gray-200"
+                    aria-label="Tableau des commandes de réapprovisionnement"
+                >
                     <thead>
                         <tr>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Numéro de commande
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Nom du produit
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Stock Actuel
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Date de Commande
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Statut de la commande
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
                                 Quantité Commandée
                             </th>
                         </tr>
@@ -86,9 +89,7 @@ const OrdersAdminList = () => {
                                     {order.current_stock}
                                 </td>
                                 <td className="px-4 py-2 border border-gray-200">
-                                    {new Date(
-                                        order.order_date
-                                    ).toLocaleString()}
+                                    {new Date(order.order_date).toLocaleString()}
                                 </td>
                                 <td className="px-4 py-2 border border-gray-200">
                                     {order.order_status}

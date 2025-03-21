@@ -37,7 +37,7 @@ const DeliveryHomePage = () => {
         const fetchAddresses = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/user/${user.id}/addresses` //localhost
+                    `http://localhost:8000/api/user/${user.id}/addresses`
                 );
                 setAddresses(response.data);
             } catch (error) {
@@ -81,8 +81,8 @@ const DeliveryHomePage = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(
-                `http://localhost:8000/api/order/${orderId}/address`, //localhost
+            await axios.post(
+                `http://localhost:8000/api/order/${orderId}/address`,
                 {
                     name: `${firstname} ${lastname}`,
                     telephone,
@@ -108,7 +108,7 @@ const DeliveryHomePage = () => {
     return (
         <div className="w-9/12 m-auto">
             <Alert message={alert.message} type={alert.type} />
-            <h1 className="text-center text-4xl font-bold my-4">
+            <h1 className="text-center text-4xl font-bold my-4" aria-label="Livraison à domicile">
                 Livraison à domicile
             </h1>
             <div className="w-full">
@@ -123,25 +123,18 @@ const DeliveryHomePage = () => {
                         {displayState && (
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="address-select"
-                                        className="text-gray-700"
-                                    >
+                                    <label htmlFor="address-select" className="text-gray-700">
                                         Carnet d'adresses
                                     </label>
                                     <select
                                         id="address-select"
                                         onChange={handleAddressChange}
                                         className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
+                                        aria-label="Sélectionnez une adresse enregistrée"
                                     >
-                                        <option value="">
-                                            Sélectionnez une adresse
-                                        </option>
+                                        <option value="">Sélectionnez une adresse</option>
                                         {addresses.map((address) => (
-                                            <option
-                                                key={address.id}
-                                                value={address.id}
-                                            >
+                                            <option key={address.id} value={address.id}>
                                                 {address.name}
                                             </option>
                                         ))}
@@ -152,50 +145,8 @@ const DeliveryHomePage = () => {
 
                         <form onSubmit={handleSubmit}>
                             <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col md:w-1/2">
-                                    <label
-                                        htmlFor="lastname"
-                                        className="text-gray-700"
-                                    >
-                                        Nom
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre nom"
-                                        value={lastname}
-                                        onChange={(e) =>
-                                            setLastname(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                                <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
-                                    <label
-                                        htmlFor="firstname"
-                                        className="text-gray-700"
-                                    >
-                                        Prénom
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="firstname"
-                                        placeholder="Entrez votre prénom"
-                                        value={firstname}
-                                        onChange={(e) =>
-                                            setFirstname(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="telephone"
-                                        className="text-gray-700"
-                                    >
+                                    <label htmlFor="telephone" className="text-gray-700">
                                         Numéro de téléphone
                                     </label>
                                     <input
@@ -211,134 +162,13 @@ const DeliveryHomePage = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="email"
-                                        className="text-gray-700"
-                                    >
-                                        Adresse e-mail
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="email"
-                                        placeholder="Entrez votre adresse e-mail"
-                                        value={email}
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="address"
-                                        className="text-gray-700"
-                                    >
-                                        Adresse
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="address"
-                                        placeholder="Entrez l'adresse"
-                                        value={address}
-                                        onChange={(e) =>
-                                            setAddress(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="complement"
-                                        className="text-gray-700"
-                                    >
-                                        Complément d'adresse
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="complement"
-                                        placeholder="Entrez le complément d'adresse"
-                                        value={complement}
-                                        onChange={(e) =>
-                                            setComplement(e.target.value)
-                                        }
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col md:w-1/2">
-                                    <label
-                                        htmlFor="postalCode"
-                                        className="text-gray-700"
-                                    >
-                                        Code postal
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="postalCode"
-                                        placeholder="Entrez le code postal"
-                                        value={postalCode}
-                                        onChange={(e) =>
-                                            setPostalCode(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                                <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
-                                    <label
-                                        htmlFor="city"
-                                        className="text-gray-700"
-                                    >
-                                        Ville
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="city"
-                                        placeholder="Entrez la ville"
-                                        value={city}
-                                        onChange={(e) =>
-                                            setCity(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="md:flex items-center mt-4">
-                                <div className="w-full flex flex-col">
-                                    <label
-                                        htmlFor="country"
-                                        className="text-gray-700"
-                                    >
-                                        Pays
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="country"
-                                        placeholder="Entrez le pays"
-                                        value={country}
-                                        onChange={(e) =>
-                                            setCountry(e.target.value)
-                                        }
-                                        required
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
-                                    />
-                                </div>
-                            </div>
+
                             <button
                                 type="submit"
                                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 mt-4"
+                                aria-label="Valider l'adresse et continuer vers le paiement"
                             >
-                                Valider et passer au payement
+                                Valider et passer au paiement
                             </button>
                         </form>
                     </div>

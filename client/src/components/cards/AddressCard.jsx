@@ -5,7 +5,7 @@ const AddressCard = ({ address, onDelete, onEdit, onSetPrimary }) => {
     return (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center">
             <div className="mb-4">
-                <FaMapMarkerAlt size={40} className="text-gray-500" />
+                <FaMapMarkerAlt size={40} className="text-gray-500" aria-hidden="true" />
             </div>
             <h2 className="text-xl font-bold mb-4">Adresse</h2>
             <p className="text-center"><strong>Nom :</strong> {address.name}</p>
@@ -21,14 +21,16 @@ const AddressCard = ({ address, onDelete, onEdit, onSetPrimary }) => {
                 <button
                     onClick={() => onEdit(address.id)}
                     className="bg-green-600 text-white p-2 rounded-full hover:bg-green-500 flex items-center justify-center"
+                    aria-label={`Modifier l'adresse ${address.name}`}
                 >
-                    <FaEdit size={20} />
+                    <FaEdit size={20} aria-hidden="true" />
                 </button>
                 <button
                     onClick={() => onDelete(address.id)}
                     className="bg-red-600 text-white p-2 rounded-full hover:bg-red-500 flex items-center justify-center"
+                    aria-label={`Supprimer l'adresse ${address.name}`}
                 >
-                    <FaTrash size={20} />
+                    <FaTrash size={20} aria-hidden="true" />
                 </button>
                 <button
                     onClick={() => onSetPrimary(address.id)}
@@ -36,8 +38,13 @@ const AddressCard = ({ address, onDelete, onEdit, onSetPrimary }) => {
                         address.isPrimary ? "bg-yellow-500 text-white" : "bg-gray-400 text-white hover:bg-gray-300"
                     }`}
                     disabled={address.isPrimary}
+                    aria-label={
+                        address.isPrimary
+                            ? `Adresse ${address.name} déjà définie comme principale`
+                            : `Définir ${address.name} comme adresse principale`
+                    }
                 >
-                    <FaStar size={20} />
+                    <FaStar size={20} aria-hidden="true" />
                 </button>
             </div>
         </div>

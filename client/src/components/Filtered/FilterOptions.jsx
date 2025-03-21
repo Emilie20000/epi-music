@@ -1,7 +1,14 @@
 import React from "react";
 
 const FilterOptions = ({ options, sectionId }) => (
-  <div className="space-y-6 pl-4 py-4">
+  <div 
+    className="space-y-6 pl-4 py-4"
+    role="group"
+    aria-labelledby={`filter-group-${sectionId}`}
+  >
+    <h3 id={`filter-group-${sectionId}`} className="sr-only">
+      {sectionId}
+    </h3>
     {options.map((option, optionIdx) => (
       <div key={option.value} className="flex items-center">
         <input
@@ -11,8 +18,12 @@ const FilterOptions = ({ options, sectionId }) => (
           name={`${sectionId}[]`}
           type="checkbox"
           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          aria-checked={option.checked}
         />
-        <label htmlFor={`filter-${sectionId}-${optionIdx}`} className="ml-3 min-w-0 flex-2 text-gray-500 text-sm lg:text-base">
+        <label 
+          htmlFor={`filter-${sectionId}-${optionIdx}`} 
+          className="ml-3 min-w-0 flex-2 text-gray-500 text-sm lg:text-base"
+        >
           {option.label}
         </label>
       </div>

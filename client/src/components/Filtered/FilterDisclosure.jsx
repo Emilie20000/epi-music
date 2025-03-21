@@ -3,7 +3,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import FilterOptions from './FilterOptions'; 
 
 const FilterDisclosure = ({ section }) => {
-  
     return (
         <div className="border-t border-gray-200 px-4 py-6 lg:py-0 lg:border-0">
             <h3 className="border mx-2 my-3 flow-root rounded-lg">
@@ -15,11 +14,15 @@ const FilterDisclosure = ({ section }) => {
                     <Disclosure>
                         {({ open }) => (
                             <>
-                                <DisclosureButton className="group flex w-full items-center justify-between border bg-white px-2 py-3 text-gray-400 hover:bg-gray-100">
+                                <DisclosureButton
+                                    className="group flex w-full items-center justify-between border bg-white px-2 py-3 text-gray-400 hover:bg-gray-100"
+                                    aria-label={`Afficher ou masquer la section ${section.name}`}
+                                    aria-expanded={open}
+                                >
                                     <span className="font-medium text-gray-900">{section.name}</span>
                                     <span className="ml-6 flex items-center">
-                                        <span className={`h-5 w-5 ${open ? 'block' : 'hidden'}`}>v</span>
-                                        <span className={`h-5 w-5 ${open ? 'hidden' : 'block'}`}>v</span>
+                                        <span className={`h-5 w-5 ${open ? 'block' : 'hidden'}`} aria-hidden="true">v</span>
+                                        <span className={`h-5 w-5 ${open ? 'hidden' : 'block'}`} aria-hidden="true">v</span>
                                     </span>
                                 </DisclosureButton>
                                 <DisclosurePanel className="pt-6">

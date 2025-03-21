@@ -303,30 +303,29 @@ const ProductList = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4" aria-label="Liste des produits">
             {error && (
-                <p className="text-red-500 font-bold text-center mb-4">
+                <p className="text-red-500 font-bold text-center mb-4" role="alert">
                     {error}
                 </p>
             )}
             {alert && (
-                <p className="text-green-500 font-bold text-center mb-4">
+                <p className="text-green-500 font-bold text-center mb-4" role="alert">
                     {alert}
                 </p>
             )}
             {formattedCategory ? (
-                <h1 className="text-center text-4xl font-bold my-4">
+                <h1 className="text-center text-4xl font-bold my-4" aria-label={formattedCategory}>
                     {formattedCategory}
                 </h1>
-
              ) : (
-                <h1 className="text-center text-4xl font-bold my-4">
+                <h1 className="text-center text-4xl font-bold my-4" aria-label="Tous les produits">
                     Tous les produits
                 </h1>
              )}
             
             <div className="flex">
-                <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
+                <div className="w-1/4 min-w-[300px] h-screen top-0 p-4" aria-label="Filtres de produits">
                     <ProductFilter
                         categories={availableFilterCategories}
                         brands={availableFilterBrands}
@@ -341,8 +340,7 @@ const ProductList = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => {
-                                const selectedColor =
-                                    selectedColors[product.id];
+                                const selectedColor = selectedColors[product.id];
                                 const selectedSize = selectedSizes[product.id];
                                 const filteredModel = product.models.find(
                                     (model) =>
@@ -363,16 +361,14 @@ const ProductList = () => {
                                               product.models
                                                   .filter(
                                                       (model) =>
-                                                          model.color ===
-                                                          selectedColor
+                                                          model.color === selectedColor
                                                   )
                                                   .map((model) => model.size)
                                           )
                                       )
                                     : [];
 
-                                const promotion =
-                                    product.promotions.length > 0
+                                const promotion = product.promotions.length > 0
                                         ? product.promotions[0]
                                         : null;
 
@@ -380,31 +376,24 @@ const ProductList = () => {
                                     <div
                                         key={product.id}
                                         className="bg-white border border-gray-300 rounded-lg p-4 flex flex-col h-full transition-transform duration-300 ease-in-out hover:scale-105"
+                                        aria-label={`Produit: ${product.name}`}
                                     >
                                         <Link
                                             to={`/product/${product.id}`}
                                             className="flex flex-col h-full"
+                                            aria-label={`Voir les détails de ${product.name}`}
                                         >
                                             <div className="flex-1 flex justify-center items-center mb-1">
                                                 {filteredModel?.images &&
-                                                filteredModel.images.length >
-                                                    0 ? (
+                                                filteredModel.images.length > 0 ? (
                                                     <img
-                                                        src={`http://localhost:8000${
-                                                            filteredModel.images.find(
-                                                                (img) =>
-                                                                    img.is_main
-                                                            )?.path
-                                                        }`}
-                                                        alt={`Produit ${product.name}`}
+                                                        src={`http://localhost:8000${filteredModel.images.find(img => img.is_main)?.path || '/default-image.jpg'}`}
+                                                        alt={`Image principale de ${product.name}`}
                                                         className="object-contain max-w-full max-h-48"
                                                     />
                                                 ) : (
                                                     <div className="flex items-center justify-center w-full h-48 bg-gray-200 text-gray-600">
-                                                        <p>
-                                                            Aucune image
-                                                            disponible
-                                                        </p>
+                                                        <p>Aucune image disponible</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -428,68 +417,41 @@ const ProductList = () => {
                                                 <div className="flex-1">
                                                     <ProductColors
                                                         colors={uniqueColors}
-                                                        selectedColor={
-                                                            selectedColor
+                                                        selectedColor={selectedColor}
+                                                        onColorSelect={(color) =>
+                                                            handleColorSelect(product.id, color)
                                                         }
-                                                        onColorSelect={(
-                                                            color
-                                                        ) =>
-                                                            handleColorSelect(
-                                                                product.id,
-                                                                color
-                                                            )
-                                                        }
+                                                        aria-label={`Sélectionner la couleur pour ${product.name}`}
                                                     />
                                                     <ProductSizes
                                                         sizes={availableSizes}
-                                                        selectedSize={
-                                                            selectedSize
-                                                        }
+                                                        selectedSize={selectedSize}
                                                         onSizeSelect={(size) =>
-                                                            handleSizeSelect(
-                                                                product.id,
-                                                                size
-                                                            )
+                                                            handleSizeSelect(product.id, size)
                                                         }
+                                                        aria-label={`Sélectionner la taille pour ${product.name}`}
                                                     />
                                                 </div>
-                                                <div className="w-1/3 ml-4">
-                                                    {" "}
-                                                    {filteredModel?.stock !==
-                                                        undefined && (
+                                                <div className="w-1/3 ml-4" aria-label="Stock">
+                                                    {filteredModel?.stock !== undefined && (
                                                         <>
-                                                            {filteredModel.stock >
-                                                                0 &&
-                                                            filteredModel.stock <=
-                                                                5 ? (
+                                                            {filteredModel.stock > 0 && filteredModel.stock <= 5 ? (
                                                                 <>
-                                                                    <p>
-                                                                        Stock :{" "}
-                                                                        {
-                                                                            filteredModel.stock
-                                                                        }
-                                                                    </p>
+                                                                    <p>Stock : {filteredModel.stock}</p>
                                                                     <p className="text-orange-500 font-bold">
                                                                         Bientôt épuisé
                                                                     </p>
                                                                 </>
-                                                            ) : filteredModel.stock >
-                                                              5 ? (
+                                                            ) : filteredModel.stock > 5 ? (
                                                                 <>
-                                                                    <p>
-                                                                        Stock :{" "}
-                                                                        {
-                                                                            filteredModel.stock
-                                                                        }
-                                                                    </p>
+                                                                    <p>Stock : {filteredModel.stock}</p>
                                                                     <p className="text-green-500 font-bold">
                                                                         En stock
                                                                     </p>
                                                                 </>
                                                             ) : (
                                                                 <p className="text-red-500 font-bold">
-                                                                    Rupture de
-                                                                    stock
+                                                                    Rupture de stock
                                                                 </p>
                                                             )}
                                                         </>
@@ -498,28 +460,20 @@ const ProductList = () => {
                                             </div>
 
                                             {promotion ? (
-                                                <div className="flex flex-col mb-2">
+                                                <div className="flex flex-col mb-2" aria-label={`Promotion pour ${product.name}`}>
                                                     <span className="text-gray-500 line-through text-lg">
-                                                        $
-                                                        {filteredModel?.price?.toFixed(
-                                                            2
-                                                        ) || "Non disponible"}
+                                                        ${filteredModel?.price?.toFixed(2) || "Non disponible"}
                                                     </span>
                                                     <span className="text-red-600 text-xl font-bold">
                                                         ${promotion.promo_price}
                                                     </span>
                                                     <p className="text-sm text-red-600 font-bold">
-                                                        Promotion du{" "}
-                                                        {promotion.start_date}{" "}
-                                                        au {promotion.end_date}
+                                                        Promotion du {promotion.start_date} au {promotion.end_date}
                                                     </p>
                                                 </div>
                                             ) : (
-                                                <p className="text-xl font-bold">
-                                                    $
-                                                    {filteredModel?.price?.toFixed(
-                                                        2
-                                                    ) || "Non disponible"}
+                                                <p className="text-xl font-bold" aria-label={`Prix du produit ${product.name}`}>
+                                                    ${filteredModel?.price?.toFixed(2) || "Non disponible"}
                                                 </p>
                                             )}
                                         </div>
@@ -530,14 +484,14 @@ const ProductList = () => {
                                                     ? "bg-green-500 text-white hover:bg-green-700"
                                                     : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                             }`}
-                                            onClick={() =>
-                                                handleAddToCart(product)
-                                            }
+                                            onClick={() => handleAddToCart(product)}
                                             disabled={filteredModel?.stock <= 0}
+                                            aria-label={`Ajouter ${product.name} au panier`}
                                         >
                                             <FontAwesomeIcon
                                                 icon={faShoppingCart}
                                                 className="mr-2"
+                                                aria-hidden="true"
                                             />
                                             Ajouter au panier
                                         </button>
@@ -545,7 +499,7 @@ const ProductList = () => {
                                 );
                             })
                         ) : (
-                            <p className="text-center">Aucun produit trouvé</p>
+                            <p className="text-center" aria-label="Aucun produit trouvé">Aucun produit trouvé</p>
                         )}
                     </div>
                 </div>
