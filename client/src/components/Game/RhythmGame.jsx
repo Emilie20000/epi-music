@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/RhythmGame.css';
-import arrowUp from '../../assets/Game/arrow-up.png';
-import arrowDown from '../../assets/Game/arrow-down.png';
-import arrowLeft from '../../assets/Game/arrow-left.png';
-import arrowRight from '../../assets/Game/arrow-right.png';
+import arrowUp from '../../assets/Game/arrow-up.webp';
+import arrowDown from '../../assets/Game/arrow-down.webp';
+import arrowLeft from '../../assets/Game/arrow-left.webp';
+import arrowRight from '../../assets/Game/arrow-right.webp';
 
 const RhythmGame = () => {
     const [sequence, setSequence] = useState([]);
