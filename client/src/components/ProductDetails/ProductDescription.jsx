@@ -13,33 +13,37 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
             default:
                 return 'Taille';
         }
-    }
+    };
 
     const sizeLabel = getSizeLabel();
     const shouldShowSize = sizeLabel && category.toLowerCase() !== 'instrument';
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md max-h-100 overflow-y-auto">
-            <div className="text-lg font-semibold mb-2">Description</div>
-            <p className="text-gray-700 mb-4">{description}</p>
-            <div className="flex items-center mb-2">
+        <div className="p-6 bg-white rounded-lg shadow-md max-h-100 overflow-y-auto" aria-label="Détails du produit">
+            <div className="text-lg font-semibold mb-2" role="heading" aria-level="2">
+                Description
+            </div>
+            <p className="text-gray-700 mb-4" aria-label="Description du produit">
+                {description}
+            </p>
+            <div className="flex items-center mb-2" aria-label={`Stock: ${stock > 0 ? stock : 'Bientôt disponible'}`}>
                 <span className="font-semibold mr-2">Stock:</span>
                 <span className={stock > 0 ? "text-green-600" : "text-red-600"}>
                     {stock > 0 ? `${stock}` : 'Bientôt disponible'}
                 </span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center mb-2" aria-label={`Couleur: ${color}`}>
                 <span className="font-semibold mr-2">Couleur:</span>
                 <span className="text-gray-700">{color}</span>
             </div>
             {shouldShowSize && (
-                <div className="flex items-center mb-2">
+                <div className="flex items-center mb-2" aria-label={`Taille: ${size}`}>
                     <span className="font-semibold mr-2">{sizeLabel}:</span>
                     <span className="text-gray-700">{size}</span>
                 </div>
             )}
-             {promotion ? (
-                <div className="flex flex-col mb-2">
+            {promotion ? (
+                <div className="flex flex-col mb-2" aria-label="Promotion">
                     <span className="text-gray-500 line-through text-lg">
                         ${price || 'Non disponible'}
                     </span>
@@ -51,12 +55,12 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
                     </p>
                 </div>
             ) : (
-                <p className="text-lg font-semibold mb-2">
+                <p className="text-lg font-semibold mb-2" aria-label={`Prix du produit: ${price || 'Non disponible'}`}>
                     Prix : ${price || 'Non disponible'}
                 </p>
             )}
-            <div className="flex items-center mb-2">
-                 <span className="font-semibold mr-2">Poids:</span>
+            <div className="flex items-center mb-2" aria-label={`Poids: ${weight} kg`}>
+                <span className="font-semibold mr-2">Poids:</span>
                 <span className="text-gray-700">{weight} kg</span>
             </div>
         </div>
@@ -64,4 +68,3 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
 };
 
 export default ProductDescription;
-

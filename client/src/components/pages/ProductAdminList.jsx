@@ -138,33 +138,35 @@ const ProductAdminList = () => {
         setCurrentProductId(null);
     };
 
-
     return (
-        <div className="container mx-auto p-4">
-            {message && <p className="text-green-500 mb-4">{message}</p>}
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <h1 className="text-2xl font-bold mb-4">Liste des Produits</h1>
+        <div className="container mx-auto p-4" aria-label="Liste des produits administrables">
+            {message && <p className="text-green-500 mb-4" aria-live="polite">{message}</p>}
+            {error && <p className="text-red-500 mb-4" aria-live="polite">{error}</p>}
+            <h1 className="text-2xl font-bold mb-4" aria-label="Liste des Produits">Liste des Produits</h1>
             <div className="mb-4 flex gap-4">
                 <Link to="/admin/create-product">
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" aria-label="Créer un nouveau produit">
                         Créer un nouveau produit
                     </button>
                 </Link>
                 <button
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     onClick={deleteSelectedProducts}
+                    aria-label="Supprimer les produits sélectionnés"
                 >
                     Supprimer les sélectionnés
                 </button>
                 <button
                     className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     onClick={editSelectedProducts}
+                    aria-label="Modifier les produits sélectionnés"
                 >
                     Modifier les sélectionnés
                 </button>
                 <button
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                     onClick={() => openPromotionModal(selectedProducts[0])}
+                    aria-label="Ajouter une promotion au produit sélectionné"
                 >
                     Ajouter une Promotion
                 </button>
@@ -187,13 +189,14 @@ const ProductAdminList = () => {
                     const promotion = product.promotions.length > 0 ? product.promotions[0] : null;
 
                     return (
-                        <div key={product.id} className="bg-white p-4 rounded shadow-lg">
+                        <div key={product.id} className="bg-white p-4 rounded shadow-lg" aria-label={`Produit ${product.name}`}>
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
                                     checked={selectedProducts.includes(product.id)}
                                     onChange={() => handleSelectProduct(product.id)}
                                     className="mr-2"
+                                    aria-label={`Sélectionner le produit ${product.name}`}
                                 />
                                 <img
                                     src={`http://localhost:8000${filteredModel?.images?.find(image => image.is_main)?.path || '/default-image.jpg'}`}
@@ -212,11 +215,13 @@ const ProductAdminList = () => {
                                 colors={uniqueColors}
                                 selectedColor={selectedColor}
                                 onColorSelect={(color) => handleColorSelect(product.id, color)}
+                                aria-label={`Sélectionner la couleur pour ${product.name}`}
                             />
                             <ProductSizes
                                 sizes={availableSizes}
                                 selectedSize={selectedSize}
                                 onSizeSelect={(size) => handleSizeSelect(product.id, size)}
+                                aria-label={`Sélectionner la taille pour ${product.name}`}
                             />
                             <p className="text-sm text-gray-500 mb-2">Poids : {product.weight} Kg</p>
                             {filteredModel ? (
@@ -239,7 +244,7 @@ const ProductAdminList = () => {
                                 <p className="text-red-500 mb-2">Stock non disponible</p>
                             )}
                             {promotion ? (
-                                <div className="flex flex-col mb-2">
+                                <div className="flex flex-col mb-2" aria-label={`Promotion pour ${product.name}`}>
                                     <span className="text-gray-500 line-through text-lg">
                                         ${filteredModel?.price?.toFixed(2) || 'Non disponible'}
                                     </span>
@@ -251,29 +256,37 @@ const ProductAdminList = () => {
                                     </p>
                                 </div>
                             ) : (
-                                <p className="text-lg font-semibold mb-2">
+                                <p className="text-lg font-semibold mb-2" aria-label={`Prix du produit ${product.name}`}>
                                     Prix : ${filteredModel?.price?.toFixed(2) || 'Non disponible'}
                                 </p>
                             )}
                             <div className="mt-4 flex gap-2">
                                 <Link to={`/admin/product/${product.category}/${product.id}/add-model`}>
-                                    <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Ajouter un modèle</button>
+                                    <button 
+                                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                        aria-label={`Ajouter un modèle pour ${product.name}`}
+                                    >
+                                        Ajouter un modèle
+                                    </button>
                                 </Link>
                                 <button
                                     className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                                     onClick={() => editProduct(product.id)}
+                                    aria-label={`Modifier le produit ${product.name}`}
                                 >
                                     Modifier
                                 </button>
                                 <button
                                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                                     onClick={() => deleteProduct(product.id)}
+                                    aria-label={`Supprimer le produit ${product.name}`}
                                 >
                                     Supprimer
                                 </button>
                                 <button
                                     className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                                     onClick={() => openPromotionModal(product.id)}
+                                    aria-label={`Ajouter une promotion au produit ${product.name}`}
                                 >
                                     Ajouter une Promotion
                                 </button>

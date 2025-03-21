@@ -16,9 +16,7 @@ const CategoryAdminForm = () => {
 
         try {
             const response = await axios.post("http://localhost:8000/upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: { "Content-Type": "multipart/form-data" },
             });
             return response.data.filePath;
         } catch (error) {
@@ -34,21 +32,16 @@ const CategoryAdminForm = () => {
         let imagePath = null;
         if (image) {
             imagePath = await handleImageUpload();
-            if (!imagePath) return; // Arrête si l'upload échoue
+            if (!imagePath) return;
         }
 
-        const formData = {
-            name,
-            imagePath,
-        };
+        const formData = { name, imagePath };
 
         try {
             await axios.post("http://localhost:8000/api/admin/categories", formData, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
             });
-            setMessage("Catégorie créée avec succès!");
+            setMessage("Catégorie créée avec succès !");
             setError("");
             setTimeout(() => {
                 navigate("/admin/categories");
@@ -74,12 +67,13 @@ const CategoryAdminForm = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="md:flex items-center mt-12">
                             <div className="w-full md:w-1/2 flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="name">
+                                <label htmlFor="name" className="font-semibold leading-none text-black">
                                     Nom
                                 </label>
                                 <input
                                     type="text"
                                     id="name"
+                                    aria-label="Nom de la catégorie"
                                     placeholder="Entrez le nom de la catégorie"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -88,12 +82,13 @@ const CategoryAdminForm = () => {
                                 />
                             </div>
                             <div className="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
-                                <label className="font-semibold leading-none text-black" htmlFor="image">
+                                <label htmlFor="image" className="font-semibold leading-none text-black">
                                     Image
                                 </label>
                                 <input
                                     type="file"
                                     id="image"
+                                    aria-label="Télécharger une image pour la catégorie"
                                     onChange={(e) => setImage(e.target.files[0])}
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
                                 />
@@ -104,7 +99,7 @@ const CategoryAdminForm = () => {
                                 type="submit"
                                 disabled={isSubmitting}
                                 className={`font-semibold leading-none text-white py-4 px-10 rounded focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none ${
-                                    isSubmitting ? 'bg-gray-400' : 'bg-blue-700 hover:bg-blue-600'
+                                    isSubmitting ? "bg-gray-400" : "bg-blue-700 hover:bg-blue-600"
                                 }`}
                             >
                                 Créer la catégorie
