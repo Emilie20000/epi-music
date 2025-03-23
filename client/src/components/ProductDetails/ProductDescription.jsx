@@ -13,7 +13,7 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
             default:
                 return 'Taille';
         }
-    };
+    }
 
     const sizeLabel = getSizeLabel();
     const shouldShowSize = sizeLabel && category.toLowerCase() !== 'instrument';
@@ -43,14 +43,14 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
                 </div>
             )}
             {promotion ? (
-                <div className="flex flex-col mb-2" aria-label="Promotion">
-                    <span className="text-gray-500 line-through text-lg">
+                <div className="flex flex-col mb-2" aria-label="Détails de la promotion">
+                    <span className="text-gray-500 line-through text-lg" aria-label={`Prix normal: ${price || 'Non disponible'}`}>
                         ${price || 'Non disponible'}
                     </span>
-                    <span className="text-red-600 text-xl font-bold">
+                    <span className="text-red-600 text-xl font-bold" aria-label={`Prix promotionnel: ${promotion.promo_price}`}>
                         ${promotion.promo_price}
                     </span>
-                    <p className="text-sm text-red-600 font-bold">
+                    <p className="text-sm text-red-600 font-bold" aria-label={`Promotion du ${promotion.start_date} au ${promotion.end_date}`}>
                         Promotion du {promotion.start_date} au {promotion.end_date}
                     </p>
                 </div>
@@ -60,7 +60,7 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
                 </p>
             )}
             <div className="flex items-center mb-2" aria-label={`Poids: ${weight} kg`}>
-                <span className="font-semibold mr-2">Poids:</span>
+                 <span className="font-semibold mr-2">Poids:</span>
                 <span className="text-gray-700">{weight} kg</span>
             </div>
         </div>

@@ -19,7 +19,7 @@ function Login() {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/api/login", {
+            const response = await fetch("http://localhost:8000/api/login", { //localhost
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -57,12 +57,12 @@ function Login() {
     };
 
     return (
-        <div className="flex items-center justify-center overflow-hidden">
+        <div className="flex items-center justify-center overflow-hidden" aria-label="Page de connexion">
             <div className="max-w-md w-full mx-auto p-8 rounded-lg mb-16">
                 <div className="flex items-center justify-center py-16">
                     <img src={logo} alt="Logo de l'application" className="w-64 h-64" />
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" aria-label="Formulaire de connexion">
                     <div className="flex items-center text-lg mb-6 md:mb-8 relative">
                         <svg
                             className="absolute ml-3"
@@ -101,7 +101,7 @@ function Login() {
                             aria-label="Mot de passe"
                         />
                     </div>
-                    {message && <p className="text-red-600">{message}</p>}
+                    {message && <p className="text-red-600" role="alert">{message}</p>}
                     <button
                         type="submit"
                         className="w-full bg-white text-[#EEB829] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -116,6 +116,7 @@ function Login() {
                     <Link
                         to="/register"
                         className="text-indigo-600 hover:text-indigo-800"
+                        aria-label="Accéder à la page d'inscription"
                     >
                         Inscription
                     </Link>

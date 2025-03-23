@@ -7,12 +7,9 @@ import ProvidersProductsModal from "../Modals/ProvidersProductsModal";
 const ProvidersAdminList = () => {
     const [providers, setProviders] = useState([]);
     const [alert, setAlert] = useState({ type: "", message: "" });
-    const [isProviderCreateModalOpen, setIsProviderCreateModalOpen] =
-        useState(false);
-    const [isProviderEditModalOpen, setIsProviderEditModalOpen] =
-        useState(false);
-    const [isProvidersProductsModalOpen, setIsProvidersProductsModalOpen] =
-        useState(false);
+    const [isProviderCreateModalOpen, setIsProviderCreateModalOpen] = useState(false);
+    const [isProviderEditModalOpen, setIsProviderEditModalOpen] = useState(false);
+    const [isProvidersProductsModalOpen, setIsProvidersProductsModalOpen] = useState(false);
     const [selectedProviderId, setSelectedProviderId] = useState(null);
 
     const fetchProviders = async () => {
@@ -90,15 +87,12 @@ const ProvidersAdminList = () => {
     };
 
     return (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" aria-label="Liste des prestataires">
             <h2 className="text-2xl font-bold my-4">
-                Liste des Prestataires (Cliquez sur les noms des prestataires
-                pour voir les produits éligibles)
+                Liste des Prestataires (Cliquez sur les noms des prestataires pour voir les produits éligibles)
             </h2>
             <h3 className="text-xl my-4">
-                L'affichage des produits est fait en fonction du coût de
-                transport, en sélectionnant le prestataire logistique le plus
-                économique
+                L'affichage des produits est fait en fonction du coût de transport, en sélectionnant le prestataire logistique le plus économique
             </h3>
             <button
                 onClick={() => setIsProviderCreateModalOpen(true)}
@@ -111,34 +105,31 @@ const ProvidersAdminList = () => {
                 <Alert message={alert.message} type={alert.type} />
             )}
             <div className="overflow-x-auto">
-                <table
-                    className="min-w-full bg-white border border-gray-200"
-                    aria-label="Tableau des prestataires"
-                >
+                <table className="min-w-full bg-white border border-gray-200" aria-label="Tableau des prestataires">
                     <thead>
                         <tr>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Nom
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 EAN
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Longueur (cm)
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Largeur (cm)
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Hauteur (cm)
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Prix (€)
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Poids Max (kg)
                             </th>
-                            <th scope="col" className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Action
                             </th>
                         </tr>
@@ -177,7 +168,9 @@ const ProvidersAdminList = () => {
                                 <td className="px-4 py-2 border border-gray-200">
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() => handleDelete(provider.id)}
+                                            onClick={() =>
+                                                handleDelete(provider.id)
+                                            }
                                             className="w-1/2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                             aria-label={`Supprimer le prestataire ${provider.name}`}
                                         >
@@ -200,6 +193,20 @@ const ProvidersAdminList = () => {
                     </tbody>
                 </table>
             </div>
+            <ProviderCreateModal
+                isOpen={isProviderCreateModalOpen}
+                onClose={() => setIsProviderCreateModalOpen(false)}
+            />
+            <ProviderEditModal
+                isOpen={isProviderEditModalOpen}
+                onClose={() => setIsProviderEditModalOpen(false)}
+                providerId={selectedProviderId}
+            />
+            <ProvidersProductsModal
+                isOpen={isProvidersProductsModalOpen}
+                onClose={() => setIsProvidersProductsModalOpen(false)}
+                providerId={selectedProviderId}
+            />
         </div>
     );
 };

@@ -86,7 +86,13 @@ const UserOrdersList = () => {
             <div className="flex flex-col items-center mb-4">
                 <h2 className="text-xl font-bold mb-4" aria-label="Mes Commandes">Mes Commandes</h2>
             </div>
-            {error && <p className="text-red-500 text-center" role="alert">{error}</p>}
+    
+            {error && (
+                <p className="text-red-500 text-center" role="alert">
+                    {error}
+                </p>
+            )}
+    
             <div className="flex flex-wrap justify-center gap-4">
                 {orders.length > 0 ? (
                     orders.map((order) => (
@@ -99,6 +105,8 @@ const UserOrdersList = () => {
                                 className="text-xl font-bold mb-2 cursor-pointer"
                                 onClick={() => handleOrderClick(order.id)}
                                 aria-label={`Voir les détails de la commande numéro ${order.id}`}
+                                role="button"
+                                tabIndex={0}
                             >
                                 Commande #{order.id}
                             </h3>
@@ -107,7 +115,9 @@ const UserOrdersList = () => {
                                 <strong>Statut :</strong>
                                 <span className="ml-2 flex items-center">
                                     {getStatusIcon(order.status)}
-                                    <span className={`ml-2 ${getStatusColor(order.status)}`}>{order.status}</span>
+                                    <span className={`ml-2 ${getStatusColor(order.status)}`}>
+                                        {order.status}
+                                    </span>
                                 </span>
                             </p>
                             <div className="flex mt-4">
@@ -125,12 +135,12 @@ const UserOrdersList = () => {
                     <p aria-label="Aucune commande trouvée">Aucune commande trouvée.</p>
                 )}
             </div>
-
+    
             {isModalOpen && selectedOrderDetails && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-                    aria-modal="true"
                     role="dialog"
+                    aria-modal="true"
                     aria-labelledby="modalTitle"
                 >
                     <div className="relative bg-white rounded-lg shadow-lg p-6 w-2/3 max-w-3xl">
@@ -156,15 +166,23 @@ const UserOrdersList = () => {
                             <tbody>
                                 {selectedOrderDetails.items.map((item, index) => (
                                     <tr key={index}>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-justify">{item.productName}</td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">{item.color || '-'}</td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">{item.size || '-'}</td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">{item.quantity}</td>
+                                        <td className="py-2 px-4 border-b border-gray-200 text-justify">
+                                            {item.productName}
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
+                                            {item.color || '-'}
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
+                                            {item.size || '-'}
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
+                                            {item.quantity}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        <div className="mt-4">
+                        <div className="mt-4" aria-label={`Prix total de la commande : ${selectedOrderDetails.totalPrice} euros`}>
                             <strong>Prix Total :</strong> {selectedOrderDetails.totalPrice} €
                         </div>
                         <div className="mt-4 flex justify-end">
@@ -181,6 +199,6 @@ const UserOrdersList = () => {
             )}
         </div>
     );
-};
+}    
 
 export default UserOrdersList;
