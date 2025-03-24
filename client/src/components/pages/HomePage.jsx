@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import "../../styles/ProductList.css";
-import CategoryCard from "../cards/CategoryCard";
 import HomeCarousel from "../carousel/HomeCarousel";
 import vinyles from "../../assets/vinyles.webp";
 import instruments from "../../assets/instruments.webp";
@@ -36,7 +35,7 @@ const HomePage = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8000/api/admin/categories") //localhost
+            .get("http://localhost:8000/api/admin/categories")
             .then((response) => {
                 setCategories(response.data);
             })
@@ -50,6 +49,10 @@ const HomePage = () => {
     }, []);
 
     return (
+        <>
+        <Helmet>
+            <title>Accueil | Epimusic</title>
+        </Helmet>
         <div>
             {message && <p className="success">{message}</p>}
             {error && <p className="error">{error}</p>}
@@ -58,6 +61,7 @@ const HomePage = () => {
                 {error && <p className="text-red-500">{error}</p>}
             </div>
         </div>
+        </>
     );
 };
 
