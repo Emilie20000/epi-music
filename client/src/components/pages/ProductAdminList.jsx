@@ -143,7 +143,7 @@ const ProductAdminList = () => {
     return (
         <>
             <Helmet>
-                <title>Liste des Produits | Epimusic</title>
+                <title>Admin Panel | Liste des produits | EpiMusic</title>
                 <meta name="description" content="Gérez les produits de la boutique Epimusic." />
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>
