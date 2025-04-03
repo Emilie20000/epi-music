@@ -25,18 +25,14 @@ const ProductCategoriesList = () => {
   return (
     <>
       <Helmet>
-        {/* TODO: Compléter les tags meta commentés (retirer si inutile)*/}
         <title>Catégories de Produits | Epimusic</title>
         <meta name="description" content="Explorez les différentes catégories de produits disponibles sur Epimusic." />
-
         <meta property="og:title" content="Catégories de produits | Epimusic" />
         <meta
           property="og:description"
           content="Parcourez nos différentes catégories de produits : instruments, vinyles, goodies et bien d'autres !"
         />
         <meta property="og:type" content="website" />
-        {/* <meta property="og:url" content="" /> */}
-
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Catégories de produits | Epimusic" />
         <meta name="twitter:description" content="Trouvez vos différentes catégories de produits musicaux sur Epimusic." />

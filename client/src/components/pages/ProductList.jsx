@@ -270,7 +270,6 @@ const ProductList = () => {
   return (
     <>
       <Helmet>
-        {/* TODO: Compléter les tags meta commentés (retirer si inutile)*/}
         <title>{formattedCategory} | Epimusic</title>
         <meta name="description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
         <meta
@@ -279,11 +278,8 @@ const ProductList = () => {
         />
         <meta property="og:title" content={`${formattedCategory} | Epimusic`} />
         <meta property="og:description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
-        {/* <meta property="og:image" content="" /> */}
-        <meta property="og:url" content={window.location.href} />
         <meta name="twitter:title" content={`${formattedCategory} | Epimusic`} />
         <meta name="twitter:description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
-        {/* <meta name="twitter:image" content="" /> */}
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       <div className="container mx-auto p-4">
