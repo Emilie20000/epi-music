@@ -1,30 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import HomePage from './components/pages/HomePage';
-import ProductAdminForm from './components/forms/ProductAdminForm';
-import Register from './components/AuthForms/Register';
-import Login from './components/AuthForms/Login';
+import { Suspense, lazy } from 'react';
 import Navbar from './components/navbar/Navbar';
+import Footer from './components/footer/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-import ProductDetailsPage from './components/pages/ProductDetailsPage';
-import ProductCategoriesList from "./components/pages/ProductCategoriesList";
-import ProductList from "./components/pages/ProductList";
-import bgAuth from "./assets/bg-auth.webp";
-import FilteredArticles from './components/Filtered/FilteredArticles';
-import AdminPanel from './components/pages/AdminPanel';
-import UserProfile from './components/user/UserProfile';
-import CartPage from "./components/pages/Checkout/CartPage";
-import Footer from "./components/footer/Footer";
-import ProductAdminAddModel from './components/forms/ProductAdminAddModel';
-import ProductAdminEdit from './components/forms/ProductAdminEdit';
-import RhythmGame from './components/Game/RhythmGame';
-import ShippingPage from './components/pages/Checkout/ShippingPage';
-import DeliveryHomePage from './components/pages/Checkout/DeliveryHomePage';
-import StockManagementPage from './components/pages/StockManagementPage';
-import { SearchProvider } from './context/SearchContext'; 
+import { SearchProvider } from './context/SearchContext';
 import { CartProvider } from './context/CartContext';
-import PaymentPage from './components/pages/Checkout/PaymentPage';
+import bgAuth from "./assets/bg-auth.webp";
+
+
+
+const HomePage = lazy(() => import('./components/pages/HomePage'));
+const ProductAdminForm = lazy(() => import('./components/forms/ProductAdminForm'));
+const Register = lazy(() => import('./components/AuthForms/Register'));
+const Login = lazy(() => import('./components/AuthForms/Login'));
+const ProductDetailsPage = lazy(() => import('./components/pages/ProductDetailsPage'));
+const ProductCategoriesList = lazy(() => import('./components/pages/ProductCategoriesList'));
+const ProductList = lazy(() => import('./components/pages/ProductList'));
+const FilteredArticles = lazy(() => import('./components/Filtered/FilteredArticles'));
+const AdminPanel = lazy(() => import('./components/pages/AdminPanel'));
+const UserProfile = lazy(() => import('./components/user/UserProfile'));
+const CartPage = lazy(() => import('./components/pages/Checkout/CartPage'));
+const ProductAdminAddModel = lazy(() => import('./components/forms/ProductAdminAddModel'));
+const ProductAdminEdit = lazy(() => import('./components/forms/ProductAdminEdit'));
+const RhythmGame = lazy(() => import('./components/Game/RhythmGame'));
+const ShippingPage = lazy(() => import('./components/pages/Checkout/ShippingPage'));
+const DeliveryHomePage = lazy(() => import('./components/pages/Checkout/DeliveryHomePage'));
+const StockManagementPage = lazy(() => import('./components/pages/StockManagementPage'));
+const PaymentPage = lazy(() => import('./components/pages/Checkout/PaymentPage'));
+
 
 const App = () => (
     <Router>
@@ -69,70 +74,72 @@ const BackgroundWrapper = ({ children }) => {
 const Content = () => {
     return (
         <div>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/products" element={<ProductCategoriesList />} />
-                <Route path="/products/:category/:categoryId" element={<ProductList />} />
-                <Route path="/products/:category/:categoryId/search" element={<ProductList />} />
-                <Route path="/products/search" element={<ProductList />} />
-                <Route
-                    path="/admin/*"
-                    element={
-                        <ProtectedRoute requiredRole="ROLE_ADMIN">
-                            <AdminPanel />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/profile/*"
-                    element={
-                        <ProtectedRoute requiredRole="ROLE_USER">
-                            <UserProfile />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route path="/admin/create-product" element={<ProductAdminForm />} />
-                <Route
-                    path="/admin/create-product"
-                    element={
-                        <ProtectedRoute requiredRole="ROLE_ADMIN">
-                            <ProductAdminForm />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/admin/edit-product/:id"
-                    element={
-                        <ProtectedRoute requiredRole="ROLE_ADMIN">
-                            <ProductAdminEdit />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/product/:category/:id/add-model'
-                    element={
-                        <ProtectedRoute requiredRole="ROLE_ADMIN">
-                            <ProductAdminAddModel />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/product/:id"
-                    element={<ProductDetailsPage />}
-                />
-                <Route path="/cart" element={<CartPage />} />
-                {/* <Route path="/admin/stock-management" element={<StockManagementPage />} /> */}
-                <Route
-                    path="/filters"
-                    element={<FilteredArticles />}
-                />
-                <Route path='/delivery' element={<ShippingPage />} />
-                <Route path='/delivery/home-delivery' element={<DeliveryHomePage />} />
-                <Route path='/checkout/payment' element={<PaymentPage />} />
-                <Route path="/rhythm-game" element={<RhythmGame />} />
-            </Routes>
+            <Suspense fallback={<div className="text-center p-4">Chargement...</div>}>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/products" element={<ProductCategoriesList />} />
+                    <Route path="/products/:category/:categoryId" element={<ProductList />} />
+                    <Route path="/products/:category/:categoryId/search" element={<ProductList />} />
+                    <Route path="/products/search" element={<ProductList />} />
+                    <Route
+                        path="/admin/*"
+                        element={
+                            <ProtectedRoute requiredRole="ROLE_ADMIN">
+                                <AdminPanel />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile/*"
+                        element={
+                            <ProtectedRoute requiredRole="ROLE_USER">
+                                <UserProfile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/admin/create-product" element={<ProductAdminForm />} />
+                    <Route
+                        path="/admin/create-product"
+                        element={
+                            <ProtectedRoute requiredRole="ROLE_ADMIN">
+                                <ProductAdminForm />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/admin/edit-product/:id"
+                        element={
+                            <ProtectedRoute requiredRole="ROLE_ADMIN">
+                                <ProductAdminEdit />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/admin/product/:category/:id/add-model'
+                        element={
+                            <ProtectedRoute requiredRole="ROLE_ADMIN">
+                                <ProductAdminAddModel />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/product/:id"
+                        element={<ProductDetailsPage />}
+                    />
+                    <Route path="/cart" element={<CartPage />} />
+                    {/* <Route path="/admin/stock-management" element={<StockManagementPage />} /> */}
+                    <Route
+                        path="/filters"
+                        element={<FilteredArticles />}
+                    />
+                    <Route path='/delivery' element={<ShippingPage />} />
+                    <Route path='/delivery/home-delivery' element={<DeliveryHomePage />} />
+                    <Route path='/checkout/payment' element={<PaymentPage />} />
+                    <Route path="/rhythm-game" element={<RhythmGame />} />
+                </Routes>
+            </Suspense> 
         </div>
     );
 };
