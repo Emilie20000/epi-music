@@ -149,14 +149,14 @@ const PaymentForm = ({ orderPrice, orderId }) => {
             icon={faCheckCircle}
             className="text-green-500 text-6xl"
           />
-          <p className="text-2xl mt-8 mb-4">Paiement réussi</p>
-          <p className="text-2xl">Merci d'avoir commandé chez Epimusic !</p>
+          <p className="text-xl mt-8 mb-4">Paiement réussi</p>
+          <p className="text-xl">Merci d'avoir commandé chez Epimusic !</p>
           <p className="text-xl mt-2">Vous allez être redirigés dans quelques instants</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
           <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
+            <label className="block text-gray-700 mb-2 text-xl">
               Titulaire de la carte
             </label>
             <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
@@ -171,7 +171,7 @@ const PaymentForm = ({ orderPrice, orderId }) => {
             </div>
           </div>
           <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
+            <label className="block text-gray-700 mb-2 text-xl">
               Numéro de carte
             </label>
             <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
@@ -181,20 +181,20 @@ const PaymentForm = ({ orderPrice, orderId }) => {
               />
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex space-x-16">
             <div>
-              <label className="block text-gray-700 mb-2 text-2xl">
+              <label className="block text-gray-700 mb-2 text-xl">
                 Date d'expiration
               </label>
               <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
                 <CardExpiryElement
                   options={CARD_ELEMENT_OPTIONS}
-                  className="w-full focus:outline-none"
+                  className="w-2/3 focus:outline-none"
                 />
               </div>
             </div>
-            <div className="w-1/6 ">
-              <label className="block text-gray-700 mb-2 text-2xl">CVC</label>
+            <div className="w-2/6 ">
+              <label className="block text-gray-700 mb-2 text-xl">CVC</label>
               <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
                 <CardCvcElement
                   options={CARD_ELEMENT_OPTIONS}
@@ -206,7 +206,7 @@ const PaymentForm = ({ orderPrice, orderId }) => {
           <button
             type="submit"
             disabled={!stripe || isProcessing}
-            className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
+            className="mt-4 p-2 bg-rose-600 text-white rounded flex items-center justify-center w-full text-xl"
           >
             {isProcessing ? "Transaction en cours..." : "Payer"}
           </button>

@@ -40,10 +40,10 @@ const PaymentPage = () => {
   }, [order]);
 
   return (
-    <div className="w-9/12 m-auto">
+    <div className="w-[90%] justify-center lg:w-9/12 m-auto">
       <h1 className="text-center text-4xl font-bold my-4">Paiement</h1>
-      <div className="flex flex-wrap justify-evenly">
-        <div className="w-2/5 max-w-xl bg-white p-8 mt-4 rounded-lg">
+      <div className="flex lg:flex-row flex-col space-y-8 flex-wrap justify-evenly">
+        <div className="lg:w-2/5 max-w-xl bg-white p-8 mt-4 rounded-lg">
           {order && (
             <Elements stripe={stripePromise}>
               <PaymentForm
@@ -53,7 +53,7 @@ const PaymentPage = () => {
             </Elements>
           )}
         </div>
-        <div className="w-1/3">
+        <div className="lg:w-1/3 w-full">
           <h3 className="text-2xl mb-4">Récapitulatif :</h3>
           <div className="w-full bg-white p-4 rounded-lg">
             {order && (
