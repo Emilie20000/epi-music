@@ -7,6 +7,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import ProductColors from "../ProductDetails/ProductColors";
 import ProductSizes from "../ProductDetails/ProductSizes";
 import ProductFilter from "../Filtered/ProductFilter";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductList = () => {
     const { categoryId, category } = useParams();
@@ -36,6 +37,11 @@ const ProductList = () => {
     const [availableFilterCategories, setAvailableCategories] = useState([]);
 
     const [shouldApplyFilters, setShouldApplyFilters] = useState(false);
+
+    const { isDark } = useTheme();
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-[#634832]";
+    const borderColor = isDark ? "border-sky-400" : "border-gray-300";
 
     function formatCategory(category) {
         if (!category) {
@@ -315,16 +321,15 @@ const ProductList = () => {
                 </p>
             )}
             {formattedCategory ? (
-                <h1 className="text-center text-4xl font-bold my-4">
+                <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`}>
                     {formattedCategory}
                 </h1>
-
-             ) : (
-                <h1 className="text-center text-4xl font-bold my-4">
+            ) : (
+                <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`}>
                     Tous les produits
                 </h1>
-             )}
-            
+            )}
+
             <div className="flex">
                 <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
                     <ProductFilter
@@ -338,8 +343,7 @@ const ProductList = () => {
                     />
                 </div>
                 <div className="w-3/4 flex-1 p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {filteredProducts.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">                        {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => {
                                 const selectedColor =
                                     selectedColors[product.id];
@@ -376,121 +380,68 @@ const ProductList = () => {
                                         ? product.promotions[0]
                                         : null;
 
+
                                 return (
                                     <div
                                         key={product.id}
-                                        className="bg-white border border-gray-300 rounded-lg p-4 flex flex-col h-full transition-transform duration-300 ease-in-out hover:scale-105"
+                                        className={`card ${cardBg} ${borderColor} border-2 rounded-lg p-4 flex flex-col transition-transform duration-300 ease-in-out hover:scale-105 ${textColor} overflow-hidden`}
+                                        style={{
+                                            maxWidth: "100%",
+
+                                        }}
                                     >
-                                        <Link
-                                            to={`/product/${product.id}`}
-                                            className="flex flex-col h-full"
-                                        >
+                                        <Link to={`/product/${product.id}`} className="flex flex-col h-full">
                                             <div className="flex-1 flex justify-center items-center mb-1">
-                                                {filteredModel?.images &&
-                                                filteredModel.images.length >
-                                                    0 ? (
+                                                {filteredModel?.images && filteredModel.images.length > 0 ? (
                                                     <img
-                                                        src={`http://localhost:8000${
-                                                            filteredModel.images.find(
-                                                                (img) =>
-                                                                    img.is_main
-                                                            )?.path
-                                                        }`}
+                                                        src={`http://localhost:8000${filteredModel.images.find(
+                                                            (img) => img.is_main
+                                                        )?.path}`}
                                                         alt={`Produit ${product.name}`}
                                                         className="object-contain max-w-full max-h-48"
                                                     />
                                                 ) : (
                                                     <div className="flex items-center justify-center w-full h-48 bg-gray-200 text-gray-600">
-                                                        <p>
-                                                            Aucune image
-                                                            disponible
-                                                        </p>
+                                                        <p>Aucune image disponible</p>
                                                     </div>
                                                 )}
                                             </div>
                                         </Link>
                                         <div className="flex-1 flex flex-col justify-between">
-                                            <h2 className="text-lg font-bold mb-2 line-clamp-1">
-                                                {product.name}
-                                            </h2>
+                                            <h2 className="text-lg font-bold mb-2 line-clamp-1">{product.name}</h2>
                                             {!formattedCategory && (
-                                                <p className="line-clamp-3 mb-2">
-                                                    Catégorie : {product.category}
-                                                </p>
+                                                <p className="line-clamp-3 mb-2">Catégorie : {product.category}</p>
                                             )}
-                                            <p className="line-clamp-3 mb-2">
-                                                {product.description}
-                                            </p>
-                                            <p className="line-clamp-3 mb-2">
-                                               Poids : {product.weight}
-                                            </p>
+                                            <p className="line-clamp-3 mb-2">{product.description}</p>
+                                            <p className="line-clamp-3 mb-2">Poids : {product.weight}</p>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex-1">
                                                     <ProductColors
                                                         colors={uniqueColors}
-                                                        selectedColor={
-                                                            selectedColor
-                                                        }
-                                                        onColorSelect={(
-                                                            color
-                                                        ) =>
-                                                            handleColorSelect(
-                                                                product.id,
-                                                                color
-                                                            )
-                                                        }
+                                                        selectedColor={selectedColor}
+                                                        onColorSelect={(color) => handleColorSelect(product.id, color)}
                                                     />
                                                     <ProductSizes
                                                         sizes={availableSizes}
-                                                        selectedSize={
-                                                            selectedSize
-                                                        }
-                                                        onSizeSelect={(size) =>
-                                                            handleSizeSelect(
-                                                                product.id,
-                                                                size
-                                                            )
-                                                        }
+                                                        selectedSize={selectedSize}
+                                                        onSizeSelect={(size) => handleSizeSelect(product.id, size)}
                                                     />
                                                 </div>
                                                 <div className="w-1/3 ml-4">
-                                                    {" "}
-                                                    {filteredModel?.stock !==
-                                                        undefined && (
+                                                    {filteredModel?.stock !== undefined && (
                                                         <>
-                                                            {filteredModel.stock >
-                                                                0 &&
-                                                            filteredModel.stock <=
-                                                                5 ? (
+                                                            {filteredModel.stock > 0 && filteredModel.stock <= 5 ? (
                                                                 <>
-                                                                    <p>
-                                                                        Stock :{" "}
-                                                                        {
-                                                                            filteredModel.stock
-                                                                        }
-                                                                    </p>
-                                                                    <p className="text-orange-500 font-bold">
-                                                                        Bientôt épuisé
-                                                                    </p>
+                                                                    <p>Stock : {filteredModel.stock}</p>
+                                                                    <p className="text-orange-500 font-bold">Bientôt épuisé</p>
                                                                 </>
-                                                            ) : filteredModel.stock >
-                                                              5 ? (
+                                                            ) : filteredModel.stock > 5 ? (
                                                                 <>
-                                                                    <p>
-                                                                        Stock :{" "}
-                                                                        {
-                                                                            filteredModel.stock
-                                                                        }
-                                                                    </p>
-                                                                    <p className="text-green-500 font-bold">
-                                                                        En stock
-                                                                    </p>
+                                                                    <p>Stock : {filteredModel.stock}</p>
+                                                                    <p className="text-green-500 font-bold">En stock</p>
                                                                 </>
                                                             ) : (
-                                                                <p className="text-red-500 font-bold">
-                                                                    Rupture de
-                                                                    stock
-                                                                </p>
+                                                                <p className="text-red-500 font-bold">Rupture de stock</p>
                                                             )}
                                                         </>
                                                     )}
@@ -499,27 +450,17 @@ const ProductList = () => {
 
                                             {promotion ? (
                                                 <div className="flex flex-col mb-2">
-                                                    <span className="text-gray-500 line-through text-lg">
-                                                        $
-                                                        {filteredModel?.price?.toFixed(
-                                                            2
-                                                        ) || "Non disponible"}
-                                                    </span>
-                                                    <span className="text-red-600 text-xl font-bold">
-                                                        ${promotion.promo_price}
-                                                    </span>
+                        <span className="text-gray-500 line-through text-lg">
+                            ${filteredModel?.price?.toFixed(2) || "Non disponible"}
+                        </span>
+                                                    <span className="text-red-600 text-xl font-bold">${promotion.promo_price}</span>
                                                     <p className="text-sm text-red-600 font-bold">
-                                                        Promotion du{" "}
-                                                        {promotion.start_date}{" "}
-                                                        au {promotion.end_date}
+                                                        Promotion du {promotion.start_date} au {promotion.end_date}
                                                     </p>
                                                 </div>
                                             ) : (
                                                 <p className="text-xl font-bold">
-                                                    $
-                                                    {filteredModel?.price?.toFixed(
-                                                        2
-                                                    ) || "Non disponible"}
+                                                    ${filteredModel?.price?.toFixed(2) || "Non disponible"}
                                                 </p>
                                             )}
                                         </div>
@@ -530,19 +471,15 @@ const ProductList = () => {
                                                     ? "bg-green-500 text-white hover:bg-green-700"
                                                     : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                             }`}
-                                            onClick={() =>
-                                                handleAddToCart(product)
-                                            }
+                                            onClick={() => handleAddToCart(product)}
                                             disabled={filteredModel?.stock <= 0}
                                         >
-                                            <FontAwesomeIcon
-                                                icon={faShoppingCart}
-                                                className="mr-2"
-                                            />
+                                            <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                                             Ajouter au panier
                                         </button>
                                     </div>
                                 );
+
                             })
                         ) : (
                             <p className="text-center">Aucun produit trouvé</p>

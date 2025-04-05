@@ -1,7 +1,6 @@
 import React from 'react';
 
-const ProductDescription = ({ category, description, stock, color, size, price, weight, promotion }) => {
-
+const ProductDescription = ({ category, description, stock, color, size, price, weight, promotion, isDark }) => {
     const getSizeLabel = () => {
         switch (category.toLowerCase()) {
             case 'instrument':
@@ -18,27 +17,33 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
     const sizeLabel = getSizeLabel();
     const shouldShowSize = sizeLabel && category.toLowerCase() !== 'instrument';
 
+
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const subTextColor = isDark ? "text-slate-300" : "text-gray-600";
+    const cardBg = isDark ? "text-slate-600" : "bg-white";
+    const borderColor = isDark ? "text-slate-600" : "bg-white";
+
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md max-h-100 overflow-y-auto">
-            <div className="text-lg font-semibold mb-2">Description</div>
-            <p className="text-gray-700 mb-4">{description}</p>
+        <div className={`p-6 ${cardBg} ${borderColor} rounded-lg shadow-md`}>
+            <div className={`text-lg font-semibold mb-2 ${textColor}`}>Description</div>
+            <p className={`mb-4 ${textColor}`}>{description}</p>
             <div className="flex items-center mb-2">
-                <span className="font-semibold mr-2">Stock:</span>
+                <span className={`font-semibold mr-2 ${textColor}`}>Stock:</span>
                 <span className={stock > 0 ? "text-green-600" : "text-red-600"}>
                     {stock > 0 ? `${stock}` : 'Bientôt disponible'}
                 </span>
             </div>
             <div className="flex items-center mb-2">
-                <span className="font-semibold mr-2">Couleur:</span>
-                <span className="text-gray-700">{color}</span>
+                <span className={`font-semibold mr-2 ${textColor}`}>Couleur:</span>
+                <span className={textColor}>{color}</span>
             </div>
             {shouldShowSize && (
                 <div className="flex items-center mb-2">
-                    <span className="font-semibold mr-2">{sizeLabel}:</span>
-                    <span className="text-gray-700">{size}</span>
+                    <span className={`font-semibold mr-2 ${textColor}`}>{sizeLabel}:</span>
+                    <span className={textColor}>{size}</span>
                 </div>
             )}
-             {promotion ? (
+            {promotion ? (
                 <div className="flex flex-col mb-2">
                     <span className="text-gray-500 line-through text-lg">
                         ${price || 'Non disponible'}
@@ -51,17 +56,16 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
                     </p>
                 </div>
             ) : (
-                <p className="text-lg font-semibold mb-2">
+                <p className={`text-lg font-semibold mb-2 ${textColor}`}>
                     Prix : ${price || 'Non disponible'}
                 </p>
             )}
             <div className="flex items-center mb-2">
-                 <span className="font-semibold mr-2">Poids:</span>
-                <span className="text-gray-700">{weight} kg</span>
+                <span className={`font-semibold mr-2 ${textColor}`}>Poids:</span>
+                <span className={textColor}>{weight} kg</span>
             </div>
         </div>
     );
 };
 
 export default ProductDescription;
-
