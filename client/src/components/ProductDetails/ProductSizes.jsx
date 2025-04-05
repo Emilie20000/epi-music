@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProductSizes = ({ sizes, selectedSize, onSizeSelect }) => {
     return (
-        <div className="flex h-8 gap-2 mb-4">
+        <div className="flex h-8 gap-2 mb-4" aria-label="Liste des tailles">
             {sizes.map((size, index) => (
                 size && (
                     <span
@@ -10,6 +10,7 @@ const ProductSizes = ({ sizes, selectedSize, onSizeSelect }) => {
                         className={`px-2 py-1 cursor-pointer border-2 ${selectedSize === size ? 'border-black' : 'border-transparent'}`}
                         onClick={() => onSizeSelect(size)}
                         title={size}
+                        aria-label={`Sélectionner la taille ${size}`}
                     >
                         {size}
                     </span>

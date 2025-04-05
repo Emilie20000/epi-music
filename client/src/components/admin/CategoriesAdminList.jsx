@@ -46,6 +46,7 @@ const CategoriesAdminList = () => {
             <button
                 className="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4"
                 onClick={handleCreateCategory}
+                aria-label="Créer une nouvelle catégorie"
             >
                 Créer une catégorie
             </button>
@@ -56,7 +57,7 @@ const CategoriesAdminList = () => {
                         <div className="mb-4 w-full h-48 image-container">
                             <img
                                 src={`http://localhost:8000${category.imagePath}`}
-                                alt={`Category ${category.name}`}
+                                alt={`Image représentant la catégorie ${category.name}`}
                                 className="w-full h-full object-cover rounded"
                             />
                         </div>
@@ -65,12 +66,14 @@ const CategoriesAdminList = () => {
                             <button
                                 className="bg-green-500 text-white font-bold py-2 px-4 rounded"
                                 onClick={() => handleEditCategory(category.id)}
+                                aria-label={`Modifier la catégorie ${category.name}`}
                             >
                                 Modifier
                             </button>
                             <button
                                 className="bg-red-500 text-white font-bold py-2 px-4 rounded"
                                 onClick={() => handleDeleteCategory(category.id)}
+                                aria-label={`Supprimer la catégorie ${category.name}`}
                             >
                                 Supprimer
                             </button>

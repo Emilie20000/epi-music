@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Alert from '../Alerts/Alert';
 
-const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
+const ProviderEditModal = ({ isOpen, onClose, providerId }) => {
     const [formData, setFormData] = useState({
         name: '',
         EAN: '',
@@ -72,14 +72,12 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                 return;
             }
 
-            const updatedProvider = await response.json();
             setAlert({ type: 'success', message: 'Prestataire mis à jour avec succès' });
 
             setTimeout(() => {
                 onClose();
                 window.location.reload();
             }, 2000);
-
         } catch (error) {
             setAlert({ type: 'error', message: 'Erreur lors de la mise à jour du prestataire' });
         }
@@ -103,6 +101,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le nom du prestataire"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -115,6 +114,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.EAN}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le code EAN du prestataire"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -127,6 +127,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.length}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la longueur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -139,6 +140,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.width}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la largeur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -151,6 +153,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.height}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la hauteur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -164,6 +167,7 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.price}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le prix en euros"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -176,12 +180,26 @@ const ProviderEditModal = ({ isOpen, onClose, providerId}) => {
                             value={formData.MaxWeight}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le poids maximal en kilogrammes"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="flex justify-end">
-                        <button type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 text-white rounded">Annuler</button>
-                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Mettre à jour</button>
+                        <button 
+                            type="button" 
+                            onClick={onClose} 
+                            aria-label="Annuler la modification du prestataire"
+                            className="mr-2 px-4 py-2 bg-gray-300 text-white rounded"
+                        >
+                            Annuler
+                        </button>
+                        <button 
+                            type="submit" 
+                            aria-label="Mettre à jour le prestataire"
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Mettre à jour
+                        </button>
                     </div>
                 </form>
             </div>

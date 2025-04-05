@@ -202,6 +202,7 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             <select
                                 id="color"
                                 name="color"
+                                aria-label="Sélectionnez une couleur"
                                 value={formData.color}
                                 onChange={handleChange}
                                 className="block w-full border border-gray-300 rounded p-2"
@@ -213,13 +214,14 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             </select>
                         </div>
                     )}
-
+    
                     {shouldDisplaySize(productCategoryId) && (
                         <div className="mb-4">
                             <label className="block text-gray-700 mb-2" htmlFor="size">Taille :</label>
                             <select
                                 id="size"
                                 name="size"
+                                aria-label="Sélectionnez une taille"
                                 value={formData.size}
                                 onChange={handleChange}
                                 className="block w-full border border-gray-300 rounded p-2"
@@ -231,13 +233,14 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             </select>
                         </div>
                     )}
-
+    
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-2" htmlFor="price">Prix :</label>
                         <input
                             type="number"
                             id="price"
                             name="price"
+                            aria-label="Prix du produit"
                             value={formData.price}
                             onChange={handleChange}
                             className="block w-full border border-gray-300 rounded p-2"
@@ -246,12 +249,14 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             required
                         />
                     </div>
+    
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-2" htmlFor="stock">Stock :</label>
                         <input
                             type="number"
                             id="stock"
                             name="stock"
+                            aria-label="Stock du produit"
                             value={formData.stock}
                             onChange={handleChange}
                             className="block w-full border border-gray-300 rounded p-2"
@@ -259,21 +264,24 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             required
                         />
                     </div>
+    
                     <div className="w-full flex flex-col">
                         <label className="font-semibold leading-none text-black" htmlFor="photos">Photos</label>
                         <input
                             type="file"
                             id="photos"
                             multiple
+                            aria-label="Téléverser des images du produit"
                             onChange={handlePhotoChange}
                             className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
                         />
                         <div className="flex flex-col mt-4">
                             {formData.images.map((image, index) => (
                                 <div key={index} className="flex items-center mt-2">
-                                    <img src={image.path} alt={`Photo ${index}`} className="w-16 h-16 object-cover mr-4" />
+                                    <img src={image.path} alt={`Photo ${index + 1}`} className="w-16 h-16 object-cover mr-4" />
                                     <button
                                         type="button"
+                                        aria-label={`Définir l’image ${index + 1} comme principale`}
                                         className={`mr-4 px-3 py-1 rounded ${image.is_main ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
                                         onClick={() => handleSetMainImage(index)}
                                     >
@@ -281,6 +289,7 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                                     </button>
                                     <button
                                         type="button"
+                                        aria-label={`Supprimer l’image ${index + 1}`}
                                         className="ml-2 text-red-600"
                                         onClick={() => handleRemovePhoto(index)}
                                     >
@@ -290,11 +299,18 @@ const ProductAdminUpdateModel = ({ isOpen, onClose, modelId, productCategoryId, 
                             ))}
                         </div>
                     </div>
-                    <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">Enregistrer les modifications</button>
+    
+                    <button
+                        type="submit"
+                        aria-label="Enregistrer les modifications du modèle"
+                        className="mt-4 bg-blue-500 text-white p-2 rounded"
+                    >
+                        Enregistrer les modifications
+                    </button>
                 </form>
             </div>
         </div>
     );
-};
+}    
 
 export default ProductAdminUpdateModel;

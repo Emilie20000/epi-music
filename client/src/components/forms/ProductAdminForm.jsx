@@ -161,6 +161,7 @@ const ProductAdminForm = () => {
                                 <input
                                     type="text"
                                     id="name"
+                                    aria-label="Nom du produit"
                                     placeholder="Entrez le nom du produit"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -174,6 +175,7 @@ const ProductAdminForm = () => {
                                 </label>
                                 <select
                                     id="category"
+                                    aria-label="Sélectionner une catégorie"
                                     value={category}
                                     onChange={handleCategoryChange}
                                     required
@@ -197,6 +199,7 @@ const ProductAdminForm = () => {
                                 </label>
                                 <textarea
                                     id="description"
+                                    aria-label="Description du produit"
                                     placeholder="Entrez la description du produit"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
@@ -215,6 +218,7 @@ const ProductAdminForm = () => {
                                     <input
                                         type="text"
                                         id="brand"
+                                        aria-label="Nom de la marque"
                                         placeholder="Entrez le nom de la marque"
                                         value={brand}
                                         onChange={(e) => setBrand(e.target.value)}
@@ -232,6 +236,7 @@ const ProductAdminForm = () => {
                                     <input
                                         type="text"
                                         id="tags"
+                                        aria-label="Ajouter un tag"
                                         placeholder="Entrez un tag"
                                         value={tagInput}
                                         onChange={handleTagInputChange}
@@ -239,6 +244,7 @@ const ProductAdminForm = () => {
                                     />
                                     <button
                                         type="button"
+                                        aria-label="Ajouter le tag saisi"
                                         onClick={handleAddTag}
                                         className="bg-blue-700 text-white px-4 py-2 rounded ml-2"
                                     >
@@ -247,11 +253,11 @@ const ProductAdminForm = () => {
                                 </div>
                                 <div className="flex flex-wrap mt-2">
                                     {tags.map((tag, index) => (
-                                        <div key={index}
-                                             className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mt-2">
+                                        <div key={index} className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mt-2">
                                             {tag}
                                             <button
                                                 type="button"
+                                                aria-label={`Supprimer le tag ${tag}`}
                                                 onClick={() => handleRemoveTag(index)}
                                                 className="ml-2 text-red-600"
                                             >
@@ -270,6 +276,7 @@ const ProductAdminForm = () => {
                                     </label>
                                     <select
                                         id="color"
+                                        aria-label="Sélectionner une couleur"
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}
                                         className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
@@ -294,6 +301,7 @@ const ProductAdminForm = () => {
                                     </label>
                                     <select
                                         id="size"
+                                        aria-label="Sélectionner une taille"
                                         value={size}
                                         onChange={(e) => setSize(e.target.value)}
                                         className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
@@ -319,6 +327,7 @@ const ProductAdminForm = () => {
                                     type="number"
                                     step="0.01"
                                     id="weight"
+                                    aria-label="Poids du produit en kilogrammes"
                                     placeholder="Entrez le poids du produit en Kg"
                                     value={weight}
                                     onChange={(e) => setWeight(e.target.value)}
@@ -330,15 +339,13 @@ const ProductAdminForm = () => {
                         </div>
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label
-                                    className="font-semibold leading-none text-black"
-                                    htmlFor="price"
-                                >
+                                <label className="font-semibold leading-none text-black" htmlFor="price">
                                     Prix
                                 </label>
                                 <input
                                     type="text"
                                     id="price"
+                                    aria-label="Prix du produit"
                                     placeholder="Entrez le prix du produit"
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
@@ -355,6 +362,7 @@ const ProductAdminForm = () => {
                                 <input
                                     type="number"
                                     id="stock"
+                                    aria-label="Stock du produit"
                                     placeholder="Entrez le stock du produit"
                                     value={stock}
                                     onChange={(e) => setStock(e.target.value)}
@@ -372,6 +380,7 @@ const ProductAdminForm = () => {
                                 <input
                                     type="file"
                                     id="photos"
+                                    aria-label="Téléverser des images du produit"
                                     multiple
                                     onChange={handlePhotoChange}
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
@@ -382,6 +391,7 @@ const ProductAdminForm = () => {
                                             <p className="mr-4">{file.name}</p>
                                             <button
                                                 type="button"
+                                                aria-label={`Définir l’image ${index + 1} comme principale`}
                                                 className={`mr-4 px-3 py-1 rounded ${mainImageIndex === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
                                                 onClick={() => setMainImageIndex(index)}
                                             >
@@ -395,6 +405,7 @@ const ProductAdminForm = () => {
                         <div className="flex items-center justify-center w-full mt-8">
                             <button
                                 type="submit"
+                                aria-label="Créer un produit"
                                 disabled={isSubmitting}
                                 className={`font-semibold leading-none text-white py-4 px-10 rounded focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none ${
                                     isSubmitting ? 'bg-gray-400' : 'bg-blue-700 hover:bg-blue-600'
@@ -408,6 +419,6 @@ const ProductAdminForm = () => {
             </div>
         </div>
     );
-};
+}    
 
 export default ProductAdminForm;

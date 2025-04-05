@@ -10,28 +10,27 @@ const ButtonDelete = ({ id, onDeleteItem }) => {
     const handleDelete = () => {
         axios.delete(`http://localhost:8000/api/cart/item/delete/${id}`) //localhost
             .then((response) => {
-        
-                onDeleteItem(response.data.message, id)
+                onDeleteItem(response.data.message, id);
                 updateItemCount();
             })
             .catch((error) => {
-        
-                onDeleteItem(error.message)
-            })
-    }
-
+                onDeleteItem(error.message);
+            });
+    };
 
     return (
         <button 
             onClick={handleDelete}
             className="w-9 h-9 bg-slate-100 rounded-full ml-4 flex justify-center items-center transition-transform duration-500 ease-in-out transform hover:rotate-45"
+            aria-label="Supprimer l'article du panier"
         >
             <FontAwesomeIcon
                 icon={faTrashCan}
                 className="text-red-500 w-lg h-lg"
+                aria-hidden="true"
             />
         </button>
-    )
-}
+    );
+};
 
 export default ButtonDelete;

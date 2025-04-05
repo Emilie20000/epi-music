@@ -7,12 +7,9 @@ import ProvidersProductsModal from "../Modals/ProvidersProductsModal";
 const ProvidersAdminList = () => {
     const [providers, setProviders] = useState([]);
     const [alert, setAlert] = useState({ type: "", message: "" });
-    const [isProviderCreateModalOpen, setIsProviderCreateModalOpen] =
-        useState(false);
-    const [isProviderEditModalOpen, setIsProviderEditModalOpen] =
-        useState(false);
-    const [isProvidersProductsModalOpen, setIsProvidersProductsModalOpen] =
-        useState(false);
+    const [isProviderCreateModalOpen, setIsProviderCreateModalOpen] = useState(false);
+    const [isProviderEditModalOpen, setIsProviderEditModalOpen] = useState(false);
+    const [isProvidersProductsModalOpen, setIsProvidersProductsModalOpen] = useState(false);
     const [selectedProviderId, setSelectedProviderId] = useState(null);
 
     const fetchProviders = async () => {
@@ -90,19 +87,17 @@ const ProvidersAdminList = () => {
     };
 
     return (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" aria-label="Liste des prestataires">
             <h2 className="text-2xl font-bold my-4">
-                Liste des Prestataires (Cliquez sur les noms des prestataires
-                pour voir les produits éligibles)
+                Liste des Prestataires (Cliquez sur les noms des prestataires pour voir les produits éligibles)
             </h2>
             <h3 className="text-xl my-4">
-                L'affichage des produits est fait en fonction du coût de
-                transport, en sélectionnant le prestataire logistique le plus
-                économique
+                L'affichage des produits est fait en fonction du coût de transport, en sélectionnant le prestataire logistique le plus économique
             </h3>
             <button
                 onClick={() => setIsProviderCreateModalOpen(true)}
                 className="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                aria-label="Ajouter un nouveau prestataire"
             >
                 Ajouter un Prestataire
             </button>
@@ -110,31 +105,31 @@ const ProvidersAdminList = () => {
                 <Alert message={alert.message} type={alert.type} />
             )}
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
+                <table className="min-w-full bg-white border border-gray-200" aria-label="Tableau des prestataires">
                     <thead>
                         <tr>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Nom
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 EAN
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Longueur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Largeur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Hauteur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Prix (€)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Poids Max (kg)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
                                 Action
                             </th>
                         </tr>
@@ -148,6 +143,7 @@ const ProvidersAdminList = () => {
                                         setSelectedProviderId(provider.id);
                                         setIsProvidersProductsModalOpen(true);
                                     }}
+                                    aria-label={`Voir les produits du prestataire ${provider.name}`}
                                 >
                                     {provider.name}
                                 </td>
@@ -176,19 +172,17 @@ const ProvidersAdminList = () => {
                                                 handleDelete(provider.id)
                                             }
                                             className="w-1/2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                            aria-label={`Supprimer le prestataire ${provider.name}`}
                                         >
                                             Supprimer
                                         </button>
                                         <button
                                             onClick={() => {
-                                                setSelectedProviderId(
-                                                    provider.id
-                                                );
-                                                setIsProviderEditModalOpen(
-                                                    true
-                                                );
+                                                setSelectedProviderId(provider.id);
+                                                setIsProviderEditModalOpen(true);
                                             }}
                                             className="w-1/2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                            aria-label={`Modifier le prestataire ${provider.name}`}
                                         >
                                             Modifier
                                         </button>

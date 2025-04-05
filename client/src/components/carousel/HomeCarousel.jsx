@@ -33,6 +33,7 @@ const HomeCarousel = ({ images }) => {
                         <div
                             key={index}
                             className="carousel-image-wrapper"
+                            aria-hidden={index !== activeImageIndex}
                         >
                             <img 
                                 src={image.src} 
@@ -41,8 +42,16 @@ const HomeCarousel = ({ images }) => {
                             />
                             <div className="absolute inset-0 flex items-center text-center justify-center">
                                 <div className="text-center px-4 md:px-8 lg:px-16">
-                                    <a className="carousel-title text-4xl underline" href={image.link}>{image.title}</a>
-                                    <p className="carousel-description text-xl">{image.description}</p>
+                                    <a 
+                                        className="carousel-title text-4xl underline" 
+                                        href={image.link}
+                                        aria-label={`Lien vers ${image.title}`}
+                                    >
+                                        {image.title}
+                                    </a>
+                                    <p className="carousel-description text-xl">
+                                        {image.description}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -50,9 +59,18 @@ const HomeCarousel = ({ images }) => {
                 </div>
             </div>
 
+            {/* Indicateur d'annonce pour les lecteurs d'écran */}
+            <div 
+                className="sr-only" 
+                aria-live="polite"
+            >
+                {`Image ${activeImageIndex + 1} sur ${images.length}: ${images[activeImageIndex].title}`}
+            </div>
+
             <button
                 onClick={prevImage}
                 className="carousel-control prev"
+                aria-label="Image précédente"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +79,7 @@ const HomeCarousel = ({ images }) => {
                     strokeWidth={2}
                     stroke="currentColor"
                     className="icon"
+                    aria-hidden="true"
                 >
                     <path
                         strokeLinecap="round"
@@ -72,6 +91,7 @@ const HomeCarousel = ({ images }) => {
             <button
                 onClick={nextImage}
                 className="carousel-control next"
+                aria-label="Image suivante"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -80,6 +100,7 @@ const HomeCarousel = ({ images }) => {
                     strokeWidth={2}
                     stroke="currentColor"
                     className="icon"
+                    aria-hidden="true"
                 >
                     <path
                         strokeLinecap="round"

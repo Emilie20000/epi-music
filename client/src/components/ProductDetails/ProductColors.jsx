@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ProductColors = ({ colors, selectedColor, onColorSelect }) => {
-
-
     const colorMap = {
         "Noir": "#000000",
         "Blanc": "#FFFFFF",
@@ -22,11 +20,14 @@ const ProductColors = ({ colors, selectedColor, onColorSelect }) => {
     };
 
     return (
-        <div className="flex gap-2 mb-4 h-8">
+        <div className="flex gap-2 mb-4 h-8" aria-label="Liste des couleurs">
             {colors.map((color, index) => (
                 color && (
                     <span
                         key={index}
+                        role="button"
+                        tabIndex="0"
+                        aria-label={`Sélectionner la couleur ${color}`}
                         className={`w-8 h-8 rounded-full cursor-pointer border-2 ${selectedColor === color ? 'border-black' : 'border-transparent'}`}
                         style={{ backgroundColor: getColorHex(color) }}
                         onClick={() => onColorSelect(color)}

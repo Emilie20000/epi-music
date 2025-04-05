@@ -79,6 +79,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le nom du prestataire"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -91,7 +92,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.EAN}
                             onChange={handleChange}
                             required
-                            className="w-full px"
+                            aria-label="Entrer le code EAN du prestataire"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
@@ -103,6 +105,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.length}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la longueur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -115,6 +118,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.width}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la largeur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -127,6 +131,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.height}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer la hauteur en centimètres"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -140,6 +145,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.price}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le prix en euros"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
@@ -152,12 +158,26 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.MaxWeight}
                             onChange={handleChange}
                             required
+                            aria-label="Entrer le poids maximal en kilogrammes"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="flex justify-end">
-                        <button type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 text-white rounded">Annuler</button>
-                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Enregistrer</button>
+                        <button 
+                            type="button" 
+                            onClick={onClose} 
+                            aria-label="Annuler l'ajout du prestataire"
+                            className="mr-2 px-4 py-2 bg-gray-300 text-white rounded"
+                        >
+                            Annuler
+                        </button>
+                        <button 
+                            type="submit" 
+                            aria-label="Enregistrer le prestataire"
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Enregistrer
+                        </button>
                     </div>
                 </form>
             </div>

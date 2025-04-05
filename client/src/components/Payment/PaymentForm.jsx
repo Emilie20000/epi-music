@@ -36,7 +36,7 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [cardHolderName, setCardHolderName] = useState("");
-  const [paymentSuccess, setPAymentSuccess] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [userId, setUserId] = useState();
   const [cartToken, setCartToken] = useState();
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const PaymentForm = ({ orderPrice, orderId }) => {
 
     axios
       .post(
-        "http://localhost:8000/api/payment/create-intent", //localhost
+        "http://localhost:8000/api/payment/create-intent",
         {
           amount: Math.round(orderPrice * 100),
         },
@@ -105,7 +105,7 @@ const PaymentForm = ({ orderPrice, orderId }) => {
     } else {
       alert("Paiement réussi");
       setIsProcessing(false);
-      setPAymentSuccess(true);
+      setPaymentSuccess(true);
     }
   };
 
@@ -115,14 +115,14 @@ const PaymentForm = ({ orderPrice, orderId }) => {
     }
 
     axios
-      .patch(`http://localhost:8000/api/order/validate/${orderId}`) //localhost
+      .patch(`http://localhost:8000/api/order/validate/${orderId}`)
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .delete(`http://localhost:8000/api/cart/`, {    //localhost
+      .delete(`http://localhost:8000/api/cart/`, {
         params: {
           userId: userId,
           token: cartToken,
@@ -130,12 +130,12 @@ const PaymentForm = ({ orderPrice, orderId }) => {
       })
       .then((response) => {
         if (cartToken) {
-          localStorage.removeItem('cart_token');
+          localStorage.removeItem("cart_token");
         }
       })
       .then(
         setTimeout(() => {
-          navigate('/');
+          navigate("/");
         }, 6000)
       )
       .catch((error) => console.log(error));
@@ -144,61 +144,90 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   return (
     <>
       {paymentSuccess ? (
-        <div className="w-full h-full flex flex-col justify-center items-center text-center">
+        <div
+          className="w-full h-full flex flex-col justify-center items-center text-center"
+          aria-label="Paiement réussi"
+        >
           <FontAwesomeIcon
             icon={faCheckCircle}
             className="text-green-500 text-6xl"
+            aria-hidden="true"
           />
           <p className="text-2xl mt-8 mb-4">Paiement réussi</p>
           <p className="text-2xl">Merci d'avoir commandé chez Epimusic !</p>
-          <p className="text-xl mt-2">Vous allez être redirigés dans quelques instants</p>
+          <p className="text-xl mt-2">
+            Vous allez être redirigés dans quelques instants
+          </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 max-w-md mx-auto"
+          aria-label="Formulaire de paiement"
+        >
           <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
+            <label
+              className="block text-gray-700 mb-2 text-2xl"
+              htmlFor="cardHolderName"
+            >
               Titulaire de la carte
             </label>
             <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
               <input
                 type="text"
+                id="cardHolderName"
                 value={cardHolderName}
                 onChange={(e) => setCardHolderName(e.target.value)}
                 placeholder="Nom du titulaire"
                 className="w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0"
                 required
+                aria-label="Nom du titulaire de la carte"
               />
             </div>
           </div>
           <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
+            <label
+              className="block text-gray-700 mb-2 text-2xl"
+              htmlFor="cardNumber"
+            >
               Numéro de carte
             </label>
             <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
               <CardNumberElement
                 options={CARD_ELEMENT_OPTIONS}
                 className="w-full focus:outline-none"
+                aria-label="Entrer le numéro de carte"
               />
             </div>
           </div>
           <div className="flex justify-between">
             <div>
-              <label className="block text-gray-700 mb-2 text-2xl">
+              <label
+                className="block text-gray-700 mb-2 text-2xl"
+                htmlFor="cardExpiry"
+              >
                 Date d'expiration
               </label>
               <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
                 <CardExpiryElement
                   options={CARD_ELEMENT_OPTIONS}
                   className="w-full focus:outline-none"
+                  aria-label="Entrer la date d'expiration"
                 />
               </div>
             </div>
             <div className="w-1/6 ">
-              <label className="block text-gray-700 mb-2 text-2xl">CVC</label>
+              <label
+                className="block text-gray-700 mb-2 text-2xl"
+                htmlFor="cardCvc"
+              >
+                CVC
+              </label>
               <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
                 <CardCvcElement
                   options={CARD_ELEMENT_OPTIONS}
                   className="w-full focus:outline-none"
+                  aria-label="Entrer le code CVC"
                 />
               </div>
             </div>
@@ -207,11 +236,15 @@ const PaymentForm = ({ orderPrice, orderId }) => {
             type="submit"
             disabled={!stripe || isProcessing}
             className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
+            aria-label="Payer"
           >
             {isProcessing ? "Transaction en cours..." : "Payer"}
           </button>
           {isProcessing && (
-            <div className="flex items-center justify-center p-4">
+            <div
+              className="flex items-center justify-center p-4"
+              aria-label="Chargement"
+            >
               <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
             </div>
           )}
