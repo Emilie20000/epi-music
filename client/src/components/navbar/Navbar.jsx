@@ -5,7 +5,8 @@ import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 
 const Navbar = () => {
     const location = useLocation();
@@ -89,6 +90,9 @@ const Navbar = () => {
                     {!isLoggedIn && (
                         <NavbarItem icon={<IoLogInOutline size={24} />} href="/login" />
                     )}
+                    <div className="pt-2">
+                        <ThemeSwitcher />
+                    </div>
                 </div>
             </div>
         </nav>
