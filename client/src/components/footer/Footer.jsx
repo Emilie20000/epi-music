@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
 
 const Footer = () => {
     return (
@@ -115,7 +115,7 @@ const Footer = () => {
             <div className="bg-white bg-opacity-50">
                 <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
                     <p className="text-gray-500 text-sm text-center sm:text-left">
-                        © 2024 EpiMusic
+                        © 2025 EpiMusic
                     </p>
                     <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
                         <a className="text-gray-500" aria-label="Facebook">

@@ -27,6 +27,11 @@ const AdminPanel = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("cart_price");
+        localStorage.removeItem("cart_promo_total");
+        localStorage.removeItem("cart_quantity");
+        localStorage.removeItem("cart_shipping_costs");
+        localStorage.removeItem("orderId");
         navigate("/login");
         window.location.reload();
     };

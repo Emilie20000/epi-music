@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../styles/ProductList.css";
 import CategoryCard from "../cards/CategoryCard";
-import vinyles from "../../assets/vinyles.jpg";
-import instruments from "../../assets/instruments.jpg";
-import goodies from "../../assets/goodies.jpeg";
+import vinyles from "../../assets/vinyles.webp";
+import instruments from "../../assets/instruments.webp";
+import goodies from "../../assets/goodies.webp";
 
 const ProductCategoriesList = () => {
     const [categories, setCategories] = useState([]);
