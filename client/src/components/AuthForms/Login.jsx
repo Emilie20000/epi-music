@@ -6,17 +6,11 @@ import logo from "../../assets/logo.webp";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
     const [alert, setAlert] = useState({ message: "", type: "error" });
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        if (!email || !password) {
-            setMessage("Veuillez remplir tous les champs");
-            return;
-        }
 
         try {
             const response = await fetch("http://localhost:8000/api/login", { //localhost
@@ -97,7 +91,6 @@ function Login() {
                             required
                         />
                     </div>
-                    {message && <p className="text-red-600">{message}</p>}
                     <button
                         type="submit"
                         className="w-full bg-white text-[#EEB829] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
