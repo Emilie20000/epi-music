@@ -43,6 +43,8 @@ const Navbar = () => {
         }
     }, []);
 
+    const textColor = isDark ? "text-white" : "text-black";
+
     return (
         <nav className="top-0 z-50 w-full flex items-center justify-between flex-wrap bg-white/80 lg:bg-transparent py-2 px-4 lg:px-16 xl:px-48">
             <div className="flex items-center flex-shrink-0 text-black mr-6">
@@ -60,6 +62,7 @@ const Navbar = () => {
                         icon={<FaGamepad size={24} />}
                         text="Jouer au jeu de rythme"
                         href="/rhythm-game"
+                        textColor={textColor}
                     />
                 </div>
             )}
@@ -123,22 +126,24 @@ const Navbar = () => {
                                 <SearchBar />
                                 {!isLoggedIn && (
                                     <>
-                                        <NavbarItem text="Se connecter" href="/login" />
-                                        <NavbarItem text="S'inscrire" href="/register" />
+                                        <NavbarItem text="Se connecter" href="/login" textColor={textColor} />
+                                        <NavbarItem text="S'inscrire" href="/register" textColor={textColor} />
                                     </>
                                 )}
-                                <NavbarItem text="Produits" href="/products" />
+                                <NavbarItem text="Produits" href="/products" textColor={textColor} />
                                 {userRole === "ROLE_ADMIN" && (
                                     <NavbarItem
                                         icon={<FaUserTie size={24} />}
                                         href="/admin/user-card"
                                         text="Panel Admin"
+                                        textColor={textColor}
                                     />
                                 )}
                                 {userRole === "ROLE_USER" && (
                                     <NavbarItem
                                         icon={<FaUser size={24} />}
                                         href="/profile/user-card"
+                                        textColor={textColor}
                                     />
                                 )}
                                 <div className="relative">
@@ -146,6 +151,7 @@ const Navbar = () => {
                                         icon={<FaShoppingCart size={24} />}
                                         href="/cart"
                                         text="Panier"
+                                        textColor={textColor}
                                     />
                                     {itemCount > 0 && (
                                         <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
@@ -158,6 +164,7 @@ const Navbar = () => {
                                         icon={<IoLogInOutline size={24} />}
                                         onClick={handleLogout}
                                         text="Déconnexion"
+                                        textColor={textColor}
                                     />
                                 )}
                             </motion.div>
@@ -174,22 +181,24 @@ const Navbar = () => {
                     <SearchBar />
                     {!isLoggedIn && (
                         <>
-                            <NavbarItem text="Se connecter" href="/login" />
-                            <NavbarItem text="S'inscrire" href="/register" />
+                            <NavbarItem text="Se connecter" href="/login" textColor={textColor} />
+                            <NavbarItem text="S'inscrire" href="/register" textColor={textColor} />
                         </>
                     )}
-                    <NavbarItem text="Produits" href="/products" />
+                    <NavbarItem text="Produits" href="/products" textColor={textColor} />
                     {userRole === "ROLE_ADMIN" && (
                         <NavbarItem
                             icon={<FaUserTie size={24} />}
                             href="/admin/user-card"
                             text="Panel Admin"
+                            textColor={textColor}
                         />
                     )}
                     {userRole === "ROLE_USER" && (
                         <NavbarItem
                             icon={<FaUser size={24} />}
                             href="/profile/user-card"
+                            textColor={textColor}
                         />
                     )}
                     <div className="relative">
@@ -197,6 +206,7 @@ const Navbar = () => {
                             icon={<FaShoppingCart size={24} />}
                             href="/cart"
                             text="Panier"
+                            textColor={textColor}
                         />
                         {itemCount > 0 && (
                             <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
@@ -209,6 +219,7 @@ const Navbar = () => {
                             icon={<IoLogInOutline size={24} />}
                             onClick={handleLogout}
                             text="Déconnexion"
+                            textColor={textColor}
                         />
                     )}
                     <div className="pt-2">
