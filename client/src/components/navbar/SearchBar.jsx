@@ -29,7 +29,7 @@ function SearchBar() {
 
 
     return (
-        <div className="pt-2 flex flex-row relative mx-auto text-gray-600 w-1/2">
+        <div className="pt-2 flex flex-row relative mx-auto text-gray-600 w-[90%] md:w-1/2">
             <div className="relative w-full">
                 <input
                     className="border-2 border-gray-300 bg-white h-10 pl-5 pr-10 rounded-full text-sm focus:outline-none w-full"

@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import NavbarItem from "./NavbarItem";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
-    const location = useLocation();
-    const isAuthRoute =
-        location.pathname === "/register" || location.pathname === "/login";
     const [isOpen, setIsOpen] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("cart_price");
+        localStorage.removeItem("cart_promo_total");
+        localStorage.removeItem("cart_quantity");
+        localStorage.removeItem("cart_shipping_costs");
+        localStorage.removeItem("orderId");
+        navigate("/login");
+        window.location.reload();
+    };
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -32,11 +40,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav
-            className={`top-0 z-50 w-full flex items-center justify-between flex-wrap ${
-                isAuthRoute ? "bg-transparent" : "bg-transparent"
-            } py-2 px-4 lg:px-16 xl:px-48`}
-        >
+        <nav className="top-0 z-50 w-full flex items-center justify-between flex-wrap bg-white/80 lg:bg-transparent py-2 px-4 lg:px-16 xl:px-48">
             <div className="flex items-center flex-shrink-0 text-black mr-6">
                 <Link to="/">
                     <img src={logo} alt="Logo" className="w-16 h-16 mr-2" />
@@ -44,7 +48,11 @@ const Navbar = () => {
             </div>
             {userRole === "ROLE_USER" && (
                 <div className="pt-2 ml-4 pl-4">
-                    <NavbarItem icon={<FaGamepad size={24} />} text="Jouer au jeu de rythme" href="/rhythm-game" />
+                    <NavbarItem
+                        icon={<FaGamepad size={24} />}
+                        text="Jouer au jeu de rythme"
+                        href="/rhythm-game"
+                    />
                 </div>
             )}
             <div className="block lg:hidden">
@@ -62,32 +70,138 @@ const Navbar = () => {
                     </svg>
                 </button>
             </div>
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                            onClick={() => setIsOpen(false)}
+                        />
+                        <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: "auto" }}
+                            exit={{ height: 0 }}
+                            className="fixed top-0 left-0 right-0 bg-white/80 lg:bg-transparent z-50"
+                        >
+                            <div className="flex items-center justify-between px-4 py-2 lg:px-16 xl:px-48">
+                                <div className="flex items-center flex-shrink-0 text-black mr-6">
+                                    <Link to="/">
+                                        <img src={logo} alt="Logo" className="w-16 h-16 mr-2" />
+                                    </Link>
+                                </div>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="flex items-center px-3 py-2 border rounded text-black border-black hover:text-black hover:border-black lg:hidden"
+                                >
+                                    <svg
+                                        className="fill-current h-5 w-5"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <title>Fermer</title>
+                                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="flex flex-col pt-3 lg:flex-row lg:items-center justify-center lg:space-x-8 lg:text-left lg:flex-grow lg:mt-0 space-y-4 lg:space-y-0"
+                            >
+                                <SearchBar />
+                                {!isLoggedIn && (
+                                    <>
+                                        <NavbarItem text="Se connecter" href="/login" />
+                                        <NavbarItem text="S'inscrire" href="/register" />
+                                    </>
+                                )}
+                                <NavbarItem text="Produits" href="/products" />
+                                {userRole === "ROLE_ADMIN" && (
+                                    <NavbarItem
+                                        icon={<FaUserTie size={24} />}
+                                        href="/admin/user-card"
+                                        text="Panel Admin"
+                                    />
+                                )}
+                                {userRole === "ROLE_USER" && (
+                                    <NavbarItem
+                                        icon={<FaUser size={24} />}
+                                        href="/profile/user-card"
+                                    />
+                                )}
+                                <div className="relative">
+                                    <NavbarItem
+                                        icon={<FaShoppingCart size={24} />}
+                                        href="/cart"
+                                        text="Panier"
+                                    />
+                                    {itemCount > 0 && (
+                                        <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
+                                            {itemCount}
+                                        </span>
+                                    )}
+                                </div>
+                                {isLoggedIn && (
+                                    <NavbarItem
+                                        icon={<IoLogInOutline size={24} />}
+                                        onClick={handleLogout}
+                                        text="Déconnexion"
+                                    />
+                                )}
+                            </motion.div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
             <div
                 className={`w-full flex-grow lg:flex lg:items-center lg:w-auto lg:justify-between ${
-                    isOpen ? "block" : "hidden"
-                } transition-all duration-300 ease-in-out`}
+                    isOpen ? "hidden" : "hidden lg:block"
+                } transition-all lg:bg-transparent duration-300 ease-in-out`}
             >
-                <div className="flex flex-col lg:flex-row lg:items-center justify-center lg:space-x-8 lg:text-left lg:flex-grow lg:mt-0 space-y-4 lg:space-y-0">
+                <div className="flex flex-col pt-3 lg:flex-row lg:items-center justify-center lg:space-x-8 lg:text-left lg:flex-grow lg:mt-0 space-y-4 lg:space-y-0">
                     <SearchBar />
-                    <div className="pt-2">
-                        <NavbarItem text="Produits" href="/products" />
-                    </div>
+                    {!isLoggedIn && (
+                        <>
+                            <NavbarItem text="Se connecter" href="/login" />
+                            <NavbarItem text="S'inscrire" href="/register" />
+                        </>
+                    )}
+                    <NavbarItem text="Produits" href="/products" />
                     {userRole === "ROLE_ADMIN" && (
-                        <NavbarItem icon={<FaUserTie size={24}/>} href="/admin/user-card" />
+                        <NavbarItem
+                            icon={<FaUserTie size={24} />}
+                            href="/admin/user-card"
+                            text="Panel Admin"
+                        />
                     )}
                     {userRole === "ROLE_USER" && (
-                        <NavbarItem icon={<FaUser size={24} />} href="/profile/user-card" />
+                        <NavbarItem
+                            icon={<FaUser size={24} />}
+                            href="/profile/user-card"
+                        />
                     )}
                     <div className="relative">
-                        <NavbarItem icon={<FaShoppingCart size={24} />} href="/cart" />
+                        <NavbarItem
+                            icon={<FaShoppingCart size={24} />}
+                            href="/cart"
+                            text="Panier"
+                        />
                         {itemCount > 0 && (
                             <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
                                 {itemCount}
                             </span>
                         )}
                     </div>
-                    {!isLoggedIn && (
-                        <NavbarItem icon={<IoLogInOutline size={24} />} href="/login" />
+                    {isLoggedIn && (
+                        <NavbarItem
+                            icon={<IoLogInOutline size={24} />}
+                            onClick={handleLogout}
+                            text="Déconnexion"
+                        />
                     )}
                 </div>
             </div>
