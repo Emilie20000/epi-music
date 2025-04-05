@@ -6,7 +6,8 @@ function NavbarItem({ text, href, onClick, icon, textColor }) {
         <Link
             to={href}
             onClick={onClick}
-            className="flex items-center justify-center px-4 py-2 text-lg font-semibold rounded-lg text-black transition-colors duration-200 ease-in-out hover:underline dark:bg-transparent dark:text-black"
+            className={`flex items-center justify-center px-4 py-2 text-lg font-semibold rounded-lg 
+                ${textColor} transition-colors duration-200 ease-in-out`}
         >
             {icon && <span className="mr-2">{icon}</span>}
             {text}
