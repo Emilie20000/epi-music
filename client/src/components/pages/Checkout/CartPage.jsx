@@ -139,7 +139,7 @@ const CartPage = () => {
             <h1 className="text-center text-4xl font-bold my-4">
                 Panier
             </h1>
-            <div className="flex flex-wrap justify-evenly">
+            <div className="flex flex-wrap justify-center">
                 {items ? (
                     items.length !== 0 && total ? (
                     <>
