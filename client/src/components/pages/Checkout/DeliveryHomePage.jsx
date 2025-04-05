@@ -106,7 +106,7 @@ const DeliveryHomePage = () => {
     };
 
     return (
-        <div className="w-9/12 m-auto">
+        <div className="lg:w-9/12 w-full m-auto">
             <Alert message={alert.message} type={alert.type} />
             <h1 className="text-center text-4xl font-bold my-4">
                 Livraison à domicile
