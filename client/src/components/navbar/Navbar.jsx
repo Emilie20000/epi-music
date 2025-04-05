@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavbarItem from "./NavbarItem";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.webp";
+import logoDark from "../../assets/logo-dark.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import { useCart } from "../../context/CartContext";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +17,7 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const { isDark } = useTheme();
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("cart_price");
@@ -44,7 +47,11 @@ const Navbar = () => {
         <nav className="top-0 z-50 w-full flex items-center justify-between flex-wrap bg-white/80 lg:bg-transparent py-2 px-4 lg:px-16 xl:px-48">
             <div className="flex items-center flex-shrink-0 text-black mr-6">
                 <Link to="/">
-                    <img src={logo} alt="Logo" className="w-16 h-16 mr-2" />
+                    <img
+                        src={ isDark ? logoDark : logo }
+                        alt="Logo"
+                        className="w-16 h-16 mr-2"
+                    />
                 </Link>
             </div>
             {userRole === "ROLE_USER" && (
