@@ -36,18 +36,24 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
-            <div className="bg-white p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                <h2 className="text-xl font-bold mb-4">Produits éligibles</h2>
+        <div className="fixed inset-0 flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} aria-hidden="true"></div>
+            <div className="bg-white p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto" role="document">
+                <h2 id="modal-title" className="text-xl font-bold mb-4">
+                    Produits éligibles
+                </h2>
                 {alert.message && <Alert message={alert.message} type={alert.type} />}
                 
                 {products.length > 0 ? (
-                    <table className="min-w-full bg-white border border-gray-200">
+                    <table className="min-w-full bg-white border border-gray-200" role="table">
                         <thead>
                             <tr>
-                                <th className="px-4 py-2 border border-gray-200 bg-gray-100">Nom du Produit</th>
-                                <th className="px-4 py-2 border border-gray-200 bg-gray-100">Poids (kg)</th>
+                                <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                                    Nom du Produit
+                                </th>
+                                <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                                    Poids (kg)
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,6 +74,7 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
                         type="button"
                         onClick={onClose}
                         className="px-4 py-2 bg-blue-800 text-white rounded"
+                        aria-label="Fermer le modal"
                     >
                         Fermer
                     </button>
@@ -75,7 +82,6 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
             </div>
         </div>
     );
-    
 };
 
 export default ProvidersProductsModal;

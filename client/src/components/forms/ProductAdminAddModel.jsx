@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Alert from "../Alerts/Alert";
 import ProductAdminUpdateModel from "./ProductAdminUpdateModel";
 import { useParams, useNavigate } from "react-router-dom";
@@ -158,7 +158,6 @@ const ProductAdminAddModel = () => {
                     setExistingModelId(data.existingModelId);
                     setShowModal(true);
                     setModalMessage(data.error);
-                  
                 }
 
                 setAlert({ type: "error", message: data.message });
@@ -170,7 +169,6 @@ const ProductAdminAddModel = () => {
                 navigate(`/admin/products`);
             }
         } catch (error) {
-    
             setAlert({
                 type: "error",
                 message: "Erreur lors de la création du modèle",
@@ -183,11 +181,11 @@ const ProductAdminAddModel = () => {
     const handleCloseModal = () => setShowModal(false);
 
     return (
-        <div className="w-full">
+        <div className="w-full" aria-label="Section d'ajout de modèle de produit">
             <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
                 <div className="bg-white w-full shadow rounded p-8 sm:p-12">
                     <Alert type={alert.type} message={alert.message} />
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} aria-label="Formulaire de création de modèle">
                         {shouldDisplayColor(categoryId) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
@@ -204,6 +202,7 @@ const ProductAdminAddModel = () => {
                                             setColor(e.target.value)
                                         }
                                         className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        aria-label="Sélectionner une couleur"
                                     >
                                         <option value="">
                                             Sélectionnez une couleur
@@ -233,6 +232,7 @@ const ProductAdminAddModel = () => {
                                             setSize(e.target.value)
                                         }
                                         className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        aria-label="Sélectionner une taille"
                                     >
                                         <option value="">
                                             Sélectionnez une taille
@@ -262,6 +262,7 @@ const ProductAdminAddModel = () => {
                                     onChange={(e) => setPrice(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Entrez le prix du produit"
                                 />
                             </div>
                         </div>
@@ -282,6 +283,7 @@ const ProductAdminAddModel = () => {
                                     min="0"
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Entrez le stock du produit"
                                 />
                             </div>
                         </div>
@@ -299,8 +301,9 @@ const ProductAdminAddModel = () => {
                                     multiple
                                     onChange={handlePhotoChange}
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Sélectionner des photos"
                                 />
-                                <div className="flex flex-col mt-4">
+                                <div className="flex flex-col mt-4" aria-label="Liste des photos sélectionnées">
                                     {photoFiles.map((file, index) => (
                                         <div
                                             key={index}
@@ -316,6 +319,11 @@ const ProductAdminAddModel = () => {
                                                 }`}
                                                 onClick={() =>
                                                     setMainImageIndex(index)
+                                                }
+                                                aria-label={
+                                                    mainImageIndex === index
+                                                        ? "Image principale sélectionnée"
+                                                        : "Définir comme image principale"
                                                 }
                                             >
                                                 {mainImageIndex === index
@@ -336,6 +344,7 @@ const ProductAdminAddModel = () => {
                                         ? "bg-gray-400"
                                         : "bg-blue-700 hover:bg-blue-600"
                                 }`}
+                                aria-label="Créer le modèle"
                             >
                                 {isSubmitting
                                     ? "Envoi en cours..."

@@ -235,9 +235,11 @@ const ProductDetailsPage = () => {
                             onSizeSelect={handleSizeSelect}
                         />
                         <div className="space-y-4">
+                            <label htmlFor="quantity" className="sr-only">Quantité</label>
                             <input
                                 type="number"
                                 id="quantity"
+                                aria-label="Quantité"
                                 value={quantity}
                                 onChange={(e) => setQuantity(Number(e.target.value))}
                                 min="1"
@@ -246,13 +248,18 @@ const ProductDetailsPage = () => {
                             />
                             <button
                                 onClick={handleAddToCart}
+                                aria-label={`Ajouter ${product.name} au panier`}
                                 className="bg-blue-500 text-white py-2 px-4 rounded"
                             >
                                 Ajouter au panier
                             </button>
+    
                             {canPostReview && (
                                 <div className="space-y-2">
+                                    <label htmlFor="new-review" className="sr-only">Ajouter un avis</label>
                                     <textarea
+                                        id="new-review"
+                                        aria-label="Ajouter un avis"
                                         value={review}
                                         onChange={(e) => setReview(e.target.value)}
                                         placeholder="Écrire un avis"
@@ -260,6 +267,7 @@ const ProductDetailsPage = () => {
                                     />
                                     <button
                                         onClick={handleAddReview}
+                                        aria-label="Soumettre l'avis"
                                         className="bg-green-500 text-white py-2 px-4 rounded"
                                     >
                                         Ajouter un avis
@@ -267,35 +275,48 @@ const ProductDetailsPage = () => {
                                 </div>
                             )}
                         </div>
+    
                         {hasPostedReview && reviews.map(review => (
-                            <div key={review.review_id} className="border border-gray-300 rounded-md p-4 space-y-2">
+                            <div
+                                key={review.review_id}
+                                className="border border-gray-300 rounded-md p-4 space-y-2"
+                                aria-label={`Avis de ${review.username}`}
+                            >
                                 <p><strong>{review.username}</strong></p>
                                 <p>{review.comment}</p>
+    
                                 {review.user_id === JSON.parse(localStorage.getItem('user'))?.id && (
                                     <div className="flex space-x-2">
                                         <button
                                             onClick={() => handleEditReview(review)}
+                                            aria-label="Modifier l'avis"
                                             className="bg-yellow-500 text-white py-1 px-2 rounded"
                                         >
                                             <FontAwesomeIcon icon={faEdit} />
                                         </button>
                                         <button
                                             onClick={() => handleDeleteReview(review.review_id)}
+                                            aria-label="Supprimer l'avis"
                                             className="bg-red-500 text-white py-1 px-2 rounded"
                                         >
                                             <FontAwesomeIcon icon={faTrash} />
                                         </button>
                                     </div>
                                 )}
+    
                                 {editingReview === review.review_id && (
                                     <div className="mt-2">
+                                        <label htmlFor={`edit-review-${review.review_id}`} className="sr-only">Modifier votre avis</label>
                                         <textarea
+                                            id={`edit-review-${review.review_id}`}
+                                            aria-label="Modifier votre avis"
                                             value={editReviewContent}
                                             onChange={(e) => setEditReviewContent(e.target.value)}
                                             className="border border-gray-300 rounded-md p-2 w-full"
                                         />
                                         <button
                                             onClick={handleUpdateReview}
+                                            aria-label="Mettre à jour l'avis"
                                             className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
                                         >
                                             Mettre à jour l'avis
@@ -309,6 +330,6 @@ const ProductDetailsPage = () => {
             )}
         </div>
     );
-};
+}    
 
 export default ProductDetailsPage;

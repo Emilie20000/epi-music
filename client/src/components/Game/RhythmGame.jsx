@@ -218,58 +218,61 @@ const RhythmGame = () => {
     }, [currentStep, sequence, validatedSteps]);
 
     return (
-        <div className="game-container">
-            <h1>EpiGame</h1>
+        <div className="game-container" role="main" aria-label="Jeu de rythme">
+            <h1 className="text-2xl font-bold mb-4" aria-label="Titre du jeu">EpiGame</h1>
             {!isGameStarted && (
-                <button onClick={startGameAndMusic} className="start-button">Jouez</button>
+                <button onClick={startGameAndMusic} className="start-button" aria-label="Démarrer le jeu">
+                    Jouez
+                </button>
             )}
             {successMessage && (
-                <div className="success-message">
+                <div className="success-message" aria-live="polite">
                     {successMessage}
                 </div>
             )}
             <div className="game-content">
                 <div className="player-info-container">
-                    <div className="player-name">{playerName}</div>
+                    <div className="player-name" aria-label="Nom du joueur">{playerName}</div>
                 </div>
-                <div className="game-area" ref={gameAreaRef}>
+                <div className="game-area" ref={gameAreaRef} aria-label="Zone de jeu">
                     {countdown !== null && (
-                        <div className="countdown">{countdown}</div>
+                        <div className="countdown" aria-live="assertive">{countdown}</div>
                     )}
                     {validationMessage && (
                         <div
                             className={`validation-message ${isSuccess ? 'success' : 'miss'}`}
                             style={{ top: messagePosition.top, left: messagePosition.left }}
+                            aria-live="polite"
                         >
                             {validationMessage}
                         </div>
                     )}
-                    <div className="arrow-targets">
+                    <div className="arrow-targets" aria-label="Zones de validation">
                         <div className="arrow-column">
-                            <div className="validation-zone validation-zone-left"></div>
-                            <img src={arrowLeft} alt="left" className="fixed-arrow"/>
+                            <div className="validation-zone validation-zone-left" aria-label="Zone de validation gauche"></div>
+                            <img src={arrowLeft} alt="Flèche gauche" className="fixed-arrow"/>
                         </div>
                         <div className="arrow-column">
-                            <div className="validation-zone validation-zone-down"></div>
-                            <img src={arrowDown} alt="down" className="fixed-arrow"/>
+                            <div className="validation-zone validation-zone-down" aria-label="Zone de validation bas"></div>
+                            <img src={arrowDown} alt="Flèche bas" className="fixed-arrow"/>
                         </div>
                         <div className="arrow-column">
-                            <div className="validation-zone validation-zone-up"></div>
-                            <img src={arrowUp} alt="up" className="fixed-arrow"/>
+                            <div className="validation-zone validation-zone-up" aria-label="Zone de validation haut"></div>
+                            <img src={arrowUp} alt="Flèche haut" className="fixed-arrow"/>
                         </div>
                         <div className="arrow-column">
-                            <div className="validation-zone validation-zone-right"></div>
-                            <img src={arrowRight} alt="right" className="fixed-arrow"/>
+                            <div className="validation-zone validation-zone-right" aria-label="Zone de validation droite"></div>
+                            <img src={arrowRight} alt="Flèche droite" className="fixed-arrow"/>
                         </div>
                     </div>
-                    <div className="arrows">
+                    <div className="arrows" aria-label="Flèche actuelle">
                         {sequence[currentStep - 1] && (
                             <Arrow key={currentStep - 1} direction={sequence[currentStep - 1]}
                                    isTransparent={transparentArrows.has(currentStep - 1)}/>
                         )}
                     </div>
                 </div>
-                <div className="score-container">
+                <div className="score-container" aria-label="Score actuel">
                     <div className="score">Score : {score}</div>
                 </div>
             </div>

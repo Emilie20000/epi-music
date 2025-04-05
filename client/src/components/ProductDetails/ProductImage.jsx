@@ -49,10 +49,11 @@ const ProductImage = ({ images }) => {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     ref={imgRef}
+                    aria-label="Zone de l'image principale"
                 >
                     <img
                         src={`http://localhost:8000${selectedImage}`} //localhost
-                        alt="Main"
+                        alt="Image principale du produit"
                         className="w-auto h-auto object-contain"
                         style={{ maxHeight: '500px', maxWidth: '100%' }}
                     />
@@ -69,18 +70,19 @@ const ProductImage = ({ images }) => {
                                 top: `${zoomPosition.top}px`,
                                 left: `${zoomPosition.left}px`,
                             }}
+                            aria-label="Zoom sur l'image"
                         />
                     )}
                 </div>
             )}
 
             {images.length > 0 && (
-                <div className="flex gap-4 overflow-x-auto mt-4">
+                <div className="flex gap-4 overflow-x-auto mt-4" aria-label="Galerie de vignettes du produit">
                     {[...mainImages, ...secondaryImages].map((image, index) => (
                         <img
                             key={index}
                             src={`http://localhost:8000${image.path}`} //localhost
-                            alt={`Image ${index}`}
+                            alt={`Vignette ${index + 1} du produit`}
                             className={`w-24 h-24 object-cover cursor-pointer ${image.is_main ? 'border-2 border-blue-500' : ''}`}
                             onClick={() => setSelectedImage(image.path)}
                         />

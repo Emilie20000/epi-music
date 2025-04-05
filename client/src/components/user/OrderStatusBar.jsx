@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const OrderStatusBar = () => {
     return (
-        <div className="w-full py-6">
+        <div className="w-full py-6" aria-label="Barre d'état de la commande">
             <div className="flex">
-                <div className="w-1/4">
+                <div className="w-1/4" aria-label="Sélection du serveur">
                     <div className="relative mb-2">
                         <div className="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center justify-center">
                             <span className="text-center text-white w-full">
@@ -14,6 +14,7 @@ const OrderStatusBar = () => {
                                     viewBox="0 0 24 24"
                                     width="24"
                                     height="24"
+                                    aria-hidden="true"
                                 >
                                     <path
                                         className="heroicon-ui"
@@ -28,7 +29,7 @@ const OrderStatusBar = () => {
                     </div>
                 </div>
 
-                <div className="w-1/4">
+                <div className="w-1/4" aria-label="Ajouter un utilisateur">
                     <div className="relative mb-2">
                         <div className="absolute flex items-center justify-center w-[calc(100%-2.5rem-1rem)] top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <div className="w-full bg-gray-200 rounded flex items-center">
@@ -43,10 +44,11 @@ const OrderStatusBar = () => {
                                     viewBox="0 0 24 24"
                                     width="24"
                                     height="24"
+                                    aria-hidden="true"
                                 >
                                     <path
                                         className="heroicon-ui"
-                                        d="M19 10h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2V8a1 1 0 0 1 2 0v2zM9 12A5 5 0 1 1 9 2a5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h5a5 5 0 0 1 5 5v2z"
+                                        d="M19 10h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2V8a1 1 0 0 1 2 0v2zM9 4.58V4c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v.58a8 8 0 0 1 1.92 1.11l.5-.29a2 2 0 0 1 2.74.73l1 1.74a2 2 0 0 1-.73 2.73l-.5.29a8.06 8.06 0 0 1 0 2.22l.5.3a2 2 0 0 1 .73 2.72l-1 1.74a2 2 0 0 1-2.73.73l-.5-.3A8 8 0 0 1 15 19.43V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.58a8 8 0 0 1-1.92-1.11l-.5.29a2 2 0 0 1-2.74-.73l-1-1.74a2 2 0 0 1 .73-2.73l.5-.29a8.06 8.06 0 0 1 0-2.22l-.5-.3a2 2 0 0 1-.73-2.72l1-1.74a2 2 0 0 1 2.73-.73l.5.3A8 8 0 0 1 9 4.57zM7.88 7.64l-.54.51-1.77-1.02-1 1.74 1.76 1.01-.17.73a6.02 6.02 0 0 0 0 2.78l.17.73-1.76 1.01 1 1.74 1.77-1.02.54.51a6 6 0 0 0 2.4 1.4l.72.2V20h2v-2.04l.71-.2a6 6 0 0 0 2.41-1.4l.54-.51 1.77 1.02 1-1.74-1.76-1.01.17-.73a6.02 6.02 0 0 0 0-2.78l-.17-.73 1.76-1.01-1-1.74-1.77 1.02-.54-.51a6 6 0 0 0-2.4-1.4l-.72-.2V4h-2v2.04l-.71.2a6 6 0 0 0-2.41 1.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
                                     />
                                 </svg>
                             </span>
@@ -55,7 +57,7 @@ const OrderStatusBar = () => {
                     <div className="text-xs text-center md:text-base">Add User</div>
                 </div>
 
-                <div className="w-1/4">
+                <div className="w-1/4" aria-label="Paramètres">
                     <div className="relative mb-2">
                         <div className="absolute flex items-center justify-center w-[calc(100%-2.5rem-1rem)] top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <div className="w-full bg-gray-200 rounded flex items-center">
@@ -70,6 +72,7 @@ const OrderStatusBar = () => {
                                     viewBox="0 0 24 24"
                                     width="24"
                                     height="24"
+                                    aria-hidden="true"
                                 >
                                     <path
                                         className="heroicon-ui"
@@ -82,7 +85,7 @@ const OrderStatusBar = () => {
                     <div className="text-xs text-center md:text-base">Setting</div>
                 </div>
 
-                <div className="w-1/4">
+                <div className="w-1/4" aria-label="Statut final">
                     <div className="relative mb-2">
                         <div className="absolute flex items-center justify-center w-[calc(100%-2.5rem-1rem)] top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <div className="w-full bg-gray-200 rounded flex items-center">
@@ -97,6 +100,7 @@ const OrderStatusBar = () => {
                                     viewBox="0 0 24 24"
                                     width="24"
                                     height="24"
+                                    aria-hidden="true"
                                 >
                                     <path
                                         className="heroicon-ui"

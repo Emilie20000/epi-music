@@ -68,10 +68,7 @@ const ProductFilter = ({
     };
 
     const handleMaxPriceChange = (e) => {
-        const value = Math.max(
-            minPriceInput,
-            Math.min(maxPrice, e.target.value)
-        );
+        const value = Math.max(minPriceInput, Math.min(maxPrice, e.target.value));
         setMaxPriceInput(value);
         handlePriceRangeChange([priceRange[0], value]);
     };
@@ -133,7 +130,7 @@ const ProductFilter = ({
     };
 
     return (
-        <div>
+        <div role="region" aria-label="Filtrer les produits">
             <h3 className="text-2xl font-semibold mb-2 text-gray-800 border bg-gray-100 shadow rounded-lg px-2 py-4">
                 Filtrer les produits
             </h3>
@@ -143,9 +140,10 @@ const ProductFilter = ({
                     <h4
                         className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                         onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                        aria-label="Filtrer par catégories"
                     >
                         Catégories
-                        <span>
+                        <span aria-hidden="true">
                             {isCategoriesOpen ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +174,7 @@ const ProductFilter = ({
                         </span>
                     </h4>
                     {isCategoriesOpen && (
-                        <div className="grid grid-cols-2 gap-2 mt-2">
+                        <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de catégories">
                             {categories.map((category, index) => (
                                 <div key={index} className="flex items-center">
                                     <input
@@ -186,6 +184,7 @@ const ProductFilter = ({
                                             handleCategoryChange(category)
                                         }
                                         className="mr-2 text-red-600 focus:ring-red-500"
+                                        aria-label={`Filtrer par catégorie ${category}`}
                                     />
                                     <p className="text-gray-600">{category}</p>
                                 </div>
@@ -196,13 +195,14 @@ const ProductFilter = ({
             )}
 
             {brands.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par marques">
                     <h4
                         className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                         onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+                        aria-label="Filtrer par marques"
                     >
                         Marques
-                        <span>
+                        <span aria-hidden="true">
                             {isBrandsOpen ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +233,7 @@ const ProductFilter = ({
                         </span>
                     </h4>
                     {isBrandsOpen && (
-                        <div className="grid grid-cols-2 gap-2 mt-2">
+                        <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de marques">
                             {brands.map((brand, index) => (
                                 <div key={index} className="flex items-center">
                                     <input
@@ -243,6 +243,7 @@ const ProductFilter = ({
                                             handleBrandChange(brand)
                                         }
                                         className="mr-2 text-red-600 focus:ring-red-500"
+                                        aria-label={`Filtrer par marque ${brand}`}
                                     />
                                     <p className="text-gray-600">{brand}</p>
                                 </div>
@@ -253,13 +254,14 @@ const ProductFilter = ({
             )}
 
             {colors.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par couleurs">
                     <h4
                         className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                         onClick={() => setIsColorsOpen(!isColorsOpen)}
+                        aria-label="Filtrer par couleurs"
                     >
                         Couleurs
-                        <span>
+                        <span aria-hidden="true">
                             {isColorsOpen ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +292,7 @@ const ProductFilter = ({
                         </span>
                     </h4>
                     {isColorsOpen && (
-                        <div className="grid grid-cols-2 gap-2 mt-2">
+                        <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de couleurs">
                             {colors.map((color, index) => (
                                 <div key={index} className="flex items-center">
                                     <input
@@ -300,6 +302,7 @@ const ProductFilter = ({
                                             handleColorChange(color)
                                         }
                                         className="mr-2 text-red-600 focus:ring-red-500"
+                                        aria-label={`Filtrer par couleur ${color}`}
                                     />
                                     <p className="text-gray-600">{color}</p>
                                 </div>
@@ -310,13 +313,14 @@ const ProductFilter = ({
             )}
 
             {sizes.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par tailles">
                     <h4
                         className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                         onClick={() => setIsSizesOpen(!isSizesOpen)}
+                        aria-label="Filtrer par tailles"
                     >
                         Tailles
-                        <span>
+                        <span aria-hidden="true">
                             {isSizesOpen ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -347,7 +351,7 @@ const ProductFilter = ({
                         </span>
                     </h4>
                     {isSizesOpen && (
-                        <div className="grid grid-cols-2 gap-2 mt-2">
+                        <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de tailles">
                             {sizes.map((size, index) => (
                                 <div key={index} className="flex items-center">
                                     <input
@@ -355,6 +359,7 @@ const ProductFilter = ({
                                         value={size}
                                         onChange={() => handleSizeChange(size)}
                                         className="mr-2 text-red-600 focus:ring-red-500"
+                                        aria-label={`Filtrer par taille ${size}`}
                                     />
                                     <p className="text-gray-600">{size}</p>
                                 </div>
@@ -364,13 +369,14 @@ const ProductFilter = ({
                 </div>
             )}
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par prix">
                 <h4
                     className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                     onClick={() => setIsPriceOpen(!isPriceOpen)}
+                    aria-label="Afficher ou masquer le filtre de prix"
                 >
                     Prix
-                    <span>
+                    <span aria-hidden="true">
                         {isPriceOpen ? (
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -401,7 +407,7 @@ const ProductFilter = ({
                     </span>
                 </h4>
                 {isPriceOpen && (
-                    <div className="flex flex-col mt-2">
+                    <div className="flex flex-col mt-2" role="group" aria-label="Options de prix">
                         <div className="flex items-center mb-2">
                             <input
                                 type="range"
@@ -412,6 +418,7 @@ const ProductFilter = ({
                                     handlePriceRangeChange([0, e.target.value])
                                 }
                                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                aria-label="Sélectionnez le prix maximum"
                             />
                         </div>
                         <div className="flex items-center">
@@ -433,16 +440,18 @@ const ProductFilter = ({
                                             e.target.blur();
                                         }
                                     }}
+                                    aria-label="Prix minimum"
                                 />
                             ) : (
                                 <span
                                     className="ml-4 text-gray-600 cursor-pointer"
                                     onClick={() => setIsEditingMin(true)}
+                                    aria-label="Modifier le prix minimum"
                                 >
                                     {priceRange[0]} €
                                 </span>
                             )}
-                            <span className="mx-2 text-gray-600">-</span>
+                            <span className="mx-2 text-gray-600" aria-hidden="true">-</span>
                             {isEditingMax ? (
                                 <input
                                     type="number"
@@ -461,11 +470,13 @@ const ProductFilter = ({
                                             e.target.blur();
                                         }
                                     }}
+                                    aria-label="Prix maximum"
                                 />
                             ) : (
                                 <span
                                     className="text-gray-600 cursor-pointer"
                                     onClick={() => setIsEditingMax(true)}
+                                    aria-label="Modifier le prix maximum"
                                 >
                                     {priceRange[1]} €
                                 </span>
@@ -475,13 +486,14 @@ const ProductFilter = ({
                 )}
             </div>
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par poids">
                 <h4
                     className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
                     onClick={() => setIsWeightOpen(!isWeightOpen)}
+                    aria-label="Afficher ou masquer le filtre de poids"
                 >
                     Poids
-                    <span>
+                    <span aria-hidden="true">
                         {isWeightOpen ? (
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -511,21 +523,20 @@ const ProductFilter = ({
                         )}
                     </span>
                 </h4>
-                {isWeightOpen && (
-                    <div className="flex items-center mt-2">
-                        <input
-                            type="range"
-                            min="0"
-                            max={maxWeight}
-                            value={weightRange[1]}
-                            onChange={(e) =>
-                                handleWeightRangeChange([0, e.target.value])
-                            }
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                        />
-                        <span className="ml-4 text-gray-600">
-                            {weightRange[0]} - {weightRange[1]} kg
-                        </span>
+                {isSizesOpen && (
+                    <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de tailles">
+                        {sizes.map((size, index) => (
+                            <div key={index} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    value={size}
+                                    onChange={() => handleSizeSelect(size)}
+                                    className="mr-2 text-red-600 focus:ring-red-500"
+                                    aria-label={`Filtrer par taille ${size}`}
+                                />
+                                <p className="text-gray-600">{size}</p>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

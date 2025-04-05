@@ -57,6 +57,7 @@ const AdminPanel = () => {
                             <UserCard user={user} />
                             <button
                                 onClick={handleLogout}
+                                aria-label="Se déconnecter"
                                 className="mt-4 p-2 bg-red-500 text-white rounded flex items-center justify-center"
                             >
                                 <IoLogOutOutline size={24} className="mr-2" />
@@ -68,7 +69,6 @@ const AdminPanel = () => {
                 <Route path="create-product" element={<ProductAdminForm />} />
                 <Route path="edit-product/:id" element={<ProductAdminEdit />} />
             </Routes>
-
         </div>
     );
 };

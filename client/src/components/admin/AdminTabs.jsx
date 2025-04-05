@@ -20,6 +20,8 @@ const AdminTabs = () => {
                     key={tab.name}
                     to={tab.path}
                     className={`p-2 ${location.pathname === tab.path ? "bg-gray-200" : "bg-gray-100"} rounded`}
+                    aria-label={`Accéder à la section ${tab.name}`}
+                    aria-current={location.pathname === tab.path ? "page" : undefined}
                 >
                     {tab.name}
                 </Link>
