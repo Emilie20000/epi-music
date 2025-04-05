@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function NavbarItem({ text, href, onClick, icon }) {
+function NavbarItem({ text, href, onClick, icon, textColor }) {
     return (
         <Link
             to={href}
