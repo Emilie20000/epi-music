@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../Alerts/Alert";
 import logo from "../../assets/logo.webp";
-
+import logoDark from "../../assets/logo-dark.webp";
+import { useTheme } from "../../context/ThemeContext";
 function Register() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -12,6 +13,7 @@ function Register() {
     const [message, setMessage] = useState("");
     const [alert, setAlert] = useState({ message: "", type: "error" });
     const navigate = useNavigate();
+    const { isDark } = useTheme();
 
     const validatePassword = (password) => {
         const minLength = 8;
@@ -84,11 +86,13 @@ function Register() {
         }
     };
 
+    const logoToUse = isDark ? logoDark : logo;
+
     return (
         <div className="flex items-center justify-center overflow-hidden">
             <div className="max-w-md w-full mx-auto p-8 rounded-lg mb-16">
                 <div className="flex items-center justify-center py-16">
-                    <img src={logo} alt="Logo" className="w-64 h-64" />
+                    <img src={logoToUse} alt="Logo" className="w-64 h-64" />
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="flex flex-wrap -mx-24">
@@ -197,7 +201,7 @@ function Register() {
                     {message && <p className="text-red-600">{message}</p>}
                     <button
                         type="submit"
-                        className="w-full bg-white text-[#EEB829] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="w-full bg-[#F3F3F3] text-[#FF9300] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         S'inscrire
                     </button>
@@ -207,7 +211,9 @@ function Register() {
                     Vous avez déjà un compte ?{" "}
                     <Link
                         to="/login"
-                        className="text-indigo-600 hover:text-indigo-800"
+                        className={`${
+                            isDark ? 'text-[#06C9F7] hover:text-[#0394B9]' : 'text-[#4F46E5] hover:text-[#4338CA]'
+                        }`}
                     >
                         Connexion
                     </Link>
