@@ -7,6 +7,7 @@ import logo from "../../assets/logo.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import { useCart } from "../../context/CartContext";
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -203,6 +204,9 @@ const Navbar = () => {
                             text="Déconnexion"
                         />
                     )}
+                    <div className="pt-2">
+                        <ThemeSwitcher />
+                    </div>
                 </div>
             </div>
         </nav>
