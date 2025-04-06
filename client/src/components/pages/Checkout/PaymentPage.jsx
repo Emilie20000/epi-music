@@ -26,13 +26,13 @@ const PaymentPage = () => {
     }
 
     axios
-      .get(`http://localhost:8000/api/order/${orderId}`)
-      .then((response) => {
-        setOrder(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .get(`http://localhost:8000/api/order/${orderId}`)
+        .then((response) => {
+          setOrder(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }, [orderId]);
 
   useEffect(() => {
@@ -46,83 +46,57 @@ const PaymentPage = () => {
   }, [order]);
 
   return (
-    <>
-      <Helmet>
-        <title>Paiement | Epimusic</title>
-        <meta name="description" content="Procédez au paiement de votre commande sur Epimusic." />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
-    <div className="w-[90%] justify-center lg:w-9/12 m-auto" aria-live="polite"  aria-label="Page de Paiement">
-      <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`}>Paiement</h1>
-      <div className="flex lg:flex-row flex-col space-y-8 flex-wrap justify-evenly">
-        <div className={`lg:w-2/5 max-w-xl ${BgColor} p-8 mt-4 rounded-lg`}>
-          {order && (
-            <Elements stripe={stripePromise}>
-              <PaymentForm
-                orderPrice={order.totalWithShippingCost}
-                orderId={orderId}
-                isDark={isDark}
-                aria-label="Formulaire de paiement"
-              />
-            </Elements>
-          )}
-        </div>
-        <div className="lg:w-1/3 w-full">
-          <h3 className={`text-2xl mb-4 ${textColor}`} aria-label="Récapitulatif de la commande">Récapitulatif :</h3>
-          <div className={`w-full ${BgColor} p-4 rounded-lg`} aria-live="polite">
-            {order && (
-                <>
-                  <p className={`text-lg ${textColor}`} aria-label="Quantité de produits" >{order.itemsQuantity} produits</p>
-                  <hr className="mb-4" />
-                  <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
-                    <p aria-label="Prix du panier" >Prix du panier :</p>
-                    <p aria-label="Prix total" >{order.totalPrice} €</p>
-                  </div>
-                  <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
-                    <p aria-label="Prix avec promotions" >Prix du panier avec promotions :</p>
-                    <p aria-label="Prix total avec promotion" >{order.totalWithPromo} €</p>
-                  </div>
-                  <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
-                    <p aria-label="Frais de livraison">Frais de livraison :</p>
-                    <p aria-label="Frais de livraison montant">{order.shippingCost} €</p>
-                  </div>
-                  <div className={`w-full mt-2 flex justify-between text-xl md:text-3xl ${textColor}`}>
-                    <p aria-label="Total final">Total</p>
-                    <p aria-label="Total avec frais">{order.totalWithShippingCost} €</p>
-                  </div>
-                </>
-            )}
-          </div>
-          <div className="w-1/3">
-            <h3 className="text-2xl mb-4">Récapitulatif :</h3>
-            <div className="w-full bg-white p-4 rounded-lg">
+      <>
+        <Helmet>
+          <title>Paiement | Epimusic</title>
+          <meta name="description" content="Procédez au paiement de votre commande sur Epimusic." />
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <div className="w-[90%] justify-center lg:w-9/12 m-auto" aria-live="polite"  aria-label="Page de Paiement">
+          <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`}>Paiement</h1>
+          <div className="flex lg:flex-row flex-col space-y-8 flex-wrap justify-evenly">
+            <div className={`lg:w-2/5 max-w-xl ${BgColor} p-8 mt-4 rounded-lg`}>
               {order && (
-                <>
-                  <p className="text-lg">{order.itemsQuantity} produits</p>
-                  <hr className="mb-4" />
-                  <div className="w-full flex justify-between text-lg md:text-xl text-slate-500">
-                    <p>Prix du panier :</p>
-                    <p>{order.totalPrice} €</p>
-                  </div>
-                  <div className="w-full flex justify-between text-lg md:text-xl text-slate-500">
-                    <p>Prix du panier avec promotions :</p>
-                    <p>{order.totalWithPromo} €</p>
-                  </div>
-                  <div className="w-full flex justify-between text-lg md:text-xl text-slate-500">
-                    <p>Frais de livraison :</p>
-                    <p>{order.shippingCost} €</p>
-                  </div>
-                  <div className="w-full mt-2 flex justify-between text-xl md:text-3xl">
-                    <p>Total</p>
-                    <p>{order.totalWithShippingCost} €</p>
-                  </div>
-                </>
+                  <Elements stripe={stripePromise}>
+                    <PaymentForm
+                        orderPrice={order.totalWithShippingCost}
+                        orderId={orderId}
+                        isDark={isDark}
+                        aria-label="Formulaire de paiement"
+                    />
+                  </Elements>
               )}
+            </div>
+            <div className="lg:w-1/3 w-full">
+              <h3 className={`text-2xl mb-4 ${textColor}`} aria-label="Récapitulatif de la commande">Récapitulatif :</h3>
+              <div className={`w-full ${BgColor} p-4 rounded-lg`} aria-live="polite">
+                {order && (
+                    <>
+                      <p className={`text-lg ${textColor}`} aria-label="Quantité de produits" >{order.itemsQuantity} produits</p>
+                      <hr className="mb-4" />
+                      <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
+                        <p aria-label="Prix du panier" >Prix du panier :</p>
+                        <p aria-label="Prix total" >{order.totalPrice} €</p>
+                      </div>
+                      <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
+                        <p aria-label="Prix avec promotions" >Prix du panier avec promotions :</p>
+                        <p aria-label="Prix total avec promotion" >{order.totalWithPromo} €</p>
+                      </div>
+                      <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
+                        <p aria-label="Frais de livraison">Frais de livraison :</p>
+                        <p aria-label="Frais de livraison montant">{order.shippingCost} €</p>
+                      </div>
+                      <div className={`w-full mt-2 flex justify-between text-xl md:text-3xl ${textColor}`}>
+                        <p aria-label="Total final">Total</p>
+                        <p aria-label="Total avec frais">{order.totalWithShippingCost} €</p>
+                      </div>
+                    </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

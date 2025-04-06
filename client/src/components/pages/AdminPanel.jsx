@@ -15,7 +15,7 @@ import CategoryAdminEdit from "../forms/CategoryAdminEdit";
 import StockManagementPage from "./StockManagementPage";
 import { useTheme } from "../../context/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
-
+import { Helmet } from "react-helmet-async";
 const AdminPanel = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();

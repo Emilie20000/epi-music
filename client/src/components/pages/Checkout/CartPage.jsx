@@ -42,11 +42,11 @@ const CartPage = () => {
                 token: cartToken
             }
         })
-        .then((response) => response.data)
-        .then((data) => {
-            setItems(data.items);
-        })
-        .catch((error) => console.log(error));
+            .then((response) => response.data)
+            .then((data) => {
+                setItems(data.items);
+            })
+            .catch((error) => console.log(error));
     }, [userId, cartToken]);
 
     useEffect(() => {
@@ -76,43 +76,61 @@ const CartPage = () => {
     }, [items]);
 
     const handleQuantityChange = (id, newQuantity, newTotal) => {
-        setItems(prevItems => 
-            prevItems.map(item => 
+        setItems(prevItems =>
+            prevItems.map(item =>
                 item.id === id ? { ...item, quantity: newQuantity, total: newTotal} : item
             )
         );
     };
 
-    axios
-      .post("http://localhost:8000/api/order/", {
-        userId: userId,
-        token: cartToken,
-      })
-      .then((response) => {
-        const orderId = response.data.orderId;
-        setOrderId(orderId);
-        localStorage.setItem("orderId", orderId);
-
-        return axios.get("http://localhost:8000/api/shipping/cost", {
-          params: {
-            userId: userId,
-            token: cartToken,
-            orderId: orderId,
-          },
-        });
-      })
-      .then((response) => {
-        const data = response.data;
-
-        localStorage.setItem("cart_shipping_costs", data.shippingCosts);
-        navigate("/delivery");
-      })
-      .catch((error) => {
-        if (error.response) {
-          setAlert({ message: error.response.data.message, type: "error" });
+    const handleDeleteItem = (message, id) => {
+        if (id) {
+            setItems(prevItems =>
+                prevItems.filter(item => item.id !== id)
+            );
+            setAlert({ message: "Le produit a été retiré de votre panier", type: "success" });
         } else {
-            setAlert({ message: "Une erreur est survenue: l'article n'a pas été retiré de votre panier", type: "error" });
+            setAlert({ message: "Une erreur est survenue: l'article n'a pas été retiré de votre panier", type: "error" })
         }
+    };
+
+    const handleSubmitOrder = () => {
+        if (!userId && !cartToken) {
+            console.log('Pas de user ou de token');
+            return;
+        }
+
+        axios
+            .post("http://localhost:8000/api/order/", {
+                userId: userId,
+                token: cartToken,
+            })
+            .then((response) => {
+                const orderId = response.data.orderId;
+                setOrderId(orderId);
+                localStorage.setItem("orderId", orderId);
+
+                return axios.get("http://localhost:8000/api/shipping/cost", {
+                    params: {
+                        userId: userId,
+                        token: cartToken,
+                        orderId: orderId,
+                    },
+                });
+            })
+            .then((response) => {
+                const data = response.data;
+
+                localStorage.setItem("cart_shipping_costs", data.shippingCosts);
+                navigate("/delivery");
+            })
+            .catch((error) => {
+                if (error.response) {
+                    setAlert({ message: error.response.data.message, type: "error" });
+                } else {
+                    setAlert({ message: "Une erreur est survenue: l'article n'a pas été retiré de votre panier", type: "error" });
+                }
+            });
     };
 
     const getShippingCost = () => {
@@ -120,84 +138,84 @@ const CartPage = () => {
             console.log('Pas de user ou de token');
             return;
         }
-        
+
         axios.post("http://localhost:8000/api/order/", {
             userId: userId,
             token: cartToken
         })
-        .then(response => {
-            const orderId = response.data.orderId;
-            setOrderId(orderId);
-            localStorage.setItem("orderId", orderId);
+            .then(response => {
+                const orderId = response.data.orderId;
+                setOrderId(orderId);
+                localStorage.setItem("orderId", orderId);
 
-            return axios.get("http://localhost:8000/api/shipping/cost", {
-                params: {
-                    userId: userId,
-                    token: cartToken,
-                    orderId: orderId
+                return axios.get("http://localhost:8000/api/shipping/cost", {
+                    params: {
+                        userId: userId,
+                        token: cartToken,
+                        orderId: orderId
+                    }
+                });
+            })
+            .then((response) => {
+                const data = response.data;
+                localStorage.setItem("cart_shipping_costs", data.shippingCosts);
+                navigate('/delivery');
+            })
+            .catch(error => {
+                if (error.response) {
+                    setAlert({ message: error.response.data.message, type: "error" });
+                } else {
+                    console.log(error.message);
                 }
             });
-        })
-        .then((response) => {
-            const data = response.data;
-            localStorage.setItem("cart_shipping_costs", data.shippingCosts);
-            navigate('/delivery');
-        })
-        .catch(error => {
-            if (error.response) {
-                setAlert({ message: error.response.data.message, type: "error" });
-            } else {
-                console.log(error.message);
-            }
-        });      
     };
 
     return (
-      <>
-      <Helmet>
-        <title>Panier | Epimusic</title>
-        <meta name="description" content="Consultez et gérez votre panier sur Epimusic." />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
-        <div className="w-9/12 m-auto">
-            <Alert message={alert.message} type={alert.type} />
-            <h1 className={`text - center text-4xl font-bold my-4 ${textColor}`}  aria-label="Votre panier">
-                Panier
-            </h1>
-            <div className="flex flex-wrap justify-center">
-                {items ? (
-                    items.length !== 0 && total ? (
-                    <>
-                        <CartList 
-                        items={items}
-                        onQuantityChange={handleQuantityChange}
-                        onDeleteItem={handleDeleteItem}    
-                        />
-                        <div className="w-full lg:w-1/2 xl:w-1/3 md:p-4 mb-4">
-                            <CartSummary total={total} quantity={quantity} promoReduction={promotionReduction} isDark={isDark} />
-                            <CartButton 
-                                text="Valider mon panier"
-                                handleClick={getShippingCost}
-                                aria-label="Procéder à la validation du panier"
-                            />
-                        </div>
-                    </>
-                    ) : (
-                        <div className={`text - center mt-40 text-2xl ${textColor}`}>
-                            <p>Votre panier est vide</p>
-                            <button
-                                className="bg-rose-600 text-2xl rounded-xl mt-8 text-black"
-                                onClick={() => window.location.href = "/products"}
-                                aria-label="Retourner à la page des produits"
-                            >
-                                Retourner vers les produits
-                            </button>
-                        </div>
-                    )
-                ) : null}
+        <>
+            <Helmet>
+                <title>Panier | Epimusic</title>
+                <meta name="description" content="Consultez et gérez votre panier sur Epimusic." />
+                <meta name="robots" content="noindex, nofollow" />
+            </Helmet>
+            <div className="w-9/12 m-auto">
+                <Alert message={alert.message} type={alert.type} />
+                <h1 className={`text - center text-4xl font-bold my-4 ${textColor}`}  aria-label="Votre panier">
+                    Panier
+                </h1>
+                <div className="flex flex-wrap justify-center">
+                    {items ? (
+                        items.length !== 0 && total ? (
+                            <>
+                                <CartList
+                                    items={items}
+                                    onQuantityChange={handleQuantityChange}
+                                    onDeleteItem={handleDeleteItem}
+                                />
+                                <div className="w-full lg:w-1/2 xl:w-1/3 md:p-4 mb-4">
+                                    <CartSummary total={total} quantity={quantity} promoReduction={promotionReduction} isDark={isDark} />
+                                    <CartButton
+                                        text="Valider mon panier"
+                                        handleClick={handleSubmitOrder}  // Fix this by using the correct function
+                                        aria-label="Procéder à la validation du panier"
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div className={`text - center mt-40 text-2xl ${textColor}`}>
+                                <p>Votre panier est vide</p>
+                                <button
+                                    className="bg-rose-600 text-2xl rounded-xl mt-8 text-black"
+                                    onClick={() => window.location.href = "/products"}
+                                    aria-label="Retourner à la page des produits"
+                                >
+                                    Retourner vers les produits
+                                </button>
+                            </div>
+                        )
+                    ) : null}
+                </div>
             </div>
-        </div>
-     </>
+        </>
     );
 };
 
