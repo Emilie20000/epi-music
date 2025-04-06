@@ -1,17 +1,21 @@
 import React from 'react';
 
-const ProductSizes = ({ sizes, selectedSize, onSizeSelect }) => {
+const ProductSizes = ({ sizes, selectedSize, onSizeSelect, isDark }) => {
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-400";
+    const selectedBorderColor = isDark ? "border-white" : "border-black";
+
     return (
         <div className="flex h-8 gap-2 mb-4">
             {sizes.map((size, index) => (
                 size && (
                     <span
                         key={index}
-                        className={`px-2 py-1 cursor-pointer border-2 ${selectedSize === size ? 'border-black' : 'border-transparent'}`}
+                        className={`px-2 py-1 cursor-pointer border-2 ${borderColor} ${selectedSize === size ? `${selectedBorderColor} font-semibold` : ''}`}
                         onClick={() => onSizeSelect(size)}
                         title={size}
                     >
-                        {size}
+                        <span className={textColor}>{size}</span>
                     </span>
                 )
             ))}
@@ -20,3 +24,4 @@ const ProductSizes = ({ sizes, selectedSize, onSizeSelect }) => {
 };
 
 export default ProductSizes;
+
