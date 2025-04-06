@@ -316,7 +316,7 @@ const ProductFilter = ({
 
 
             {sizes.length > 0 && (
-                <div className={`mb - 2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
                         className={`text - lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsSizesOpen(!isSizesOpen)}
