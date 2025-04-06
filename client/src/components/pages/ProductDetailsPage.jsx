@@ -10,6 +10,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from '../../context/CartContext';
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductDetailsPage = () => {
     const { id } = useParams();
@@ -26,6 +27,12 @@ const ProductDetailsPage = () => {
     const [hasPostedReview, setHasPostedReview] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const { updateItemCount } = useCart();
+    const { isDark } = useTheme();
+
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const subTextColor = isDark ? "text-slate-300" : "text-gray-600";
+    const BgColor = isDark ? "bg-slate-600" : "bg-white";
+    const borderColor = isDark ? "text-slate-600" : "bg-white";
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -209,8 +216,8 @@ const ProductDetailsPage = () => {
             <Alert message={alert.message} type={alert.type} />
             {product && (
                 <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <div className="space-y-4">
-                        <ProductTitle name={product.name} category={product.category.name} />
+                    <div className={`${isDark ? 'text-slate-200' : 'text-black'} space-y-4`}>
+                        <ProductTitle name={product.name} category={product.category.name} isDark={isDark} />
                         <ProductImage images={filteredModel?.images || []} />
                     </div>
                     <div className="space-y-4 mt-16 pt-12">
@@ -223,16 +230,19 @@ const ProductDetailsPage = () => {
                             price={`${filteredModel?.price || ''}`}
                             weight={`${product.weight || ''}`}
                             promotion={promotion}
+                            isDark={isDark}
                         />
                         <ProductColors
                             colors={uniqueColors}
                             selectedColor={selectedColor}
                             onColorSelect={handleColorSelect}
+                            isDark={isDark}
                         />
                         <ProductSizes
                             sizes={uniqueSizes}
                             selectedSize={selectedSize}
                             onSizeSelect={handleSizeSelect}
+                            isDark={isDark}
                         />
                         <div className="space-y-4">
                             <input
@@ -242,22 +252,22 @@ const ProductDetailsPage = () => {
                                 onChange={(e) => setQuantity(Number(e.target.value))}
                                 min="1"
                                 max={filteredModel?.stock || 1}
-                                className="border border-gray-300 rounded-md p-2"
+                                className={`border ${borderColor} rounded-md p-2 mr-4`}
                             />
                             <button
                                 onClick={handleAddToCart}
-                                className="bg-blue-500 text-white py-2 px-4 rounded"
+                                className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
                             >
                                 Ajouter au panier
                             </button>
                             {canPostReview && (
                                 <div className="space-y-2">
-                                    <textarea
-                                        value={review}
-                                        onChange={(e) => setReview(e.target.value)}
-                                        placeholder="Écrire un avis"
-                                        className="border border-gray-300 rounded-md p-2 w-full"
-                                    />
+                                <textarea
+                                    value={review}
+                                    onChange={(e) => setReview(e.target.value)}
+                                    placeholder="Écrire un avis"
+                                    className={`border ${isDark ? 'border-gray-600' : 'border-gray-300'} rounded-md p-2 w-full`}
+                                />
                                     <button
                                         onClick={handleAddReview}
                                         className="bg-green-500 text-white py-2 px-4 rounded"
@@ -268,9 +278,9 @@ const ProductDetailsPage = () => {
                             )}
                         </div>
                         {hasPostedReview && reviews.map(review => (
-                            <div key={review.review_id} className="border border-gray-300 rounded-md p-4 space-y-2">
-                                <p><strong>{review.username}</strong></p>
-                                <p>{review.comment}</p>
+                            <div key={review.review_id} className={`border ${borderColor} rounded-md p-4 space-y-2`}>
+                                <p className={`${isDark ? 'text-slate-200' : 'text-black'}`}><strong>{review.username}</strong></p>
+                                <p className={`${isDark ? 'text-slate-200' : 'text-black'}`}>{review.comment}</p>
                                 {review.user_id === JSON.parse(localStorage.getItem('user'))?.id && (
                                     <div className="flex space-x-2">
                                         <button
@@ -289,11 +299,11 @@ const ProductDetailsPage = () => {
                                 )}
                                 {editingReview === review.review_id && (
                                     <div className="mt-2">
-                                        <textarea
-                                            value={editReviewContent}
-                                            onChange={(e) => setEditReviewContent(e.target.value)}
-                                            className="border border-gray-300 rounded-md p-2 w-full"
-                                        />
+                                    <textarea
+                                        value={editReviewContent}
+                                        onChange={(e) => setEditReviewContent(e.target.value)}
+                                        className={`border ${isDark ? 'border-gray-600' : 'border-gray-300'} rounded-md p-2 w-full`}
+                                    />
                                         <button
                                             onClick={handleUpdateReview}
                                             className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
@@ -310,5 +320,4 @@ const ProductDetailsPage = () => {
         </div>
     );
 };
-
 export default ProductDetailsPage;
