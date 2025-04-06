@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Alert from "../../Alerts/Alert";
 import axios from "axios";
+import {useTheme} from "../../../context/ThemeContext";
 
 const DeliveryHomePage = () => {
     const [alert, setAlert] = useState({ message: "", type: "error" });
@@ -32,6 +33,12 @@ const DeliveryHomePage = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const orderId = localStorage.getItem("orderId");
+
+    const { isDark } = useTheme();
+    const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+    const textColor = isDark ? "text-slate-200" : "text-gray-800";
+    const borderColor = isDark ?  "border-slate-600" : "border-gray-100";
+    const subTextColor = isDark ?  "text-slate-300" : "text-gray-600";
 
     useEffect(() => {
         const fetchAddresses = async () => {
@@ -108,13 +115,13 @@ const DeliveryHomePage = () => {
     return (
         <div className="w-9/12 m-auto">
             <Alert message={alert.message} type={alert.type} />
-            <h1 className="text-center text-4xl font-bold my-4">
+            <h1 className={`${textColor} text-center text-4xl font-bold my-4`}>
                 Livraison à domicile
             </h1>
             <div className="w-full">
                 <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-                    <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                        <p className="text-3xl font-bold leading-7 text-center text-black">
+                    <div className={`${BgColor} w-full shadow rounded p-8 sm:p-12`}>
+                        <p className={`text-3xl font-bold leading-7 text-center ${textColor}`}>
                             Adresse de livraison
                         </p>
                         {message && <p className="success">{message}</p>}
@@ -125,7 +132,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="address-select"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Carnet d'adresses
                                     </label>
@@ -155,7 +162,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col md:w-1/2">
                                     <label
                                         htmlFor="lastname"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Nom
                                     </label>
@@ -173,7 +180,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
                                     <label
                                         htmlFor="firstname"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Prénom
                                     </label>
@@ -194,7 +201,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="telephone"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Numéro de téléphone
                                     </label>
@@ -215,7 +222,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="email"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Adresse e-mail
                                     </label>
@@ -236,7 +243,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="address"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Adresse
                                     </label>
@@ -257,7 +264,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="complement"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Complément d'adresse
                                     </label>
@@ -277,7 +284,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col md:w-1/2">
                                     <label
                                         htmlFor="postalCode"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Code postal
                                     </label>
@@ -296,7 +303,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
                                     <label
                                         htmlFor="city"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Ville
                                     </label>
@@ -317,7 +324,7 @@ const DeliveryHomePage = () => {
                                 <div className="w-full flex flex-col">
                                     <label
                                         htmlFor="country"
-                                        className="text-gray-700"
+                                        className={`${subTextColor}`}
                                     >
                                         Pays
                                     </label>
@@ -349,3 +356,4 @@ const DeliveryHomePage = () => {
 };
 
 export default DeliveryHomePage;
+

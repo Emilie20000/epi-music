@@ -30,7 +30,7 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-const PaymentForm = ({ orderPrice, orderId }) => {
+const PaymentForm = ({ orderPrice, orderId, isDark }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
@@ -40,6 +40,11 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   const [userId, setUserId] = useState();
   const [cartToken, setCartToken] = useState();
   const navigate = useNavigate();
+
+  const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+  const textColor = isDark ? "text-slate-200" : "text-gray-800";
+  const borderColor = isDark ?  "border-slate-600" : "border-gray-300";
+  const subTextColor = isDark ?  "text-slate-300" : "text-gray-700";
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -142,82 +147,82 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   }, [paymentSuccess]);
 
   return (
-    <>
-      {paymentSuccess ? (
-        <div className="w-full h-full flex flex-col justify-center items-center text-center">
-          <FontAwesomeIcon
-            icon={faCheckCircle}
-            className="text-green-500 text-6xl"
-          />
-          <p className="text-2xl mt-8 mb-4">Paiement réussi</p>
-          <p className="text-2xl">Merci d'avoir commandé chez Epimusic !</p>
-          <p className="text-xl mt-2">Vous allez être redirigés dans quelques instants</p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
-          <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
-              Titulaire de la carte
-            </label>
-            <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
-              <input
-                type="text"
-                value={cardHolderName}
-                onChange={(e) => setCardHolderName(e.target.value)}
-                placeholder="Nom du titulaire"
-                className="w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0"
-                required
+      <>
+        {paymentSuccess ? (
+            <div className="w-full h-full flex flex-col justify-center items-center text-center">
+              <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  className="text-green-500 text-6xl"
               />
+              <p className={`text-2xl mt-8 mb-4 ${textColor}`}>Paiement réussi</p>
+              <p className={`text-2xl ${textColor}`}>Merci d'avoir commandé chez Epimusic !</p>
+              <p className={`text-xl mt-2 ${subTextColor}`}>Vous allez être redirigés dans quelques instants</p>
             </div>
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-2 text-2xl">
-              Numéro de carte
-            </label>
-            <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
-              <CardNumberElement
-                options={CARD_ELEMENT_OPTIONS}
-                className="w-full focus:outline-none"
-              />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <label className="block text-gray-700 mb-2 text-2xl">
-                Date d'expiration
-              </label>
-              <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
-                <CardExpiryElement
-                  options={CARD_ELEMENT_OPTIONS}
-                  className="w-full focus:outline-none"
-                />
+        ) : (
+            <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
+              <div>
+                <label className={`block ${subTextColor} mb-2 text-2xl`}>
+                  Titulaire de la carte
+                </label>
+                <div className={`p-3 border border-gray-300 rounded-lg shadow-sm`}>
+                  <input
+                      type="text"
+                      value={cardHolderName}
+                      onChange={(e) => setCardHolderName(e.target.value)}
+                      placeholder="Nom du titulaire"
+                      className={`w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0 ${BgColor} ${textColor}`}
+                      required
+                  />
+                </div>
               </div>
-            </div>
-            <div className="w-1/6 ">
-              <label className="block text-gray-700 mb-2 text-2xl">CVC</label>
-              <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
-                <CardCvcElement
-                  options={CARD_ELEMENT_OPTIONS}
-                  className="w-full focus:outline-none"
-                />
+              <div>
+                <label className={`block ${textColor} mb-2 text-2xl`}>
+                  Numéro de carte
+                </label>
+                <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
+                  <CardNumberElement
+                      options={CARD_ELEMENT_OPTIONS}
+                      className={`w-full focus:outline-none ${textColor}`}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-          <button
-            type="submit"
-            disabled={!stripe || isProcessing}
-            className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
-          >
-            {isProcessing ? "Transaction en cours..." : "Payer"}
-          </button>
-          {isProcessing && (
-            <div className="flex items-center justify-center p-4">
-              <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-            </div>
-          )}
-        </form>
-      )}
-    </>
+              <div className="flex justify-between">
+                <div>
+                  <label className={`block ${textColor} mb-2 text-2xl`}>
+                    Date d'expiration
+                  </label>
+                  <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
+                    <CardExpiryElement
+                        options={CARD_ELEMENT_OPTIONS}
+                        className={`w-full focus:outline-none ${textColor}`}
+                    />
+                  </div>
+                </div>
+                <div className="w-1/6 ">
+                  <label className={`block ${textColor} mb-2 text-2xl`}>CVC</label>
+                  <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
+                    <CardCvcElement
+                        options={CARD_ELEMENT_OPTIONS}
+                        className={`w-full focus:outline-none ${textColor}`}
+                    />
+                  </div>
+                </div>
+              </div>
+              <button
+                  type="submit"
+                  disabled={!stripe || isProcessing}
+                  className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
+              >
+                {isProcessing ? "Transaction en cours..." : "Payer"}
+              </button>
+              {isProcessing && (
+                  <div className="flex items-center justify-center p-4">
+                    <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                  </div>
+              )}
+            </form>
+        )}
+      </>
   );
 };
 

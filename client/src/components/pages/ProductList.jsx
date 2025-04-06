@@ -420,11 +420,13 @@ const ProductList = () => {
                                                         colors={uniqueColors}
                                                         selectedColor={selectedColor}
                                                         onColorSelect={(color) => handleColorSelect(product.id, color)}
+                                                        isDark={isDark}
                                                     />
                                                     <ProductSizes
                                                         sizes={availableSizes}
                                                         selectedSize={selectedSize}
                                                         onSizeSelect={(size) => handleSizeSelect(product.id, size)}
+                                                        isDark={isDark}
                                                     />
                                                 </div>
                                                 <div className="w-1/3 ml-4">
