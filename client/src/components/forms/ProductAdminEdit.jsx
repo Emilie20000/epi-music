@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "../../styles/ProductForm.css";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductAdminEdit = () => {
     const { id } = useParams();
@@ -38,6 +39,15 @@ const ProductAdminEdit = () => {
     const searchParams = new URLSearchParams(location.search);
     const selectedProductIds = searchParams.get('selectedProducts')?.split(',') || [];
     const currentEditIndex = parseInt(searchParams.get('currentEditIndex')) || 0;
+
+    const { isDark } = useTheme();
+
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const inputBg = isDark ? "bg-slate-700" : "bg-gray-100";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-200";
+    const buttonBg = isDark ? "bg-blue-700 hover:bg-blue-600" : "bg-blue-700 hover:bg-blue-600";
+    const buttonTextColor = isDark ? "text-white" : "text-white";
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/admin/products/${id}`)
@@ -294,8 +304,8 @@ const ProductAdminEdit = () => {
     return (
         <div className="w-full">
             <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-                <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                    <p className="text-3xl font-bold leading-7 text-center text-black">
+                <div className={`${cardBg} w-full shadow rounded p-8 sm:p-12`}>
+                    <p className={`${textColor} text-3xl font-bold leading-7 text-center`}>
                         Mettre à jour le produit
                     </p>
                     {message && <p className="success">{message}</p>}
@@ -303,7 +313,12 @@ const ProductAdminEdit = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="md:flex items-center mt-12">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="name">Nom</label>
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="name"
+                                >
+                                    Nom
+                                </label>
                                 <input
                                     type="text"
                                     id="name"
@@ -312,14 +327,18 @@ const ProductAdminEdit = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 />
                             </div>
                         </div>
-    
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="description">Description</label>
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="description"
+                                >
+                                    Description
+                                </label>
                                 <textarea
                                     id="description"
                                     aria-label="Description du produit"
@@ -327,24 +346,29 @@ const ProductAdminEdit = () => {
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
-                                    rows="5"
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    rows="5"
                                 />
                             </div>
                         </div>
-    
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="category">Catégorie</label>
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="category"
+                                >
+                                    Catégorie
+                                </label>
                                 <select
                                     id="category"
                                     aria-label="Catégorie du produit"
                                     value={category}
                                     onChange={(e) => handleCategoryChange(e.target.value)}
                                     required
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
-                                    <option value="">Sélectionnez une catégorie</option>
+                                    <option value="" className="text-gray-500">
+                                        Sélectionnez une catégorie
+                                    </option>
                                     {categories.map((cat) => (
                                         <option key={cat.id} value={cat.id}>
                                             {cat.name}
@@ -353,11 +377,12 @@ const ProductAdminEdit = () => {
                                 </select>
                             </div>
                         </div>
-    
                         {category === "1" && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="brand">Marque</label>
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="brand">
+                                        Marque
+                                    </label>
                                     <input
                                         type="text"
                                         id="brand"
@@ -365,15 +390,15 @@ const ProductAdminEdit = () => {
                                         placeholder="Entrez le nom de la marque"
                                         value={brand}
                                         onChange={(e) => setBrand(e.target.value)}
-                                        className="..."
-                                    />
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    />
                                 </div>
                             </div>
                         )}
-    
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="tags">Tags</label>
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="tags">
+                                    Tags
+                                </label>
                                 <div className="flex">
                                     <input
                                         type="text"
@@ -382,26 +407,26 @@ const ProductAdminEdit = () => {
                                         placeholder="Entrez un tag"
                                         value={tagInput}
                                         onChange={handleTagInputChange}
-                                        className="..."
-                                    />
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    />
                                     <button
                                         type="button"
                                         aria-label="Ajouter le tag saisi"
+
                                         onClick={handleAddTag}
-                                        className="..."
+                                        className="bg-blue-700 text-white px-4 py-2 rounded ml-2"
                                     >
                                         Ajouter
                                     </button>
                                 </div>
                                 <div className="flex flex-wrap mt-2">
                                     {tags.map((tag, index) => (
-                                        <div key={index} className="...">
+                                        <div key={index} className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mt-2">
                                             {tag}
                                             <button
                                                 type="button"
                                                 aria-label={`Supprimer le tag ${tag}`}
                                                 onClick={() => handleRemoveTag(index)}
-                                                className="..."
+                                                className="ml-2 text-red-600"
                                             >
                                                 &times;
                                             </button>
@@ -410,10 +435,11 @@ const ProductAdminEdit = () => {
                                 </div>
                             </div>
                         </div>
-    
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="weight">Poids</label>
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="weight">
+                                    Poids
+                                </label>
                                 <input
                                     type="number"
                                     id="weight"
@@ -424,11 +450,10 @@ const ProductAdminEdit = () => {
                                     min="0"
                                     step="0.01"
                                     required
-                                    className="..."
-                                />
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                />
                             </div>
                         </div>
-    
+
                         {models.length > 1 && (
                             <div className="flex items-center justify-center w-full mt-8">
                                 <button
@@ -439,7 +464,7 @@ const ProductAdminEdit = () => {
                                         handlePreviousModel();
                                     }}
                                     disabled={currentModelIndex === 0}
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
                                     Modèle Précédent
                                 </button>
@@ -451,25 +476,29 @@ const ProductAdminEdit = () => {
                                         handleNextModel();
                                     }}
                                     disabled={currentModelIndex === models.length - 1}
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
                                     Modèle Suivant
                                 </button>
                             </div>
                         )}
-    
+
                         {shouldDisplayColor(category) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full md:w-1/2 flex flex-col">
-                                    <label htmlFor="color">Couleur</label>
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="color">
+                                        Couleur
+                                    </label>
                                     <select
                                         id="color"
                                         aria-label="Couleur du produit"
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}
-                                        className="..."
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                     >
-                                        <option value="">Sélectionnez une couleur</option>
+                                        <option value="" className="text-gray-500">
+                                            Sélectionnez une couleur
+                                        </option>
                                         {colors.map((clr) => (
                                             <option key={clr.id} value={clr.id}>
                                                 {clr.name}
@@ -479,19 +508,23 @@ const ProductAdminEdit = () => {
                                 </div>
                             </div>
                         )}
-    
+
                         {shouldDisplaySize(category) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full md:w-1/2 flex flex-col">
-                                    <label htmlFor="size">Taille</label>
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="size">
+                                        Taille
+                                    </label>
                                     <select
                                         id="size"
                                         aria-label="Taille du produit"
                                         value={size}
                                         onChange={(e) => setSize(e.target.value)}
-                                        className="..."
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                     >
-                                        <option value="">Sélectionnez une taille</option>
+                                        <option value="" className="text-gray-500">
+                                            Sélectionnez une taille
+                                        </option>
                                         {sizes.map((sz) => (
                                             <option key={sz.id} value={sz.id}>
                                                 {sz.value}
@@ -501,10 +534,12 @@ const ProductAdminEdit = () => {
                                 </div>
                             </div>
                         )}
-    
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="price">Prix</label>
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="price">
+                                    Prix
+                                </label>
                                 <input
                                     type="number"
                                     id="price"
@@ -515,14 +550,16 @@ const ProductAdminEdit = () => {
                                     min="0.01"
                                     step="0.01"
                                     required
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 />
                             </div>
                         </div>
-    
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="stock">Stock</label>
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="stock">
+                                    Stock
+                                </label>
                                 <input
                                     type="number"
                                     id="stock"
@@ -532,40 +569,40 @@ const ProductAdminEdit = () => {
                                     onChange={(e) => setStock(e.target.value)}
                                     min="0"
                                     required
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 />
                             </div>
                         </div>
-    
+
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label htmlFor="photos">Photos</label>
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="photos">
+                                    Photos
+                                </label>
                                 <input
                                     type="file"
                                     id="photos"
                                     aria-label="Téléverser des images du produit"
                                     multiple
                                     onChange={handlePhotoChange}
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 />
                                 <div className="flex flex-col mt-4">
                                     {photoPaths.map((path, index) => (
                                         <div key={index} className="flex items-center mt-2">
-                                            <p className="mr-4">{path}</p>
+                                            <p className={`mr-4 ${textColor}`}>{path}</p>
                                             <button
                                                 type="button"
                                                 aria-label={`Définir l’image ${index + 1} comme principale`}
-                                                className={`...`}
+                                                className={`mr-4 px-3 py-1 rounded ${mainImageIndex === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
                                                 onClick={() => setMainImageIndex(index)}
                                             >
-                                                {mainImageIndex === index
-                                                    ? 'Image principale'
-                                                    : 'Définir comme principale'}
+                                                {mainImageIndex === index ? 'Image principale' : 'Définir comme principale'}
                                             </button>
                                             <button
                                                 type="button"
                                                 aria-label={`Supprimer l’image ${index + 1}`}
-                                                className="..."
+                                                className="ml-2 text-red-600"
                                                 onClick={() => handleRemovePhoto(index)}
                                             >
                                                 &times;
@@ -575,47 +612,35 @@ const ProductAdminEdit = () => {
                                 </div>
                             </div>
                         </div>
-    
+
                         <div className="flex items-center justify-center w-full mt-8">
                             <button
                                 type="submit"
+                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
                                 aria-label="Enregistrer les modifications du produit"
-                                onClick={saveCurrentModelData}
-                                className="..."
+                                onClick={() => {
+                                    saveCurrentModelData();
+                                }}
                             >
                                 Mettre à jour le produit
                             </button>
                         </div>
-    
                         {selectedProductIds.length > 1 && (
                             <div className="flex items-center justify-center w-full mt-8">
                                 <button
                                     type="button"
                                     aria-label="Modifier le produit précédent"
-                                    onClick={() =>
-                                        navigate(
-                                            `/admin/edit-product/${selectedProductIds[currentEditIndex - 1]}?selectedProducts=${selectedProductIds.join(
-                                                ','
-                                            )}&currentEditIndex=${currentEditIndex - 1}`
-                                        )
-                                    }
+                                    onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex - 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex - 1}`)}
                                     disabled={currentEditIndex === 0}
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
                                     Précédent
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Modifier le produit suivant"
-                                    onClick={() =>
-                                        navigate(
-                                            `/admin/edit-product/${selectedProductIds[currentEditIndex + 1]}?selectedProducts=${selectedProductIds.join(
-                                                ','
-                                            )}&currentEditIndex=${currentEditIndex + 1}`
-                                        )
-                                    }
+                                    onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex + 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex + 1}`)}
                                     disabled={currentEditIndex === selectedProductIds.length - 1}
-                                    className="..."
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
                                     Suivant
                                 </button>
@@ -626,6 +651,9 @@ const ProductAdminEdit = () => {
             </div>
         </div>
     );
-}
+
+
+
+};
 
 export default ProductAdminEdit;

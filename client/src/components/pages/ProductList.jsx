@@ -7,6 +7,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import ProductColors from "../ProductDetails/ProductColors";
 import ProductSizes from "../ProductDetails/ProductSizes";
 import ProductFilter from "../Filtered/ProductFilter";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductList = () => {
     const { categoryId, category } = useParams();
@@ -36,6 +37,11 @@ const ProductList = () => {
     const [availableFilterCategories, setAvailableCategories] = useState([]);
 
     const [shouldApplyFilters, setShouldApplyFilters] = useState(false);
+
+    const { isDark } = useTheme();
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-[#634832]";
+    const borderColor = isDark ? "border-sky-400" : "border-gray-300";
 
     function formatCategory(category) {
         if (!category) {
@@ -302,218 +308,209 @@ const ProductList = () => {
         setShouldApplyFilters(true);
     };
 
-return (
-    <div className="container mx-auto p-4">
-        {error && (
-            <p className="text-red-500 font-bold text-center mb-4" role="alert">
-                {error}
-            </p>
-        )}
-        {alert && (
-            <p className="text-green-500 font-bold text-center mb-4" role="status">
-                {alert}
-            </p>
-        )}
-        {formattedCategory ? (
-            <h1 className="text-center text-4xl font-bold my-4" aria-label={`Catégorie ${formattedCategory}`}>
-                {formattedCategory}
-            </h1>
-        ) : (
-            <h1 className="text-center text-4xl font-bold my-4" aria-label="Tous les produits">
-                Tous les produits
-            </h1>
-        )}
+    return (
+        <div className="container mx-auto p-4">
+            {error && (
+                <p className="text-red-500 font-bold text-center mb-4" role="alert">
+                    {error}
+                </p>
+            )}
+            {alert && (
+                <p className="text-green-500 font-bold text-center mb-4"  role="status">
+                    {alert}
+                </p>
+            )}
+            {formattedCategory ? (
+                <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`}  aria-label={`Catégorie ${formattedCategory}`}>
+                    {formattedCategory}
+                </h1>
+            ) : (
+                <h1 className={`text-center text-4xl font-bold my-4 ${textColor}`} aria-label="Tous les produits">
+                    Tous les produits
+                </h1>
+            )}
 
-        <div className="flex">
-            <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
-                <ProductFilter
-                    categories={availableFilterCategories}
-                    brands={availableFilterBrands}
-                    colors={availableFilterColors}
-                    sizes={availableFilterSizes}
-                    maxPrice={maxPrice}
-                    maxWeight={maxWeight}
-                    onFiltersChange={setFilters}
-                />
-            </div>
+            <div className="flex">
+                <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
+                    <ProductFilter
+                        categories={availableFilterCategories}
+                        brands={availableFilterBrands}
+                        colors={availableFilterColors}
+                        sizes={availableFilterSizes}
+                        maxPrice={maxPrice}
+                        maxWeight={maxWeight}
+                        onFiltersChange={setFilters}
+                    />
+                </div>
+                <div className="w-3/4 flex-1 p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map((product) => {
+                                const selectedColor =
+                                    selectedColors[product.id];
+                                const selectedSize = selectedSizes[product.id];
+                                const filteredModel = product.models.find(
+                                    (model) =>
+                                        model.color === selectedColor &&
+                                        model.size === selectedSize
+                                );
 
-            <div className="w-3/4 flex-1 p-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {filteredProducts.length > 0 ? (
-                        filteredProducts.map((product) => {
-                            const selectedColor = selectedColors[product.id];
-                            const selectedSize = selectedSizes[product.id];
-                            const filteredModel = product.models.find(
-                                (model) =>
-                                    model.color === selectedColor &&
-                                    model.size === selectedSize
-                            );
-
-                            const uniqueColors = Array.from(
-                                new Set(product.models.map((m) => m.color))
-                            );
-                            const availableSizes = filteredModel
-                                ? Array.from(
-                                      new Set(
-                                          product.models
-                                              .filter(
-                                                  (m) =>
-                                                      m.color === selectedColor
-                                              )
-                                              .map((m) => m.size)
+                                const uniqueColors = Array.from(
+                                    new Set(
+                                        product.models.map(
+                                            (model) => model.color
+                                        )
+                                    )
+                                );
+                                const availableSizes = filteredModel
+                                    ? Array.from(
+                                          new Set(
+                                              product.models
+                                                  .filter(
+                                                      (model) =>
+                                                          model.color ===
+                                                          selectedColor
+                                                  )
+                                                  .map((model) => model.size)
+                                          )
                                       )
-                                  )
-                                : [];
+                                    : [];
 
-                            const promotion = product.promotions.length > 0 ? product.promotions[0] : null;
+                                const promotion =
+                                    product.promotions.length > 0
+                                        ? product.promotions[0]
+                                        : null;
 
-                            return (
-                                <div
-                                    key={product.id}
-                                    className="bg-white border border-gray-300 rounded-lg p-4 flex flex-col h-full transition-transform duration-300 ease-in-out hover:scale-105"
-                                    aria-label={`Produit ${product.name}`}
-                                >
-                                    <Link
-                                        to={`/product/${product.id}`}
-                                        className="flex flex-col h-full"
-                                        aria-label={`Voir les détails du produit ${product.name}`}
+
+                                return (
+                                    <div
+                                        key={product.id}
+                                        className={`card ${cardBg} ${borderColor} border-2 rounded-lg p-4 flex flex-col transition-transform duration-300 ease-in-out hover:scale-105 ${textColor} overflow-hidden`}
+                                        aria-label={`Produit ${product.name}`}
+                                        style={{
+                                            maxWidth: "100%",
+
+                                        }}
                                     >
-                                        <div className="flex-1 flex justify-center items-center mb-1">
-                                            {filteredModel?.images?.length > 0 ? (
-                                                <img
-                                                    src={`http://localhost:8000${
-                                                        filteredModel.images.find((img) => img.is_main)?.path
-                                                    }`}
-                                                    alt={`Image principale de ${product.name}`}
-                                                    className="object-contain max-w-full max-h-48"
-                                                />
-                                            ) : (
-                                                <div
-                                                    className="flex items-center justify-center w-full h-48 bg-gray-200 text-gray-600"
-                                                    aria-label="Image non disponible"
-                                                >
-                                                    <p>Aucune image disponible</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </Link>
-
-                                    <div className="flex-1 flex flex-col justify-between">
-                                        <h2 className="text-lg font-bold mb-2 line-clamp-1">
-                                            {product.name}
-                                        </h2>
-
-                                        {!formattedCategory && (
-                                            <p className="line-clamp-3 mb-2">
-                                                Catégorie : {product.category}
-                                            </p>
-                                        )}
-
-                                        <p className="line-clamp-3 mb-2">
-                                            {product.description}
-                                        </p>
-                                        <p className="line-clamp-3 mb-2">
-                                            Poids : {product.weight}
-                                        </p>
-
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex-1">
-                                                <ProductColors
-                                                    colors={uniqueColors}
-                                                    selectedColor={selectedColor}
-                                                    onColorSelect={(color) =>
-                                                        handleColorSelect(product.id, color)
-                                                    }
-                                                />
-                                                <ProductSizes
-                                                    sizes={availableSizes}
-                                                    selectedSize={selectedSize}
-                                                    onSizeSelect={(size) =>
-                                                        handleSizeSelect(product.id, size)
-                                                    }
-                                                />
-                                            </div>
-                                            <div className="w-1/3 ml-4">
-                                                {filteredModel?.stock !== undefined && (
-                                                    <>
-                                                        {filteredModel.stock > 0 && filteredModel.stock <= 5 ? (
-                                                            <>
-                                                                <p>Stock : {filteredModel.stock}</p>
-                                                                <p
-                                                                    className="text-orange-500 font-bold"
-                                                                    aria-label="Stock faible"
-                                                                >
-                                                                    Bientôt épuisé
-                                                                </p>
-                                                            </>
-                                                        ) : filteredModel.stock > 5 ? (
-                                                            <>
-                                                                <p>Stock : {filteredModel.stock}</p>
-                                                                <p
-                                                                    className="text-green-500 font-bold"
-                                                                    aria-label="Stock disponible"
-                                                                >
-                                                                    En stock
-                                                                </p>
-                                                            </>
-                                                        ) : (
-                                                            <p
-                                                                className="text-red-500 font-bold"
-                                                                aria-label="Rupture de stock"
-                                                            >
-                                                                Rupture de stock
-                                                            </p>
-                                                        )}
-                                                    </>
+                                        <Link to={`/product/${product.id}`} className="flex flex-col h-full">
+                                            <div className="flex-1 flex justify-center items-center mb-1"
+                                                 aria-label={`Voir les détails du produit ${product.name}`}
+                                            >
+                                                {filteredModel?.images && filteredModel.images.length > 0 ? (
+                                                    <img
+                                                        src={`http://localhost:8000${filteredModel.images.find(
+                                                            (img) => img.is_main
+                                                        )?.path}`}
+                                                        alt={`Image principale de ${product.name}`}
+                                                        className="object-contain max-w-full max-h-48"
+                                                    />
+                                                ) : (
+                                                    <div className="flex items-center justify-center w-full h-48 bg-gray-200 text-gray-600"
+                                                         aria-label="Image non disponible"
+                                                    >
+                                                        <p>Aucune image disponible</p>
+                                                    </div>
                                                 )}
                                             </div>
-                                        </div>
+                                        </Link>
+                                        <div className="flex-1 flex flex-col justify-between">
+                                            <h2 className="text-lg font-bold mb-2 line-clamp-1">{product.name}</h2>
+                                            {!formattedCategory && (
+                                                <p className="line-clamp-3 mb-2">Catégorie : {product.category}</p>
+                                            )}
+                                            <p className="line-clamp-3 mb-2">{product.description}</p>
+                                            <p className="line-clamp-3 mb-2">Poids : {product.weight}</p>
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex-1">
+                                                    <ProductColors
+                                                        colors={uniqueColors}
+                                                        selectedColor={selectedColor}
+                                                        onColorSelect={(color) => handleColorSelect(product.id, color)}
+                                                        isDark={isDark}
+                                                    />
+                                                    <ProductSizes
+                                                        sizes={availableSizes}
+                                                        selectedSize={selectedSize}
+                                                        onSizeSelect={(size) => handleSizeSelect(product.id, size)}
+                                                        isDark={isDark}
+                                                    />
+                                                </div>
+                                                <div className="w-1/3 ml-4">
+                                                    {filteredModel?.stock !== undefined && (
+                                                        <>
+                                                            {filteredModel.stock > 0 && filteredModel.stock <= 5 ? (
+                                                                <>
+                                                                    <p>Stock : {filteredModel.stock}</p>
+                                                                    <p className="text-orange-500 font-bold"
+                                                                       aria-label="Stock faible"
+                                                                    >
+                                                                        Bientôt épuisé
+                                                                    </p>
+                                                                </>
+                                                            ) : filteredModel.stock > 5 ? (
+                                                                <>
+                                                                    <p>Stock : {filteredModel.stock}</p>
+                                                                    <p className="text-green-500 font-bold"
+                                                                       aria-label="Stock disponible"
+                                                                    >
+                                                                        En stock
+                                                                    </p>
+                                                                </>
+                                                            ) : (
+                                                                <p className="text-red-500 font-bold"
+                                                                   aria-label="Rupture de stock"
+                                                                >
+                                                                    Rupture de stock
+                                                                </p>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
 
-                                        {promotion ? (
-                                            <div className="flex flex-col mb-2">
+                                            {promotion ? (
+                                                <div className="flex flex-col mb-2">
                                                 <span className="text-gray-500 line-through text-lg">
                                                     ${filteredModel?.price?.toFixed(2) || "N/A"}
                                                 </span>
-                                                <span className="text-red-600 text-xl font-bold">
-                                                    ${promotion.promo_price}
-                                                </span>
-                                                <p className="text-sm text-red-600 font-bold">
-                                                    Promotion du {promotion.start_date} au {promotion.end_date}
+                                                    <span className="text-red-600 text-xl font-bold">${promotion.promo_price}</span>
+                                                    <p className="text-sm text-red-600 font-bold">
+                                                        Promotion du {promotion.start_date} au {promotion.end_date}
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <p className="text-xl font-bold">
+                                                    ${filteredModel?.price?.toFixed(2) || "Non disponible"}
                                                 </p>
-                                            </div>
-                                        ) : (
-                                            <p className="text-xl font-bold">
-                                                ${filteredModel?.price?.toFixed(2) || "Non disponible"}
-                                            </p>
-                                        )}
-                                    </div>
+                                            )}
+                                        </div>
 
-                                    <button
-                                        className={`mt-4 py-2 px-4 rounded w-full flex items-center justify-center ${
-                                            filteredModel?.stock > 0
-                                                ? "bg-green-500 text-white hover:bg-green-700"
-                                                : "bg-gray-400 text-gray-700 cursor-not-allowed"
-                                        }`}
-                                        onClick={() => handleAddToCart(product)}
-                                        disabled={filteredModel?.stock <= 0}
-                                        aria-label={`Ajouter ${product.name} au panier`}
-                                    >
-                                        <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
-                                        Ajouter au panier
-                                    </button>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <p className="text-center" aria-label="Aucun produit trouvé">
-                            Aucun produit trouvé
-                        </p>
-                    )}
+                                        <button
+                                            className={`mt-4 py-2 px-4 rounded w-full flex items-center justify-center ${
+                                                filteredModel?.stock > 0
+                                                    ? "bg-green-500 text-white hover:bg-green-700"
+                                                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                            }`}
+                                            onClick={() => handleAddToCart(product)}
+                                            disabled={filteredModel?.stock <= 0}
+                                            aria-label={`Ajouter ${product.name} au panier`}
+                                        >
+                                            <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                );
+
+                            })
+                        ) : (
+                            <p className="text-center" aria-label="Aucun produit trouvé">
+                                Aucun produit trouvé
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
-}
+    );
+};
 
 export default ProductList;

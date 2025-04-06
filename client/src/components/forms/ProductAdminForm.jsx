@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../styles/ProductForm.css";
+import { useTheme } from "../../context/ThemeContext";
+
 
 const ProductAdminForm = () => {
     const [categories, setCategories] = useState([]);
@@ -24,6 +26,16 @@ const ProductAdminForm = () => {
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+
+
+    const {isDark} = useTheme();
+
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const inputBg = isDark ? "bg-slate-700" : "bg-gray-100";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-200";
+    const buttonBg = isDark ? "bg-blue-700 hover:bg-blue-600" : "bg-blue-700 hover:bg-blue-600";
+    const buttonTextColor = isDark ? "text-white" : "text-white";
 
     useEffect(() => {
         axios.get("http://localhost:8000/api/admin/categories")
@@ -146,8 +158,8 @@ const ProductAdminForm = () => {
     return (
         <div className="w-full">
             <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-                <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                    <p className="text-3xl font-bold leading-7 text-center text-black">
+                <div className={`w-full shadow rounded p-8 sm:p-12 ${cardBg}`}>
+                    <p className={`text-3xl font-bold leading-7 text-center ${textColor}`}>
                         Créer un produit
                     </p>
                     {message && <p className="success">{message}</p>}
@@ -155,7 +167,7 @@ const ProductAdminForm = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="md:flex items-center mt-12">
                             <div className="w-full md:w-1/2 flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="name">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="name">
                                     Nom
                                 </label>
                                 <input
@@ -166,11 +178,11 @@ const ProductAdminForm = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 />
                             </div>
                             <div className="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
-                                <label className="font-semibold leading-none text-black" htmlFor="category">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="category">
                                     Catégorie
                                 </label>
                                 <select
@@ -179,7 +191,7 @@ const ProductAdminForm = () => {
                                     value={category}
                                     onChange={handleCategoryChange}
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 >
                                     <option value="" className="text-gray-500">
                                         Sélectionnez une catégorie
@@ -194,7 +206,7 @@ const ProductAdminForm = () => {
                         </div>
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="description">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="description">
                                     Description
                                 </label>
                                 <textarea
@@ -204,7 +216,7 @@ const ProductAdminForm = () => {
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                     rows="5"
                                 />
                             </div>
@@ -212,7 +224,7 @@ const ProductAdminForm = () => {
                         {category === "1" && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
-                                    <label className="font-semibold leading-none text-black" htmlFor="brand">
+                                    <label className={`font-semibold leading-none ${textColor}`} htmlFor="brand">
                                         Marque
                                     </label>
                                     <input
@@ -222,14 +234,14 @@ const ProductAdminForm = () => {
                                         placeholder="Entrez le nom de la marque"
                                         value={brand}
                                         onChange={(e) => setBrand(e.target.value)}
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                     />
                                 </div>
                             </div>
                         )}
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="tags">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="tags">
                                     Tags
                                 </label>
                                 <div className="flex">
@@ -240,7 +252,7 @@ const ProductAdminForm = () => {
                                         placeholder="Entrez un tag"
                                         value={tagInput}
                                         onChange={handleTagInputChange}
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200 flex-grow"
+                                        className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded flex-grow`}
                                     />
                                     <button
                                         type="button"
@@ -271,7 +283,7 @@ const ProductAdminForm = () => {
                         {shouldDisplayColor(category) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
-                                    <label className="font-semibold leading-none text-black" htmlFor="color">
+                                    <label className={`font-semibold leading-none ${textColor}`} htmlFor="color">
                                         Couleur
                                     </label>
                                     <select
@@ -279,7 +291,7 @@ const ProductAdminForm = () => {
                                         aria-label="Sélectionner une couleur"
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                     >
                                         <option value="" className="text-gray-500">
                                             Sélectionnez une couleur
@@ -296,7 +308,7 @@ const ProductAdminForm = () => {
                         {shouldDisplaySize(category) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
-                                    <label className="font-semibold leading-none text-black" htmlFor="size">
+                                    <label className={`font-semibold leading-none ${textColor}`} htmlFor="size">
                                         Taille
                                     </label>
                                     <select
@@ -304,7 +316,7 @@ const ProductAdminForm = () => {
                                         aria-label="Sélectionner une taille"
                                         value={size}
                                         onChange={(e) => setSize(e.target.value)}
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                     >
                                         <option value="" className="text-gray-500">
                                             Sélectionnez une taille
@@ -320,7 +332,7 @@ const ProductAdminForm = () => {
                         )}
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="weight">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="weight">
                                     Poids (Kg)
                                 </label>
                                 <input
@@ -333,13 +345,13 @@ const ProductAdminForm = () => {
                                     onChange={(e) => setWeight(e.target.value)}
                                     min="0"
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 />
                             </div>
                         </div>
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="price">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="price">
                                     Prix
                                 </label>
                                 <input
@@ -350,13 +362,13 @@ const ProductAdminForm = () => {
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 />
                             </div>
                         </div>
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="stock">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="stock">
                                     Stock
                                 </label>
                                 <input
@@ -368,13 +380,13 @@ const ProductAdminForm = () => {
                                     onChange={(e) => setStock(e.target.value)}
                                     min="0"
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 />
                             </div>
                         </div>
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="photos">
+                                <label className={`font-semibold leading-none ${textColor}`} htmlFor="photos">
                                     Photos
                                 </label>
                                 <input
@@ -383,7 +395,7 @@ const ProductAdminForm = () => {
                                     aria-label="Téléverser des images du produit"
                                     multiple
                                     onChange={handlePhotoChange}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 ${inputBg} ${borderColor} border rounded`}
                                 />
                                 <div className="flex flex-col mt-4">
                                     {photoFiles.map((file, index) => (
@@ -419,6 +431,6 @@ const ProductAdminForm = () => {
             </div>
         </div>
     );
-}    
+};
 
 export default ProductAdminForm;

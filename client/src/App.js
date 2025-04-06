@@ -8,6 +8,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { SearchProvider } from './context/SearchContext';
 import { CartProvider } from './context/CartContext';
 import bgAuth from "./assets/bg-auth.webp";
+import bgAuthDark from "./assets/bg-auth-dark.webp";
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 
 
@@ -33,27 +35,32 @@ const PaymentPage = lazy(() => import('./components/pages/Checkout/PaymentPage')
 
 const App = () => (
     <Router>
-        <SearchProvider>
-        <CartProvider>
-        <BackgroundWrapper>
-            <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <div className="flex-grow">
-                    <Content />
-                </div>
-                <Footer />
-            </div>
-        </BackgroundWrapper>
-        </CartProvider>
-        </SearchProvider>
+        <ThemeProvider>
+            <SearchProvider>
+                <CartProvider>
+                    <BackgroundWrapper>
+                        <div className="flex flex-col min-h-screen">
+                            <Navbar />
+                            <div className="flex-grow">
+                                <Content />
+                            </div>
+                            <Footer />
+                        </div>
+                    </BackgroundWrapper>
+                </CartProvider>
+            </SearchProvider>
+        </ThemeProvider>
     </Router>
-    
+
 );
 
 const BackgroundWrapper = ({ children }) => {
     const location = useLocation();
     const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
-    const backgroundImage = isAuthRoute ? bgAuth : bgAuth;
+    const { isDark } = useTheme();
+
+    const backgroundImage = isAuthRoute ? (isDark ? bgAuthDark : bgAuth) : (isDark ? bgAuthDark : bgAuth);
+
 
     return (
         <div

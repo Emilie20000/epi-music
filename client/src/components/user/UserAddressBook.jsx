@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddressCard from "../cards/AddressCard";
+import { useTheme } from "../../context/ThemeContext";
 
 const UserAddressBook = () => {
     const [addresses, setAddresses] = useState([]);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { isDark } = useTheme();
+
+    const textColor = isDark ? "text-slate-200" : "text-black";
 
     useEffect(() => {
         const fetchAddresses = async () => {
@@ -63,7 +67,7 @@ const UserAddressBook = () => {
     return (
         <div className="w-full" aria-label="Carnet d'adresses">
             <div className="flex flex-col items-center mb-4">
-                <h2 className="text-xl font-bold mb-4">Carnet d'Adresses</h2>
+                <h2 className={`text-xl font-bold mb-4 ${textColor}`}>Carnet d'Adresses</h2>
                 <button
                     onClick={handleAddAddress}
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
@@ -89,11 +93,12 @@ const UserAddressBook = () => {
                         />
                     ))
                 ) : (
-                    <p>Aucune adresse enregistrée.</p>
+                    <p className={`text-center ${textColor}`}>Aucune adresse enregistrée.</p>
                 )}
             </div>
         </div>
     );
 };
+
 
 export default UserAddressBook;

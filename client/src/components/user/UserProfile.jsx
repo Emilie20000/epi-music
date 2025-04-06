@@ -7,10 +7,14 @@ import UserOrdersList from "./UserOrdersList";
 import UserAddressBook from "./UserAddressBook";
 import AddressForm from "../forms/AddressForm";
 import AddressEditForm from "../forms/AddressEditForm";
+import { useTheme } from "../../context/ThemeContext";
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const { isDark } = useTheme();
+
+    const textColor = isDark ? "text-slate-200" : "text-black";
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("user"));
@@ -18,6 +22,7 @@ const UserProfile = () => {
             setUser(userData);
         }
     }, []);
+
 
     const handleLogout = () => {
         localStorage.removeItem("user");
@@ -32,9 +37,7 @@ const UserProfile = () => {
 
     return (
         <div className="flex flex-col items-center p-6" aria-label="Page de profil utilisateur">
-            <h1 className="text-2xl font-bold mb-6 text-center" role="heading" aria-level="1">
-                Profil Utilisateur
-            </h1>
+            <h1 className={`text-2xl font-bold mb-6 text-center ${textColor}`}  role="heading" aria-level="1">Profil Utilisateur</h1>
             <UserTabs aria-label="Onglets du profil utilisateur" />
             <Routes>
                 <Route

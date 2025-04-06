@@ -4,9 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavbarItem from "./NavbarItem";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.webp";
+import logoDark from "../../assets/logo-dark.webp";
 import { FaUserTie, FaUser, FaShoppingCart, FaGamepad } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import { useCart } from "../../context/CartContext";
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +17,7 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const { isDark } = useTheme();
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("cart_price");
@@ -39,25 +43,27 @@ const Navbar = () => {
         }
     }, []);
 
+    const textColor = isDark ? "text-white" : "text-black";
+
     return (
-        <nav
-            className={`top-0 z-50 w-full flex items-center justify-between flex-wrap ${
-                isAuthRoute ? "bg-transparent" : "bg-transparent"
-            } py-2 px-4 lg:px-16 xl:px-48`}
-            role="navigation"
-        >
+        <nav className="top-0 z-50 w-full flex items-center justify-between flex-wrap bg-white/80 lg:bg-transparent py-2 px-4 lg:px-16 xl:px-48"  role="navigation">
             <div className="flex items-center flex-shrink-0 text-black mr-6">
                 <Link to="/" aria-label="Accueil">
-                    <img src={logo} alt="Logo du site" className="w-16 h-16 mr-2" />
+                    <img
+                        src={ isDark ? logoDark : logo }
+                        alt="Logo du site"
+                        className="w-16 h-16 mr-2"
+                    />
                 </Link>
             </div>
             {userRole === "ROLE_USER" && (
                 <div className="pt-2 ml-4 pl-4">
-                    <NavbarItem 
-                        icon={<FaGamepad size={24} />} 
-                        text="Jouer au jeu de rythme" 
-                        href="/rhythm-game" 
+                    <NavbarItem
+                        icon={<FaGamepad size={24} />}
+                        text="Jouer au jeu de rythme"
+                        href="/rhythm-game"
                         aria-label="Accéder au jeu de rythme"
+                        textColor={textColor}
                     />
                 </div>
             )}
@@ -125,22 +131,24 @@ const Navbar = () => {
                                 <SearchBar />
                                 {!isLoggedIn && (
                                     <>
-                                        <NavbarItem text="Se connecter" href="/login" />
-                                        <NavbarItem text="S'inscrire" href="/register" />
+                                        <NavbarItem text="Se connecter" href="/login" textColor={textColor} />
+                                        <NavbarItem text="S'inscrire" href="/register" textColor={textColor} />
                                     </>
                                 )}
-                                <NavbarItem text="Produits" href="/products" />
+                                <NavbarItem text="Produits" href="/products" textColor={textColor} />
                                 {userRole === "ROLE_ADMIN" && (
                                     <NavbarItem
                                         icon={<FaUserTie size={24} />}
                                         href="/admin/user-card"
                                         text="Panel Admin"
+                                        textColor={textColor}
                                     />
                                 )}
                                 {userRole === "ROLE_USER" && (
                                     <NavbarItem
                                         icon={<FaUser size={24} />}
                                         href="/profile/user-card"
+                                        textColor={textColor}
                                     />
                                 )}
                                 <div className="relative">
@@ -148,6 +156,7 @@ const Navbar = () => {
                                         icon={<FaShoppingCart size={24} />}
                                         href="/cart"
                                         text="Panier"
+                                        textColor={textColor}
                                     />
                                     {itemCount > 0 && (
                                         <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full">
@@ -160,6 +169,7 @@ const Navbar = () => {
                                         icon={<IoLogInOutline size={24} />}
                                         onClick={handleLogout}
                                         text="Déconnexion"
+                                        textColor={textColor}
                                     />
                                 )}
                             </motion.div>
@@ -174,46 +184,59 @@ const Navbar = () => {
             >
                 <div className="flex flex-col pt-3 lg:flex-row lg:items-center justify-center lg:space-x-8 lg:text-left lg:flex-grow lg:mt-0 space-y-4 lg:space-y-0">
                     <SearchBar />
-                    <div className="pt-2">
-                        <NavbarItem text="Produits" href="/products" aria-label="Accéder aux produits" />
-                    </div>
+                    {!isLoggedIn && (
+                        <>
+                            <NavbarItem text="Se connecter" href="/login" textColor={textColor} aria-label="Se connecter"/>
+                            <NavbarItem text="S'inscrire" href="/register" textColor={textColor} />
+                        </>
+                    )}
+                    <NavbarItem text="Produits" href="/products" textColor={textColor}  aria-label="Accéder aux produits" />
                     {userRole === "ROLE_ADMIN" && (
-                        <NavbarItem 
-                            icon={<FaUserTie size={24}/>} 
-                            href="/admin/user-card" 
+                        <NavbarItem
+                            icon={<FaUserTie size={24} />}
+                            href="/admin/user-card"
+                            text="Panel Admin"
                             aria-label="Accéder à l'administration des utilisateurs"
+                            textColor={textColor}
+
+
                         />
                     )}
                     {userRole === "ROLE_USER" && (
-                        <NavbarItem 
-                            icon={<FaUser size={24} />} 
-                            href="/profile/user-card" 
-                            aria-label="Accéder au profil utilisateur"
+                        <NavbarItem
+                            icon={<FaUser size={24} />}
+                            href="/profile/user-card"
+                            textColor={textColor}
+
                         />
                     )}
                     <div className="relative">
-                        <NavbarItem 
-                            icon={<FaShoppingCart size={24} />} 
-                            href="/cart" 
+                        <NavbarItem
+                            icon={<FaShoppingCart size={24} />}
+                            href="/cart"
+                            text="Panier"
                             aria-label={`Panier, ${itemCount} article${itemCount > 1 ? "s" : ""}`}
+                            textColor={textColor}
                         />
                         {itemCount > 0 && (
-                            <span 
-                                className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full"
-                                aria-hidden="true"
+                            <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 px-2 py-1 text-xs font-bold text-white bg-green-500 rounded-full"
+                                  aria-hidden="true"
                             >
                                 {itemCount}
                             </span>
                         )}
                     </div>
-                    {!isLoggedIn && (
-                        <NavbarItem 
-                            icon={<IoLogInOutline size={24} />} 
-                            href="/login" 
-                            aria-label="Se connecter"
-
+                    {isLoggedIn && (
+                        <NavbarItem
+                            icon={<IoLogInOutline size={24} />}
+                            onClick={handleLogout}
+                            text="Déconnexion"
+                            textColor={textColor}
                         />
                     )}
+                    <div className="pt-2">
+                        <ThemeSwitcher />
+                    </div>
                 </div>
             </div>
         </nav>

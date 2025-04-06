@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductFilter = ({
     categories,
@@ -28,6 +29,12 @@ const ProductFilter = ({
     const [isWeightOpen, setIsWeightOpen] = useState(true);
 
     const { category } = useParams();
+
+    const { isDark } = useTheme();
+    const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+    const textColor = isDark ? "text-slate-200" : "text-gray-700";
+    const borderColor = isDark ?  "border-slate-600" : "border-gray-100";
+    const subTextColor = isDark ?  "text-slate-300" : "text-gray-600";
 
     const handleCategoryChange = (category) => {
         const updatedCategories = selectedCategories.includes(category)
@@ -131,14 +138,14 @@ const ProductFilter = ({
 
     return (
         <div role="region" aria-label="Filtrer les produits">
-            <h3 className="text-2xl font-semibold mb-2 text-gray-800 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <h3 className={`text-2xl font-semibold mb-2 ${textColor} border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                 Filtrer les produits
             </h3>
 
             {categories.length > 0 && category === undefined && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor}  cursor-pointer flex justify-between items-center"`}
                         onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
                         aria-label="Filtrer par catégories"
                     >
@@ -186,7 +193,7 @@ const ProductFilter = ({
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                         aria-label={`Filtrer par catégorie ${category}`}
                                     />
-                                    <p className="text-gray-600">{category}</p>
+                                    <p className={`${subTextColor}`}>{category}</p>
                                 </div>
                             ))}
                         </div>
@@ -195,9 +202,9 @@ const ProductFilter = ({
             )}
 
             {brands.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par marques">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}  role="region" aria-label="Filtrer par marques">
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsBrandsOpen(!isBrandsOpen)}
                         aria-label="Filtrer par marques"
                     >
@@ -245,7 +252,7 @@ const ProductFilter = ({
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                         aria-label={`Filtrer par marque ${brand}`}
                                     />
-                                    <p className="text-gray-600">{brand}</p>
+                                    <p className={`${subTextColor}`}>{brand}</p>
                                 </div>
                             ))}
                         </div>
@@ -254,42 +261,42 @@ const ProductFilter = ({
             )}
 
             {colors.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par couleurs">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}  role="region" aria-label="Filtrer par couleurs">
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsColorsOpen(!isColorsOpen)}
                         aria-label="Filtrer par couleurs"
                     >
                         Couleurs
                         <span aria-hidden="true">
-                            {isColorsOpen ? (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            )}
-                        </span>
+                {isColorsOpen ? (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="w-5 h-5"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                ) : (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="w-5 h-5"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                )}
+            </span>
                     </h4>
                     {isColorsOpen && (
                         <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de couleurs">
@@ -298,13 +305,13 @@ const ProductFilter = ({
                                     <input
                                         type="checkbox"
                                         value={color}
-                                        onChange={() =>
-                                            handleColorChange(color)
-                                        }
-                                        className="mr-2 text-red-600 focus:ring-red-500"
+                                        onChange={() => handleColorChange(color)}
+                                        className={`mr-2 text-red-600 focus:ring-red-500 border ${subTextColor}`}
                                         aria-label={`Filtrer par couleur ${color}`}
                                     />
-                                    <p className="text-gray-600">{color}</p>
+                                    <p
+                                        className={`${subTextColor}`}>{color}
+                                    </p>
                                 </div>
                             ))}
                         </div>
@@ -313,9 +320,9 @@ const ProductFilter = ({
             )}
 
             {sizes.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par tailles">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`} role="region" aria-label="Filtrer par tailles">
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text - lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsSizesOpen(!isSizesOpen)}
                         aria-label="Filtrer par tailles"
                     >
@@ -361,7 +368,7 @@ const ProductFilter = ({
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                         aria-label={`Filtrer par taille ${size}`}
                                     />
-                                    <p className="text-gray-600">{size}</p>
+                                    <p className={`${subTextColor}`}>{size}</p>
                                 </div>
                             ))}
                         </div>
@@ -369,42 +376,42 @@ const ProductFilter = ({
                 </div>
             )}
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par prix">
+            <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}  role="region" aria-label="Filtrer par prix">
                 <h4
-                    className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                    className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                     onClick={() => setIsPriceOpen(!isPriceOpen)}
                     aria-label="Afficher ou masquer le filtre de prix"
                 >
                     Prix
-                    <span aria-hidden="true">
-                        {isPriceOpen ? (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ) : (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        )}
-                    </span>
+                    <span  aria-hidden="true">
+            {isPriceOpen ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            )}
+        </span>
                 </h4>
                 {isPriceOpen && (
                     <div className="flex flex-col mt-2" role="group" aria-label="Options de prix">
@@ -444,14 +451,14 @@ const ProductFilter = ({
                                 />
                             ) : (
                                 <span
-                                    className="ml-4 text-gray-600 cursor-pointer"
+                                    className={`ml-4 ${subTextColor} cursor-pointer`}
                                     onClick={() => setIsEditingMin(true)}
                                     aria-label="Modifier le prix minimum"
                                 >
-                                    {priceRange[0]} €
-                                </span>
+                        {priceRange[0]} €
+                    </span>
                             )}
-                            <span className="mx-2 text-gray-600" aria-hidden="true">-</span>
+                            <span className={`mx-2 ${subTextColor}`} aria-hidden="true">-</span>
                             {isEditingMax ? (
                                 <input
                                     type="number"
@@ -474,69 +481,71 @@ const ProductFilter = ({
                                 />
                             ) : (
                                 <span
-                                    className="text-gray-600 cursor-pointer"
+                                    className={`ml-4 ${subTextColor} cursor-pointer`}
                                     onClick={() => setIsEditingMax(true)}
                                     aria-label="Modifier le prix maximum"
                                 >
-                                    {priceRange[1]} €
-                                </span>
+                        {priceRange[1]} €
+                    </span>
                             )}
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4" role="region" aria-label="Filtrer par poids">
+            <div className={`mb - 2 border  ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}  role="region" aria-label="Filtrer par poids">
                 <h4
-                    className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                    className={`text-lg font-medium ${subTextColor} cursor-pointer flex justify-between items-center`}
                     onClick={() => setIsWeightOpen(!isWeightOpen)}
                     aria-label="Afficher ou masquer le filtre de poids"
                 >
                     Poids
                     <span aria-hidden="true">
-                        {isWeightOpen ? (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ) : (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        )}
-                    </span>
+            {isWeightOpen ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            )}
+        </span>
                 </h4>
-                {isSizesOpen && (
-                    <div className="grid grid-cols-2 gap-2 mt-2" role="group" aria-label="Options de tailles">
-                        {sizes.map((size, index) => (
-                            <div key={index} className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    value={size}
-                                    onChange={() => handleSizeSelect(size)}
-                                    className="mr-2 text-red-600 focus:ring-red-500"
-                                    aria-label={`Filtrer par taille ${size}`}
-                                />
-                                <p className="text-gray-600">{size}</p>
-                            </div>
-                        ))}
+                {isWeightOpen && (
+                    <div className="flex items-center mt-2" role="group" aria-label="Options de tailles">
+                        <input
+                            type="range"
+                            min="0"
+                            max={maxWeight}
+                            value={weightRange[1]}
+                            onChange={(e) =>
+                                handleWeightRangeChange([0, e.target.value])
+                            }
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            aria-label={`Filtrer par taille ${size}`}
+                        />
+                        <span className={`ml-4 ${subTextColor}`}>
+                {weightRange[0]} - {weightRange[1]} kg
+            </span>
                     </div>
                 )}
             </div>

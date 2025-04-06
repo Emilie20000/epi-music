@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Alert from "../Alerts/Alert";
 import ProductAdminUpdateModel from "./ProductAdminUpdateModel";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
+
 
 const ProductAdminAddModel = () => {
     const { id: productId, category } = useParams();
@@ -21,6 +23,14 @@ const ProductAdminAddModel = () => {
     const [showModal, setShowModal] = useState(false);
     const [existingModelId, setExistingModelId] = useState(null);
     const [modalMessage, setModalMessage] = useState("");
+
+    const { isDark } = useTheme();
+
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const inputBg = isDark ? "bg-slate-700" : "bg-gray-100";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-200";
+
 
     const getCategoryId = async (category) => {
         try {
@@ -183,14 +193,17 @@ const ProductAdminAddModel = () => {
     return (
         <div className="w-full" aria-label="Section d'ajout de modèle de produit">
             <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-                <div className="bg-white w-full shadow rounded p-8 sm:p-12">
+                <div className={`${cardBg} w-full shadow rounded p-8 sm:p-12`}>
                     <Alert type={alert.type} message={alert.message} />
                     <form onSubmit={handleSubmit} aria-label="Formulaire de création de modèle">
+                        <h2 className={`${textColor} text-2xl font-bold mt-4 text-center`}>
+                            Ajouter un nouveau modèle
+                        </h2>
                         {shouldDisplayColor(categoryId) && (
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
                                     <label
-                                        className="font-semibold leading-none text-black"
+                                        className={`font-semibold leading-none ${textColor}`}
                                         htmlFor="color"
                                     >
                                         Couleur
@@ -198,15 +211,12 @@ const ProductAdminAddModel = () => {
                                     <select
                                         id="color"
                                         value={color}
-                                        onChange={(e) =>
-                                            setColor(e.target.value)
-                                        }
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        onChange={(e) => setColor(e.target.value)}
+                                        className={`${inputBg} leading-none ${textColor} p-3 focus:outline-none focus:border-blue-700 mt-4 ${borderColor} border rounded`}
                                         aria-label="Sélectionner une couleur"
+
                                     >
-                                        <option value="">
-                                            Sélectionnez une couleur
-                                        </option>
+                                        <option value="">Sélectionnez une couleur</option>
                                         {colors.map((c) => (
                                             <option key={c.id} value={c.id}>
                                                 {c.name}
@@ -220,7 +230,7 @@ const ProductAdminAddModel = () => {
                             <div className="md:flex items-center mt-8">
                                 <div className="w-full flex flex-col">
                                     <label
-                                        className="font-semibold leading-none text-black"
+                                        className={`font-semibold leading-none ${textColor}`}
                                         htmlFor="size"
                                     >
                                         Taille
@@ -228,15 +238,12 @@ const ProductAdminAddModel = () => {
                                     <select
                                         id="size"
                                         value={size}
-                                        onChange={(e) =>
-                                            setSize(e.target.value)
-                                        }
-                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                        onChange={(e) => setSize(e.target.value)}
+                                        className={`${inputBg} leading-none ${textColor} p-3 focus:outline-none focus:border-blue-700 mt-4 ${borderColor} border rounded`}
                                         aria-label="Sélectionner une taille"
+
                                     >
-                                        <option value="">
-                                            Sélectionnez une taille
-                                        </option>
+                                        <option value="">Sélectionnez une taille</option>
                                         {sizes.map((s) => (
                                             <option key={s.id} value={s.id}>
                                                 {s.value} {s.unit}
@@ -249,7 +256,7 @@ const ProductAdminAddModel = () => {
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
                                 <label
-                                    className="font-semibold leading-none text-black"
+                                    className={`font-semibold leading-none ${textColor}`}
                                     htmlFor="price"
                                 >
                                     Prix
@@ -261,7 +268,7 @@ const ProductAdminAddModel = () => {
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`${inputBg} leading-none ${textColor} p-3 focus:outline-none focus:border-blue-700 mt-4 ${borderColor} border rounded`}
                                     aria-label="Entrez le prix du produit"
                                 />
                             </div>
@@ -269,7 +276,7 @@ const ProductAdminAddModel = () => {
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
                                 <label
-                                    className="font-semibold leading-none text-black"
+                                    className={`font-semibold leading-none ${textColor}`}
                                     htmlFor="stock"
                                 >
                                     Stock
@@ -282,7 +289,7 @@ const ProductAdminAddModel = () => {
                                     onChange={(e) => setStock(e.target.value)}
                                     min="0"
                                     required
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`${inputBg} leading-none ${textColor} p-3 focus:outline-none focus:border-blue-700 mt-4 ${borderColor} border rounded`}
                                     aria-label="Entrez le stock du produit"
                                 />
                             </div>
@@ -290,7 +297,7 @@ const ProductAdminAddModel = () => {
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
                                 <label
-                                    className="font-semibold leading-none text-black"
+                                    className={`font-semibold leading-none ${textColor}`}
                                     htmlFor="photos"
                                 >
                                     Photos
@@ -300,15 +307,12 @@ const ProductAdminAddModel = () => {
                                     id="photos"
                                     multiple
                                     onChange={handlePhotoChange}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    className={`${inputBg} leading-none ${textColor} p-3 focus:outline-none focus:border-blue-700 mt-4 ${borderColor} border rounded`}
                                     aria-label="Sélectionner des photos"
                                 />
                                 <div className="flex flex-col mt-4" aria-label="Liste des photos sélectionnées">
                                     {photoFiles.map((file, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center mt-2"
-                                        >
+                                        <div key={index} className="flex items-center mt-2">
                                             <p className="mr-4">{file.name}</p>
                                             <button
                                                 type="button"

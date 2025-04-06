@@ -1,22 +1,30 @@
 import React from "react";
 import { FaMapMarkerAlt, FaTrash, FaEdit, FaStar } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 const AddressCard = ({ address, onDelete, onEdit, onSetPrimary }) => {
+    const { isDark } = useTheme();
+
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const iconColor = isDark ? "text-gray-300" : "text-gray-500";
+
+
     return (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center">
+        <div className={`${cardBg} shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center`}>
             <div className="mb-4">
-                <FaMapMarkerAlt size={40} className="text-gray-500" aria-hidden="true" />
+                <FaMapMarkerAlt size={40} className={`${iconColor}`} aria-hidden="true"/>
             </div>
-            <h2 className="text-xl font-bold mb-4">Adresse</h2>
-            <p className="text-center"><strong>Nom :</strong> {address.name}</p>
-            <p className="text-center"><strong>Téléphone :</strong> {address.telephone}</p>
-            <p className="text-center"><strong>Adresse :</strong> {address.address}</p>
+            <h2 className={`text-xl font-bold mb-4 ${textColor}`}>Adresse</h2>
+            <p className={`text-center ${textColor}`}><strong>Nom :</strong> {address.name}</p>
+            <p className={`text-center ${textColor}`}><strong>Téléphone :</strong> {address.telephone}</p>
+            <p className={`text-center ${textColor}`}><strong>Adresse :</strong> {address.address}</p>
             {address.complement && (
-                <p className="text-center"><strong>Complément :</strong> {address.complement}</p>
+                <p className={`text-center ${textColor}`}><strong>Complément :</strong> {address.complement}</p>
             )}
-            <p className="text-center"><strong>Code Postal :</strong> {address.postalCode}</p>
-            <p className="text-center"><strong>Ville :</strong> {address.city}</p>
-            <p className="text-center"><strong>Pays :</strong> {address.country}</p>
+            <p className={`text-center ${textColor}`}><strong>Code Postal :</strong> {address.postalCode}</p>
+            <p className={`text-center ${textColor}`}><strong>Ville :</strong> {address.city}</p>
+            <p className={`text-center ${textColor}`}><strong>Pays :</strong> {address.country}</p>
             <div className="flex mt-4 space-x-2">
                 <button
                     onClick={() => onEdit(address.id)}

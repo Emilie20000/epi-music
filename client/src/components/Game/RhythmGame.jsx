@@ -4,6 +4,7 @@ import arrowUp from '../../assets/Game/arrow-up.webp';
 import arrowDown from '../../assets/Game/arrow-down.webp';
 import arrowLeft from '../../assets/Game/arrow-left.webp';
 import arrowRight from '../../assets/Game/arrow-right.webp';
+import { useTheme } from "../../context/ThemeContext";
 
 const RhythmGame = () => {
     const [sequence, setSequence] = useState([]);
@@ -24,6 +25,9 @@ const RhythmGame = () => {
     const intervalRef = useRef(null);
 
     const playerName = "Joueur 1";
+
+    const { isDark } = useTheme();
+    const textColor = isDark ? "text-white" : "text-black";
 
     useEffect(() => {
         fetch('http://localhost:8000/api/random-track')
@@ -219,7 +223,7 @@ const RhythmGame = () => {
 
     return (
         <div className="game-container" role="main" aria-label="Jeu de rythme">
-            <h1 className="text-2xl font-bold mb-4" aria-label="Titre du jeu">EpiGame</h1>
+            <h1 className={`text-3xl md:text-5xl ${textColor}`} aria-label="Titre du jeu">EpiGame</h1>
             {!isGameStarted && (
                 <button onClick={startGameAndMusic} className="start-button" aria-label="Démarrer le jeu">
                     Jouez
