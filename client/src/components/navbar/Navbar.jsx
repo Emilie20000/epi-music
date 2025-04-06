@@ -172,6 +172,9 @@ const Navbar = () => {
                                         textColor={textColor}
                                     />
                                 )}
+                                <div className="flex justify-center items-center mb-4">
+                                    <ThemeSwitcher />
+                                </div>
                             </motion.div>
                         </motion.div>
                     </>
