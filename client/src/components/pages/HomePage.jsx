@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ProductList.css";
 import HomeCarousel from "../carousel/HomeCarousel";
@@ -53,12 +54,12 @@ const HomePage = () => {
         <Helmet>
             <title>Accueil | Epimusic</title>
         </Helmet>
-        <div>
+        <div aria-label="Page d'accueil">
             {message && <p className="success">{message}</p>}
             {error && <p className="error">{error}</p>}
-            <HomeCarousel images={imagesToDisplay}/>
+            <HomeCarousel images={imagesToDisplay} />
             <div className="flex flex-wrap justify-center">
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500" aria-label="Message d'erreur">{error}</p>}
             </div>
         </div>
         </>

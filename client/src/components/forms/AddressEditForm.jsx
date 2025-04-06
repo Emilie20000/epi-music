@@ -88,12 +88,12 @@ const EditAddressForm = () => {
         <div className="w-full">
             <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
                 <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                    <p className="text-3xl font-bold leading-7 text-center text-black">
+                    <p className="text-3xl font-bold leading-7 text-center text-black" aria-label="Titre du formulaire de modification d'adresse">
                         Modifier l'adresse
                     </p>
-                    {message && <p className="success">{message}</p>}
-                    {error && <p className="error">{error}</p>}
-                    <form onSubmit={handleSubmit}>
+                    {message && <p className="success" role="alert">{message}</p>}
+                    {error && <p className="error" role="alert">{error}</p>}
+                    <form onSubmit={handleSubmit} aria-label="Formulaire de modification d'adresse">
                         <div className="md:flex items-center mt-12">
                             <div className="w-full flex flex-col">
                                 <label className="font-semibold leading-none text-black" htmlFor="name">
@@ -107,6 +107,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Nom"
                                 />
                             </div>
                         </div>
@@ -123,6 +124,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setTelephone(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Téléphone"
                                 />
                             </div>
                         </div>
@@ -139,6 +141,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setAddress(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Adresse"
                                 />
                             </div>
                         </div>
@@ -154,6 +157,7 @@ const EditAddressForm = () => {
                                     value={complement}
                                     onChange={(e) => setComplement(e.target.value)}
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Complément d'adresse"
                                 />
                             </div>
                         </div>
@@ -170,6 +174,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setPostalCode(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Code Postal"
                                 />
                             </div>
                             <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
@@ -184,6 +189,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setCity(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Ville"
                                 />
                             </div>
                         </div>
@@ -200,6 +206,7 @@ const EditAddressForm = () => {
                                     onChange={(e) => setCountry(e.target.value)}
                                     required
                                     className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    aria-label="Pays"
                                 />
                             </div>
                         </div>
@@ -214,6 +221,7 @@ const EditAddressForm = () => {
                                     checked={isPrimary}
                                     onChange={(e) => setIsPrimary(e.target.checked)}
                                     className="mt-4"
+                                    aria-label="Adresse principale"
                                 />
                             </div>
                         </div>
@@ -224,6 +232,7 @@ const EditAddressForm = () => {
                                 className={`font-semibold leading-none text-white py-4 px-10 rounded focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none ${
                                     isSubmitting ? 'bg-gray-400' : 'bg-blue-700 hover:bg-blue-600'
                                 }`}
+                                aria-label="Modifier l'adresse"
                             >
                                 Modifier l'adresse
                             </button>

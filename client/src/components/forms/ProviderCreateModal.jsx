@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Alert from '../Alerts/Alert';
+import { useTheme } from "../../context/ThemeContext";
 
 const ProviderCreateModal = ({ isOpen, onClose }) => {
     const [alert, setAlert] = useState({ type: '', message: '' });
@@ -12,7 +13,12 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
         price: '',
         MaxWeight: ''
     });
-    
+
+    const { isDark } = useTheme();
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-300";
+
     if (!isOpen) return null;
 
     const handleChange = (e) => {
@@ -33,7 +39,6 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
-                
             });
 
             if (!response.ok) {
@@ -53,7 +58,7 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                 price: '',
                 MaxWeight: ''
             });
-            
+
             setTimeout(() => {
                 onClose();
                 window.location.reload();
@@ -61,17 +66,17 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
         } catch (error) {
             setAlert({ type: 'error', message: 'Erreur lors de l\'enregistrement du nouveau prestataire' });
         }
-    }
+    };
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
-            <div className="bg-white p-6 rounded-lg z-10 w-full max-w-lg">
-                <h2 className="text-xl font-bold mb-4">Ajouter un Prestataire</h2>
+            <div className={`p-6 rounded-lg z-10 w-full max-w-lg ${cardBg}`}>
+                <h2 className={`text-xl font-bold mb-4 ${textColor}`}>Ajouter un Prestataire</h2>
                 {alert.message && <Alert message={alert.message} type={alert.type} />}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1" htmlFor="name">Nom</label>
+                        <label className={`block text-sm font-medium mb-1 ${textColor}`} htmlFor="name">Nom</label>
                         <input
                             id="name"
                             name="name"
@@ -79,7 +84,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
+                            aria-label="Entrer le nom du prestataire"
                         />
                     </div>
                     <div className="mb-4">
@@ -91,7 +97,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.EAN}
                             onChange={handleChange}
                             required
-                            className="w-full px"
+                            aria-label="Entrer le code EAN du prestataire"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="mb-4">
@@ -103,7 +110,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.length}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            aria-label="Entrer la longueur en centimètres"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="mb-4">
@@ -115,7 +123,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.width}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            aria-label="Entrer la largeur en centimètres"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="mb-4">
@@ -127,7 +136,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.height}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            aria-label="Entrer la hauteur en centimètres"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="mb-4">
@@ -140,7 +150,8 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.price}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            aria-label="Entrer le prix en euros"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="mb-4">
@@ -152,12 +163,26 @@ const ProviderCreateModal = ({ isOpen, onClose }) => {
                             value={formData.MaxWeight}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                            aria-label="Entrer le poids maximal en kilogrammes"
+                            className={`w-full px-3 py-2 border ${borderColor} ${cardBg} ${textColor} rounded`}
                         />
                     </div>
                     <div className="flex justify-end">
-                        <button type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 text-white rounded">Annuler</button>
-                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Enregistrer</button>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="Annuler l'ajout du prestataire"
+                            className="mr-2 px-4 py-2 bg-gray-300 text-white rounded"
+                        >
+                            Annuler
+                        </button>
+                        <button
+                            type="submit"
+                            aria-label="Enregistrer le prestataire"
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Enregistrer
+                        </button>
                     </div>
                 </form>
             </div>

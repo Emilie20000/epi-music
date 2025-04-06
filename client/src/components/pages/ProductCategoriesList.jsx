@@ -22,7 +22,7 @@ const ProductCategoriesList = () => {
     fetchCategories();
   }, []);
 
-  return (
+    return (
     <>
       <Helmet>
         <title>Catégories de Produits | Epimusic</title>
@@ -39,19 +39,19 @@ const ProductCategoriesList = () => {
         <meta name="twitter:creator" content="@Epimusic" />
         <meta name="twitter:site" content="@Epimusic" />
       </Helmet>
-      <div className="flex flex-wrap justify-center">
-        {error && <p className="text-red-500">{error}</p>}
-        {categories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            imageSrc={`http://localhost:8000${category.imagePath}`} //localhost
-            categoryName={category.name}
-            categoryId={category.id}
-          />
-        ))}
-      </div>
-    </>
-  );
+        <div className="flex flex-wrap justify-center" aria-label="Liste des catégories de produits">
+            {error && <p className="text-red-500" role="alert">{error}</p>}
+            {categories.map((category) => (
+                <CategoryCard
+                    key={category.id}
+                    imageSrc={`http://localhost:8000${category.imagePath}`}
+                    categoryName={category.name}
+                    categoryId={category.id}
+                />
+            ))}
+        </div>
+</>
+    );
 };
 
 export default ProductCategoriesList;

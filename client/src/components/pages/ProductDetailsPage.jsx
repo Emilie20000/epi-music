@@ -1,39 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
-import ProductTitle from "../ProductDetails/ProductTitle";
-import ProductDescription from "../ProductDetails/ProductDescription";
-import ProductImage from "../ProductDetails/ProductImage";
-import ProductColors from "../ProductDetails/ProductColors";
-import ProductSizes from "../ProductDetails/ProductSizes";
-import Alert from "../Alerts/Alert";
-import { useParams, useLocation } from "react-router-dom";
-import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useCart } from "../../context/CartContext";
+import ProductTitle from '../ProductDetails/ProductTitle';
+import ProductDescription from '../ProductDetails/ProductDescription';
+import ProductImage from '../ProductDetails/ProductImage';
+import ProductColors from '../ProductDetails/ProductColors';
+import ProductSizes from '../ProductDetails/ProductSizes';
+import Alert from '../Alerts/Alert';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useCart } from '../../context/CartContext';
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductDetailsPage = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [alert, setAlert] = useState({ message: "", type: "error" });
-  const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [review, setReview] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [editingReview, setEditingReview] = useState(null);
-  const [editReviewContent, setEditReviewContent] = useState("");
-  const [canPostReview, setCanPostReview] = useState(false);
-  const [hasPostedReview, setHasPostedReview] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const { updateItemCount } = useCart();
-  const location = useLocation();
-  const currentUrl = `https://epimusic.com${location.pathname}`;
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+    const [alert, setAlert] = useState({ message: '', type: 'error' });
+    const [quantity, setQuantity] = useState(1);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [review, setReview] = useState('');
+    const [reviews, setReviews] = useState([]);
+    const [editingReview, setEditingReview] = useState(null);
+    const [editReviewContent, setEditReviewContent] = useState('');
+    const [canPostReview, setCanPostReview] = useState(false);
+    const [hasPostedReview, setHasPostedReview] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const { updateItemCount } = useCart();
+    const { isDark } = useTheme();
+    const location = useLocation();
+
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const subTextColor = isDark ? "text-slate-300" : "text-gray-600";
+    const BgColor = isDark ? "bg-slate-600" : "bg-white";
+    const borderColor = isDark ? "text-slate-600" : "bg-white";
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/products/${id}`); //localhost
+        const response = await fetch(`http://localhost:8000/api/products/${id}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -66,7 +72,7 @@ const ProductDetailsPage = () => {
     if (!user) return;
 
     try {
-      const response = await axios.get("http://localhost:8000/api/cart", { params: { userId: user.id } }); //localhost
+      const response = await axios.get("http://localhost:8000/api/cart", { params: { userId: user.id } });
       const cartItems = response.data.items;
       const productInCart = cartItems.some((item) => item.product_id === parseInt(id));
       const existingReview = productReviews.some((review) => review.user_id === user.id);
@@ -95,7 +101,7 @@ const ProductDetailsPage = () => {
     };
 
     axios
-      .post(`http://localhost:8000/api/cart/add/${product.id}`, data) //localhost
+      .post(`http://localhost:8000/api/cart/add/${product.id}`, data) 
       .then((response) => {
         setAlert({ message: "Produit ajouté au panier !", type: "success" });
         if (response.data.token) {
@@ -126,7 +132,7 @@ const ProductDetailsPage = () => {
     };
 
     axios
-      .post("http://localhost:8000/api/product/add/review", data) //localhost
+      .post("http://localhost:8000/api/product/add/review", data)
       .then((response) => {
         setAlert({ message: "Avis ajouté avec succès !", type: "success" });
         setReviews([response.data.review, ...reviews]);
@@ -154,7 +160,7 @@ const ProductDetailsPage = () => {
     };
 
     axios
-      .patch(`http://localhost:8000/api/review/update/${editingReview}`, data) //localhost
+      .patch(`http://localhost:8000/api/review/update/${editingReview}`, data)
       .then((response) => {
         setAlert({ message: "Avis mis à jour avec succès !", type: "success" });
         setReviews(reviews.map((r) => (r.review_id === editingReview ? response.data.review : r)));
@@ -173,7 +179,7 @@ const ProductDetailsPage = () => {
     const data = { user_id: user.id };
 
     axios
-      .delete(`http://localhost:8000/api/review/delete/${reviewId}`, { data }) //localhost
+      .delete(`http://localhost:8000/api/review/delete/${reviewId}`, { data })
       .then((response) => {
         setAlert({ message: "Avis supprimé avec succès !", type: "success" });
         setReviews(reviews.filter((r) => r.review_id !== reviewId));
@@ -207,7 +213,7 @@ const ProductDetailsPage = () => {
   const filteredModel = product?.models.find((model) => model.color === selectedColor && model.size === selectedSize);
   const promotion = product?.promotions.length > 0 ? product.promotions[0] : null;
 
-  return (
+    return (
     <>
       <Helmet>
         <title>{product ? `${product.name} - Epimusic` : "Produit - Epimusic"}</title>
@@ -233,91 +239,139 @@ const ProductDetailsPage = () => {
         <meta name="twitter:site" content="@Epimusic" />
         <meta name="twitter:creator" content="@Epimusic" />
       </Helmet>
-      <div className="p-6">
-        <Alert message={alert.message} type={alert.type} />
-        {product && (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-4">
-              <ProductTitle name={product.name} category={product.category.name} />
-              <ProductImage images={filteredModel?.images || []} />
-            </div>
-            <div className="space-y-4 mt-16 pt-12">
-              <ProductDescription
-                category={product.category.name}
-                description={product.description}
-                stock={filteredModel?.stock}
-                color={filteredModel?.color}
-                size={`${filteredModel?.size || ""}`}
-                price={`${filteredModel?.price || ""}`}
-                weight={`${product.weight || ""}`}
-                promotion={promotion}
-              />
-              <ProductColors colors={uniqueColors} selectedColor={selectedColor} onColorSelect={handleColorSelect} />
-              <ProductSizes sizes={uniqueSizes} selectedSize={selectedSize} onSizeSelect={handleSizeSelect} />
-              <div className="space-y-4">
-                <input
-                  type="number"
-                  id="quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  min="1"
-                  max={filteredModel?.stock || 1}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-                <button onClick={handleAddToCart} className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Ajouter au panier
-                </button>
-                {canPostReview && (
-                  <div className="space-y-2">
-                    <textarea
-                      value={review}
-                      onChange={(e) => setReview(e.target.value)}
-                      placeholder="Écrire un avis"
-                      className="border border-gray-300 rounded-md p-2 w-full"
-                    />
-                    <button onClick={handleAddReview} className="bg-green-500 text-white py-2 px-4 rounded">
-                      Ajouter un avis
-                    </button>
-                  </div>
-                )}
-              </div>
-              {hasPostedReview &&
-                reviews.map((review) => (
-                  <div key={review.review_id} className="border border-gray-300 rounded-md p-4 space-y-2">
-                    <p>
-                      <strong>{review.username}</strong>
-                    </p>
-                    <p>{review.comment}</p>
-                    {review.user_id === JSON.parse(localStorage.getItem("user"))?.id && (
-                      <div className="flex space-x-2">
-                        <button onClick={() => handleEditReview(review)} className="bg-yellow-500 text-white py-1 px-2 rounded">
-                          <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                        <button onClick={() => handleDeleteReview(review.review_id)} className="bg-red-500 text-white py-1 px-2 rounded">
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
-                      </div>
-                    )}
-                    {editingReview === review.review_id && (
-                      <div className="mt-2">
-                        <textarea
-                          value={editReviewContent}
-                          onChange={(e) => setEditReviewContent(e.target.value)}
-                          className="border border-gray-300 rounded-md p-2 w-full"
+        <div className="p-6">
+            <Alert message={alert.message} type={alert.type} />
+            {product && (
+                <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className={`${isDark ? 'text-slate-200' : 'text-black'} space-y-4`}>
+                        <ProductTitle name={product.name} category={product.category.name} isDark={isDark} />
+                        <ProductImage images={filteredModel?.images || []} />
+                    </div>
+                    <div className="space-y-4 mt-16 pt-12">
+                        <ProductDescription
+                            category={product.category.name}
+                            description={product.description}
+                            stock={filteredModel?.stock}
+                            color={filteredModel?.color}
+                            size={`${filteredModel?.size || ''}`}
+                            price={`${filteredModel?.price || ''}`}
+                            weight={`${product.weight || ''}`}
+                            promotion={promotion}
+                            isDark={isDark}
                         />
-                        <button onClick={handleUpdateReview} className="bg-blue-500 text-white py-2 px-4 rounded mt-2">
-                          Mettre à jour l'avis
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </>
-  );
+                        <ProductColors
+                            colors={uniqueColors}
+                            selectedColor={selectedColor}
+                            onColorSelect={handleColorSelect}
+                            isDark={isDark}
+                        />
+                        <ProductSizes
+                            sizes={uniqueSizes}
+                            selectedSize={selectedSize}
+                            onSizeSelect={handleSizeSelect}
+                            isDark={isDark}
+                        />
+                        <div className="space-y-4">
+                            <label htmlFor="quantity" className="sr-only">Quantité</label>
+                            <input
+                                type="number"
+                                id="quantity"
+                                aria-label="Quantité"
+                                value={quantity}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
+                                min="1"
+                                max={filteredModel?.stock || 1}
+                                className={`border ${borderColor} rounded-md p-2 mr-4`}
+                            />
+                            <button
+                                onClick={handleAddToCart}
+                                className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
+                                aria-label={`Ajouter ${product.name} au panier`}
+                            >
+                                Ajouter au panier
+                            </button>
+                            {canPostReview && (
+                                <div className="space-y-2">
+                                <textarea
+                                    id="new-review"
+                                    aria-label="Ajouter un avis"
+                                    value={review}
+                                    onChange={(e) => setReview(e.target.value)}
+                                    placeholder="Écrire un avis"
+                                    className={`border ${borderColor} ${BgColor} text-white rounded-md p-2 w-full ${isDark ? 'placeholder-slate-200' : 'placeholder-gray-800'}`}
+                                />
+                                    <button
+                                        onClick={handleAddReview}
+                                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                                        aria-label="Soumettre l'avis"
+                                    >
+                                        Ajouter un avis
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                        {hasPostedReview && reviews.map(review => (
+                            <div key={review.review_id} className={`border ${borderColor} ${BgColor} rounded-md p-4 space-y-2`} aria-label={`Avis de ${review.username}`}>
+                                <p className={`font-semibold ${textColor}`}>
+                                    <strong>
+                                        {review.user_id
+                                            ? `${review.user_firstname} ${review.user_lastname || ''}`.trim()
+                                            : review.user_firstname || "Anonyme"
+                                        }
+                                    </strong>
+                                    <span className={`text-sm ${subTextColor} ml-2`}>
+
+                                        {new Date(review.created_at).toLocaleDateString("fr-FR", {
+                                            year: "numeric", month: "long", day: "numeric"
+                                        })}
+                                    </span>
+                                </p>
+                                <p className={`${subTextColor}`}>{review.comment}</p>
+                                {review.user_id === JSON.parse(localStorage.getItem('user'))?.id && (
+                                    <div className="flex space-x-2">
+                                        <button
+                                            onClick={() => handleEditReview(review)}
+                                            aria-label="Modifier l'avis"
+                                            className="bg-yellow-500 text-white py-1 px-2 rounded"
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteReview(review.review_id)}
+                                            aria-label="Supprimer l'avis"
+                                            className="bg-red-500 text-white py-1 px-2 rounded"
+                                        >
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                    </div>
+                                )}
+
+                                {editingReview === review.review_id && (
+                                    <div className="mt-2">
+                                    <textarea
+                                        id={`edit-review-${review.review_id}`}
+                                        aria-label="Modifier votre avis"
+                                        value={editReviewContent}
+                                        onChange={(e) => setEditReviewContent(e.target.value)}
+                                        className={`border ${borderColor} ${BgColor} ${isDark ? 'text-white' : 'text-black'} rounded-md p-2 w-full`}
+                                    />
+                                        <button
+                                            onClick={handleUpdateReview}
+                                            aria-label="Mettre à jour l'avis"
+                                            className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
+                                        >
+                                            Mettre à jour l'avis
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+        </>
+    );
 };
 
 export default ProductDetailsPage;
