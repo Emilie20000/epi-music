@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Alert from "../../Alerts/Alert";
 import { FaShippingFast } from "react-icons/fa";
 import CartButton from "../../Buttons/CartButton";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../../context/ThemeContext";
-
 
 const ShippingPage = () => {
   const [alert, setAlert] = useState({ message: "", type: "error" });
@@ -35,7 +35,6 @@ const ShippingPage = () => {
     if (!orderId) {
       return;
     }
-
         axios.get(`http://localhost:8000/api/order/${orderId}`)
             .then(response => {
                 setOrder(response.data);
@@ -68,6 +67,12 @@ const ShippingPage = () => {
     navigate("/delivery/home-delivery");
   };
   return (
+<>
+      <Helmet>
+        <title>Récapitulatif de votre commande | Epimusic</title>
+        <meta name="description" content="Retrouvez ici le récapitulatif de votre commande" />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
     <div className="w-9/12 m-auto">
       <Alert message={alert.message} type={alert.type} />
       <h1 className={`text-center ${textColor} text-4xl font-bold my-4`} aria-label="Livraison">Livraison</h1>
@@ -115,6 +120,7 @@ const ShippingPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

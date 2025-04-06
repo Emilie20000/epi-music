@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from "../../Alerts/Alert";
 import axios from "axios";
 import {useTheme} from "../../../context/ThemeContext";
+import { Helmet } from "react-helmet-async";
 
 const DeliveryHomePage = () => {
     const [alert, setAlert] = useState({ message: "", type: "error" });
@@ -44,7 +45,7 @@ const DeliveryHomePage = () => {
         const fetchAddresses = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/user/${user.id}/addresses` //localhost
+                    `http://localhost:8000/api/user/${user.id}/addresses`
                 );
                 setAddresses(response.data);
             } catch (error) {
@@ -89,7 +90,7 @@ const DeliveryHomePage = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/order/${orderId}/address`, //localhost
+                `http://localhost:8000/api/order/${orderId}/address`,
                 {
                     name: `${firstname} ${lastname}`,
                     telephone,
@@ -113,6 +114,11 @@ const DeliveryHomePage = () => {
     };
 
     return (
+      <>
+      <Helmet>
+        <title>Livraison | Epimusic</title>
+        <meta name="description" content="Sélectionnez votre adresse de livraison sur Epimusic." />
+      </Helmet>
         <div className="lg:w-9/12 w-full m-auto">
             <Alert message={alert.message} type={alert.type} />
             <h1 className={`${textColor} text-center text-4xl font-bold my-4`}>
@@ -348,6 +354,7 @@ const DeliveryHomePage = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

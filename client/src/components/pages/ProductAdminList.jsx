@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import "tailwindcss/tailwind.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -148,6 +149,12 @@ const ProductAdminList = () => {
 
 
     return (
+              <>
+            <Helmet>
+                <title>Admin Panel | Liste des produits | EpiMusic</title>
+                <meta name="description" content="Gérez les produits de la boutique Epimusic." />
+                <meta name="robots" content="noindex, nofollow" />
+            </Helmet>
         <div className="container mx-auto p-4" aria-label="Liste des produits administrables">
             {message && <p className="text-green-500 mb-4" aria-live="polite">{message}</p>}
             {error && <p className="text-red-500 mb-4" aria-live="polite">{error}</p>}
@@ -313,6 +320,7 @@ const ProductAdminList = () => {
             </div>
             {showPromotionModal && <ProductPromotion onClose={closePromotionModal} productId={currentProductId} />}
         </div>
+        </>
     );
 };
 

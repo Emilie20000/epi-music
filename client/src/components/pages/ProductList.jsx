@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Link, useParams, useLocation } from "react-router-dom";
@@ -30,15 +31,26 @@ const ProductList = () => {
         categories: []
     });
     const [isFilterVisible, setIsFilterVisible] = useState(false);
-
+    
     const [availableFilterBrands, setAvailableBrands] = useState([]);
-    const [availableFilterColors, setAvailableColors] = useState([]);
-    const [availableFilterSizes, setAvailableSizes] = useState([]);
-    const [maxPrice, setMaxPrice] = useState(1150);
-    const [maxWeight, setMaxWeight] = useState(50);
-    const [availableFilterCategories, setAvailableCategories] = useState([]);
+  const [availableFilterColors, setAvailableColors] = useState([]);
+  const [availableFilterSizes, setAvailableSizes] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(1150);
+  const [maxWeight, setMaxWeight] = useState(50);
+  const [availableFilterCategories, setAvailableCategories] = useState([]);
 
-    const [shouldApplyFilters, setShouldApplyFilters] = useState(false);
+  const [shouldApplyFilters, setShouldApplyFilters] = useState(false);
+
+  function formatCategory(category) {
+    if (!category) {
+      return "";
+    }
+
+    let formatted = category.toLowerCase().trim();
+
+    if (formatted.length > 0) {
+      formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+    }
 
     const { isDark } = useTheme();
     const cardBg = isDark ? "bg-slate-600" : "bg-white";
@@ -63,254 +75,235 @@ const ProductList = () => {
         return formatted;
     }
 
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const query = queryParams.get("query") || "";
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            search: query
+    return formatted;
+  }
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get("query") || "";
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      search: query,
+    }));
+  }, [location.search]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters, products]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [categoryId, filters.search]);
+
+  useEffect(() => {
+    if (shouldApplyFilters) {
+      handleApplyFilters();
+      setShouldApplyFilters(false);
+    }
+  }, [filters, products, shouldApplyFilters]);
+
+  useEffect(() => {
+    products.forEach((product) => {
+      if (product.models && product.models.length > 0) {
+        const firstColor = product.models[0].color;
+        const firstSize = product.models[0].size;
+
+        setSelectedColors((prevColors) => ({
+          ...prevColors,
+          [product.id]: prevColors[product.id] || firstColor,
         }));
-    }, [location.search]);
 
-    useEffect(() => {
-        applyFilters();
-    }, [filters, products]);
-
-    useEffect(() => {
-        fetchProducts();
-    }, [categoryId, filters.search]);
-
-    useEffect(() => {
-        if (shouldApplyFilters) {
-            handleApplyFilters();
-            setShouldApplyFilters(false);
-        }
-    }, [filters, products, shouldApplyFilters]);
-
-    useEffect(() => {
-        products.forEach((product) => {
-            if (product.models && product.models.length > 0) {
-                const firstColor = product.models[0].color;
-                const firstSize = product.models[0].size;
-
-                setSelectedColors((prevColors) => ({
-                    ...prevColors,
-                    [product.id]: prevColors[product.id] || firstColor,
-                }));
-
-                setSelectedSizes((prevSizes) => ({
-                    ...prevSizes,
-                    [product.id]: prevSizes[product.id] || firstSize,
-                }));
-            }
-        });
-    }, [products]);
-
-    const fetchProducts = async () => {
-        try {
-            const queryParams = new URLSearchParams();
-            if (filters.search) {
-                queryParams.append('search', filters.search);  
-            }
-            const response = await axios.get(
-                `http://localhost:8000/api/products/category/${categoryId}?${queryParams.toString()}`
-            );
-
-            setProducts(response.data);
-
-            const brandsSet = new Set();
-            const colorsSet = new Set();
-            const sizesSet = new Set();
-            const categoriesSet = new Set();
-            let highestPrice = 0;
-            let highestWeight = 0;
-
-            response.data.forEach((product) => {
-                product.brands.forEach((brand) => brandsSet.add(brand));
-                categoriesSet.add(product.category);
-                product.models.forEach((model) => {
-                    if (model.size) sizesSet.add(model.size);
-                    if (model.color) colorsSet.add(model.color);
-                    if (model.size) sizesSet.add(model.size);
-                    if (model.price > highestPrice)
-                        highestPrice = model.price + 1;
-                    if (model.weight && model.weight > highestWeight)
-                        highestWeight = model.weight;
-                });
-            });
-
-            setAvailableBrands(Array.from(brandsSet));
-            setAvailableColors(Array.from(colorsSet));
-            setAvailableSizes(Array.from(sizesSet));
-            setAvailableCategories(Array.from(categoriesSet));
-            setMaxPrice(highestPrice);
-            setMaxWeight(highestWeight);
-
-            setFilters((prevFilters) => ({
-                ...prevFilters,
-                priceRange: [0, highestPrice],
-                weightRange: [0, highestWeight],
-            }));
-
-            handleApplyFilters();
-        } catch (error) {
-            setError(
-                "Une erreur s'est produite lors de la récupération des produits !"
-            );
-        }
-    };
-
-    const applyFilters = () => {
-        let filtered = products;
-     
-        if (filters.brands.length > 0) {
-            filtered = filtered.filter((product) =>
-                filters.brands.some((brand) => product.brands.includes(brand))
-            );
-        }
-
-        if (filters.colors.length > 0) {
-            filtered = filtered.filter((product) =>
-                product.models.some((model) =>
-                    filters.colors.includes(model.color)
-                )
-            );
-        }
-
-        if (filters.sizes.length > 0) {
-            filtered = filtered.filter((product) =>
-                product.models.some((model) =>
-                    filters.sizes.includes(model.size)
-                )
-            );
-        }
-
-        if (filters.priceRange.length === 2) {
-            filtered = filtered.filter((product) =>
-                product.models.some(
-                    (model) =>
-                        model.price >= filters.priceRange[0] &&
-                        model.price <= filters.priceRange[1]
-                )
-            );
-        }
-
-        if (filters.weightRange.length === 2) {
-            filtered = filtered.filter((product) =>
-                product.models.some(
-                    (model) =>
-                        model.weight >= filters.weightRange[0] &&
-                        model.weight <= filters.weightRange[1]
-                )
-            );
-        }
-
-        if (filters.categories.length > 0) {
-            filtered = filtered.filter((product) => 
-                filters.categories.includes(product.category)
-            );
-        }
-
-        if (category === undefined) {
-            updateAvailableFilters(filtered);
-        }
-        
-
-        setFilteredProducts(filtered);
-    };
-
-    const updateAvailableFilters = (filteredProducts) => {
-        const brandsSet = new Set();
-        const colorsSet = new Set();
-        const sizesSet = new Set();
-    
-        filteredProducts.forEach((product) => {
-            product.brands.forEach((brand) => brandsSet.add(brand));
-            product.models.forEach((model) => {
-                if (model.size) sizesSet.add(model.size);
-                if (model.color) colorsSet.add(model.color);
-            });
-        });
-    
-        setAvailableBrands(Array.from(brandsSet));
-        setAvailableColors(Array.from(colorsSet));
-        setAvailableSizes(Array.from(sizesSet));
-    };
-
-    const handleColorSelect = (productId, color) => {
-        setSelectedColors((prevColors) => {
-            const updatedColors = { ...prevColors, [productId]: color };
-            const product = products.find((p) => p.id === productId);
-            const availableSizes = product.models
-                .filter((model) => model.color === color)
-                .map((model) => model.size);
-
-            const updatedSize = availableSizes.includes(
-                selectedSizes[product.id]
-            )
-                ? selectedSizes[product.id]
-                : availableSizes[0];
-
-            setSelectedSizes((prevSizes) => ({
-                ...prevSizes,
-                [productId]: updatedSize,
-            }));
-
-            return updatedColors;
-        });
-    };
-
-    const handleSizeSelect = (productId, size) => {
         setSelectedSizes((prevSizes) => ({
-            ...prevSizes,
-            [productId]: size,
+          ...prevSizes,
+          [product.id]: prevSizes[product.id] || firstSize,
         }));
-    };
+      }
+    });
+  }, [products]);
 
-    const handleAddToCart = (product) => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const token = localStorage.getItem("cart_token");
-        const model = product.models.find((model) => {
-            if (!model.color && !model.size) {
-                return true;
-            }
-            return (
-                model.color === selectedColors[product.id] &&
-                model.size === selectedSizes[product.id]
-            );
+  const fetchProducts = async () => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (filters.search) {
+        queryParams.append("search", filters.search);
+      }
+      const response = await axios.get(`http://localhost:8000/api/products/category/${categoryId}?${queryParams.toString()}`);
+
+      setProducts(response.data);
+
+      const brandsSet = new Set();
+      const colorsSet = new Set();
+      const sizesSet = new Set();
+      const categoriesSet = new Set();
+      let highestPrice = 0;
+      let highestWeight = 0;
+
+      response.data.forEach((product) => {
+        product.brands.forEach((brand) => brandsSet.add(brand));
+        categoriesSet.add(product.category);
+        product.models.forEach((model) => {
+          if (model.size) sizesSet.add(model.size);
+          if (model.color) colorsSet.add(model.color);
+          if (model.size) sizesSet.add(model.size);
+          if (model.price > highestPrice) highestPrice = model.price + 1;
+          if (model.weight && model.weight > highestWeight) highestWeight = model.weight;
         });
+      });
 
-        if (!model) return;
+      setAvailableBrands(Array.from(brandsSet));
+      setAvailableColors(Array.from(colorsSet));
+      setAvailableSizes(Array.from(sizesSet));
+      setAvailableCategories(Array.from(categoriesSet));
+      setMaxPrice(highestPrice);
+      setMaxWeight(highestWeight);
 
-        const data = {
-            model_id: model.model_id,
-            quantity: 1,
-        };
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        priceRange: [0, highestPrice],
+        weightRange: [0, highestWeight],
+      }));
 
-        if (user) {
-            data.user_id = user.id;
-        } else if (token) {
-            data.token = token;
+      handleApplyFilters();
+    } catch (error) {
+      setError("Une erreur s'est produite lors de la récupération des produits !");
+    }
+  };
+
+  const applyFilters = () => {
+    let filtered = products;
+
+    if (filters.brands.length > 0) {
+      filtered = filtered.filter((product) => filters.brands.some((brand) => product.brands.includes(brand)));
+    }
+
+    if (filters.colors.length > 0) {
+      filtered = filtered.filter((product) => product.models.some((model) => filters.colors.includes(model.color)));
+    }
+
+    if (filters.sizes.length > 0) {
+      filtered = filtered.filter((product) => product.models.some((model) => filters.sizes.includes(model.size)));
+    }
+
+    if (filters.priceRange.length === 2) {
+      filtered = filtered.filter((product) =>
+        product.models.some((model) => model.price >= filters.priceRange[0] && model.price <= filters.priceRange[1])
+      );
+    }
+
+    if (filters.weightRange.length === 2) {
+      filtered = filtered.filter((product) =>
+        product.models.some((model) => model.weight >= filters.weightRange[0] && model.weight <= filters.weightRange[1])
+      );
+    }
+
+    if (filters.categories.length > 0) {
+      filtered = filtered.filter((product) => filters.categories.includes(product.category));
+    }
+
+    if (category === undefined) {
+      updateAvailableFilters(filtered);
+    }
+
+    setFilteredProducts(filtered);
+  };
+
+  const updateAvailableFilters = (filteredProducts) => {
+    const brandsSet = new Set();
+    const colorsSet = new Set();
+    const sizesSet = new Set();
+
+    filteredProducts.forEach((product) => {
+      product.brands.forEach((brand) => brandsSet.add(brand));
+      product.models.forEach((model) => {
+        if (model.size) sizesSet.add(model.size);
+        if (model.color) colorsSet.add(model.color);
+      });
+    });
+
+    setAvailableBrands(Array.from(brandsSet));
+    setAvailableColors(Array.from(colorsSet));
+    setAvailableSizes(Array.from(sizesSet));
+  };
+
+  const handleColorSelect = (productId, color) => {
+    setSelectedColors((prevColors) => {
+      const updatedColors = { ...prevColors, [productId]: color };
+      const product = products.find((p) => p.id === productId);
+      const availableSizes = product.models.filter((model) => model.color === color).map((model) => model.size);
+
+      const updatedSize = availableSizes.includes(selectedSizes[product.id]) ? selectedSizes[product.id] : availableSizes[0];
+
+      setSelectedSizes((prevSizes) => ({
+        ...prevSizes,
+        [productId]: updatedSize,
+      }));
+
+      return updatedColors;
+    });
+  };
+
+  const handleSizeSelect = (productId, size) => {
+    setSelectedSizes((prevSizes) => ({
+      ...prevSizes,
+      [productId]: size,
+    }));
+  };
+
+  const handleAddToCart = (product) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("cart_token");
+    const model = product.models.find((model) => {
+      if (!model.color && !model.size) {
+        return true;
+      }
+      return model.color === selectedColors[product.id] && model.size === selectedSizes[product.id];
+    });
+
+    if (!model) return;
+
+    const data = {
+      model_id: model.model_id,
+      quantity: 1,
+    };
+
+    if (user) {
+      data.user_id = user.id;
+    } else if (token) {
+      data.token = token;
+    }
+
+    axios
+      .post(`http://localhost:8000/api/cart/add/${product.id}`, data)
+      .then((response) => {
+        setAlert("Produit ajouté au panier !");
+        if (response.data.token) {
+          localStorage.setItem("cart_token", response.data.token);
         }
+      })
+      .catch(() => {
+        setAlert("Erreur lors de l'ajout du produit au panier.");
+      });
+  };
 
-        axios
-            .post(`http://localhost:8000/api/cart/add/${product.id}`, data)
-            .then((response) => {
-                setAlert("Produit ajouté au panier !");
-                if (response.data.token) {
-                    localStorage.setItem("cart_token", response.data.token);
-                }
-            })
-            .catch(() => {
-                setAlert("Erreur lors de l'ajout du produit au panier.");
-            });
-    };
-
-    const handleApplyFilters = () => {
-        setShouldApplyFilters(true);
-    };
+  const handleApplyFilters = () => {
+    setShouldApplyFilters(true);
+  };
 
     return (
+    <>
+      <Helmet>
+        <title>{formattedCategory} | Epimusic</title>
+        <meta name="description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
+        <meta
+          name="keywords"
+          content={`produits ${formattedCategory.toLowerCase()}, ${formattedCategory.toLowerCase()}, musique, instruments de musique, accessoires de ${formattedCategory.toLowerCase()}, boutique ${formattedCategory.toLowerCase()}, Epimusic`}
+        />
+        <meta property="og:title" content={`${formattedCategory} | Epimusic`} />
+        <meta property="og:description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
+        <meta name="twitter:title" content={`${formattedCategory} | Epimusic`} />
+        <meta name="twitter:description" content={`Découvrez notre large sélection de produits ${formattedCategory}.`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
         <div className="relative container mx-auto p-4">
             {error && (
                 <p className="text-red-500 font-bold text-center mb-4" role="alert">
@@ -542,11 +535,30 @@ const ProductList = () => {
                                 Aucun produit trouvé
                             </p>
                         )}
+                      </div>
+
+                      <button
+                        className={`mt-4 py-2 px-4 rounded w-full flex items-center justify-center ${
+                          filteredModel?.stock > 0 ? "bg-green-500 text-white hover:bg-green-700" : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                        }`}
+                        onClick={() => handleAddToCart(product)}
+                        disabled={filteredModel?.stock <= 0}
+                      >
+                        <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                        Ajouter au panier
+                      </button>
                     </div>
-                </div>
+                  );
+                })
+              ) : (
+                <p className="text-center">Aucun produit trouvé</p>
+              )}
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </>
+  );
 };
 
 export default ProductList;

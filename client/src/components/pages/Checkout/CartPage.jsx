@@ -6,6 +6,7 @@ import Alert from "../../Alerts/Alert";
 import CartButton from "../../Buttons/CartButton";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../context/ThemeContext";
+import { Helmet } from "react-helmet-async";
 
 const CartPage = () => {
     const [items, setItems] = useState([]);
@@ -35,7 +36,7 @@ const CartPage = () => {
         if (!userId && !cartToken) {
             return;
         }
-        axios.get("http://localhost:8000/api/cart", { //localhost
+        axios.get("http://localhost:8000/api/cart", {
             params: {
                 userId: userId,
                 token: cartToken
@@ -82,12 +83,33 @@ const CartPage = () => {
         );
     };
 
-    const handleDeleteItem = (message, id) => {
-        if (id) {
-            setItems(prevItems =>
-                prevItems.filter(item => item.id !== id)
-            );
-            setAlert({ message: "Le produit a été retiré de votre panier", type: "success" });
+    axios
+      .post("http://localhost:8000/api/order/", {
+        userId: userId,
+        token: cartToken,
+      })
+      .then((response) => {
+        const orderId = response.data.orderId;
+        setOrderId(orderId);
+        localStorage.setItem("orderId", orderId);
+
+        return axios.get("http://localhost:8000/api/shipping/cost", {
+          params: {
+            userId: userId,
+            token: cartToken,
+            orderId: orderId,
+          },
+        });
+      })
+      .then((response) => {
+        const data = response.data;
+
+        localStorage.setItem("cart_shipping_costs", data.shippingCosts);
+        navigate("/delivery");
+      })
+      .catch((error) => {
+        if (error.response) {
+          setAlert({ message: error.response.data.message, type: "error" });
         } else {
             setAlert({ message: "Une erreur est survenue: l'article n'a pas été retiré de votre panier", type: "error" });
         }
@@ -99,7 +121,7 @@ const CartPage = () => {
             return;
         }
         
-        axios.post("http://localhost:8000/api/order/", { //localhost
+        axios.post("http://localhost:8000/api/order/", {
             userId: userId,
             token: cartToken
         })
@@ -108,7 +130,7 @@ const CartPage = () => {
             setOrderId(orderId);
             localStorage.setItem("orderId", orderId);
 
-            return axios.get("http://localhost:8000/api/shipping/cost", { //localhost
+            return axios.get("http://localhost:8000/api/shipping/cost", {
                 params: {
                     userId: userId,
                     token: cartToken,
@@ -131,6 +153,12 @@ const CartPage = () => {
     };
 
     return (
+      <>
+      <Helmet>
+        <title>Panier | Epimusic</title>
+        <meta name="description" content="Consultez et gérez votre panier sur Epimusic." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
         <div className="w-9/12 m-auto">
             <Alert message={alert.message} type={alert.type} />
             <h1 className={`text - center text-4xl font-bold my-4 ${textColor}`}  aria-label="Votre panier">
@@ -169,6 +197,7 @@ const CartPage = () => {
                 ) : null}
             </div>
         </div>
+     </>
     );
 };
 

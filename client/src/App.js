@@ -10,8 +10,7 @@ import { CartProvider } from './context/CartContext';
 import bgAuth from "./assets/bg-auth.webp";
 import bgAuthDark from "./assets/bg-auth-dark.webp";
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-
-
+import { HelmetProvider } from "react-helmet-async";
 
 const HomePage = lazy(() => import('./components/pages/HomePage'));
 const ProductAdminForm = lazy(() => import('./components/forms/ProductAdminForm'));
@@ -35,6 +34,7 @@ const PaymentPage = lazy(() => import('./components/pages/Checkout/PaymentPage')
 
 const App = () => (
     <Router>
+  <HelmetProvider>
         <ThemeProvider>
             <SearchProvider>
                 <CartProvider>
@@ -50,6 +50,7 @@ const App = () => (
                 </CartProvider>
             </SearchProvider>
         </ThemeProvider>
+  </HelmetProvider>
     </Router>
 
 );

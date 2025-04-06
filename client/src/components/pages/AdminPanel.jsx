@@ -14,7 +14,7 @@ import CategoryAdminForm from "../forms/CategoryAdminForm";
 import CategoryAdminEdit from "../forms/CategoryAdminEdit";
 import StockManagementPage from "./StockManagementPage";
 import { useTheme } from "../../context/ThemeContext";
-
+import { HelmetProvider } from "react-helmet-async";
 
 const AdminPanel = () => {
     const [user, setUser] = useState(null);
@@ -42,6 +42,12 @@ const AdminPanel = () => {
     };
 
     return (
+      <>
+      <Helmet>
+    <title>Panneau d'administration | Epimusic</title>
+    <meta name="description" content="Gérez les produits, utilisateurs, commandes et stock de la boutique Epimusic." />
+    <meta name="robots" content="noindex, nofollow" />
+  </Helmet>;
         <div className="flex flex-col items-center p-6">
             <h1 className={`text-2xl font-bold mb-6 text-center ${textColor}`}>Admin Panel</h1>
             <AdminTabs />
@@ -75,6 +81,7 @@ const AdminPanel = () => {
                 <Route path="edit-product/:id" element={<ProductAdminEdit />} />
             </Routes>
         </div>
+        </>
     );
 };
 
