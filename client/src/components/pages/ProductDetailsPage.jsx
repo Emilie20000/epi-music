@@ -266,11 +266,11 @@ const ProductDetailsPage = () => {
                                     value={review}
                                     onChange={(e) => setReview(e.target.value)}
                                     placeholder="Écrire un avis"
-                                    className={`border ${isDark ? 'border-gray-600' : 'border-gray-300'} rounded-md p-2 w-full`}
+                                    className={`border ${borderColor} ${BgColor} text-white rounded-md p-2 w-full ${isDark ? 'placeholder-slate-200' : 'placeholder-gray-800'}`}
                                 />
                                     <button
                                         onClick={handleAddReview}
-                                        className="bg-green-500 text-white py-2 px-4 rounded"
+                                        className="bg-blue-500 text-white py-2 px-4 rounded"
                                     >
                                         Ajouter un avis
                                     </button>
@@ -302,7 +302,7 @@ const ProductDetailsPage = () => {
                                     <textarea
                                         value={editReviewContent}
                                         onChange={(e) => setEditReviewContent(e.target.value)}
-                                        className={`border ${isDark ? 'border-gray-600' : 'border-gray-300'} rounded-md p-2 w-full`}
+                                        className={`border ${borderColor} ${BgColor} ${isDark ? 'text-white' : 'text-black'} rounded-md p-2 w-full`}
                                     />
                                         <button
                                             onClick={handleUpdateReview}
