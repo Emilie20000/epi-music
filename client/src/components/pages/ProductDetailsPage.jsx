@@ -278,9 +278,22 @@ const ProductDetailsPage = () => {
                             )}
                         </div>
                         {hasPostedReview && reviews.map(review => (
-                            <div key={review.review_id} className={`border ${borderColor} rounded-md p-4 space-y-2`}>
-                                <p className={`${isDark ? 'text-slate-200' : 'text-black'}`}><strong>{review.username}</strong></p>
-                                <p className={`${isDark ? 'text-slate-200' : 'text-black'}`}>{review.comment}</p>
+                            <div key={review.review_id} className={`border ${borderColor} ${BgColor} rounded-md p-4 space-y-2`}>
+                                <p className={`font-semibold ${textColor}`}>
+                                    <strong>
+                                        {review.user_id
+                                            ? `${review.user_firstname} ${review.user_lastname || ''}`.trim()
+                                            : review.user_firstname || "Anonyme"
+                                        }
+                                    </strong>
+                                    <span className={`text-sm ${subTextColor} ml-2`}>
+
+                                        {new Date(review.created_at).toLocaleDateString("fr-FR", {
+                                            year: "numeric", month: "long", day: "numeric"
+                                        })}
+                                    </span>
+                                </p>
+                                <p className={`${subTextColor}`}>{review.comment}</p>
                                 {review.user_id === JSON.parse(localStorage.getItem('user'))?.id && (
                                     <div className="flex space-x-2">
                                         <button
