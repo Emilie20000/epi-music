@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductFilter = ({
     categories,
@@ -28,6 +29,12 @@ const ProductFilter = ({
     const [isWeightOpen, setIsWeightOpen] = useState(true);
 
     const { category } = useParams();
+
+    const { isDark } = useTheme();
+    const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+    const textColor = isDark ? "text-slate-200" : "text-gray-700";
+    const borderColor = isDark ?  "border-slate-600" : "border-gray-100";
+    const subTextColor = isDark ?  "text-slate-300" : "text-gray-600";
 
     const handleCategoryChange = (category) => {
         const updatedCategories = selectedCategories.includes(category)
@@ -134,14 +141,14 @@ const ProductFilter = ({
 
     return (
         <div>
-            <h3 className="text-2xl font-semibold mb-2 text-gray-800 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <h3 className={`text-2xl font-semibold mb-2 ${textColor} border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                 Filtrer les produits
             </h3>
 
             {categories.length > 0 && category === undefined && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor}  cursor-pointer flex justify-between items-center"`}
                         onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
                     >
                         Catégories
@@ -187,7 +194,7 @@ const ProductFilter = ({
                                         }
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                     />
-                                    <p className="text-gray-600">{category}</p>
+                                    <p className={`${subTextColor}`}>{category}</p>
                                 </div>
                             ))}
                         </div>
@@ -196,9 +203,9 @@ const ProductFilter = ({
             )}
 
             {brands.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsBrandsOpen(!isBrandsOpen)}
                     >
                         Marques
@@ -244,7 +251,7 @@ const ProductFilter = ({
                                         }
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                     />
-                                    <p className="text-gray-600">{brand}</p>
+                                    <p className={`${subTextColor}`}>{brand}</p>
                                 </div>
                             ))}
                         </div>
@@ -253,41 +260,41 @@ const ProductFilter = ({
             )}
 
             {colors.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsColorsOpen(!isColorsOpen)}
                     >
                         Couleurs
                         <span>
-                            {isColorsOpen ? (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            )}
-                        </span>
+                {isColorsOpen ? (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="w-5 h-5"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                ) : (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="w-5 h-5"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                )}
+            </span>
                     </h4>
                     {isColorsOpen && (
                         <div className="grid grid-cols-2 gap-2 mt-2">
@@ -296,12 +303,10 @@ const ProductFilter = ({
                                     <input
                                         type="checkbox"
                                         value={color}
-                                        onChange={() =>
-                                            handleColorChange(color)
-                                        }
-                                        className="mr-2 text-red-600 focus:ring-red-500"
+                                        onChange={() => handleColorChange(color)}
+                                        className={`mr-2 text-red-600 focus:ring-red-500 border ${subTextColor}`}
                                     />
-                                    <p className="text-gray-600">{color}</p>
+                                    <p className={`${subTextColor}`}>{color}</p>
                                 </div>
                             ))}
                         </div>
@@ -309,10 +314,11 @@ const ProductFilter = ({
                 </div>
             )}
 
+
             {sizes.length > 0 && (
-                <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+                <div className={`mb - 2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                     <h4
-                        className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                        className={`text - lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                         onClick={() => setIsSizesOpen(!isSizesOpen)}
                     >
                         Tailles
@@ -356,7 +362,7 @@ const ProductFilter = ({
                                         onChange={() => handleSizeChange(size)}
                                         className="mr-2 text-red-600 focus:ring-red-500"
                                     />
-                                    <p className="text-gray-600">{size}</p>
+                                    <p className={`${subTextColor}`}>{size}</p>
                                 </div>
                             ))}
                         </div>
@@ -364,41 +370,41 @@ const ProductFilter = ({
                 </div>
             )}
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <div className={`mb-2 border ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                 <h4
-                    className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                    className={`text-lg font-medium ${textColor} cursor-pointer flex justify-between items-center`}
                     onClick={() => setIsPriceOpen(!isPriceOpen)}
                 >
                     Prix
                     <span>
-                        {isPriceOpen ? (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ) : (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        )}
-                    </span>
+            {isPriceOpen ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            )}
+        </span>
                 </h4>
                 {isPriceOpen && (
                     <div className="flex flex-col mt-2">
@@ -436,13 +442,13 @@ const ProductFilter = ({
                                 />
                             ) : (
                                 <span
-                                    className="ml-4 text-gray-600 cursor-pointer"
+                                    className={`ml-4 ${subTextColor} cursor-pointer`}
                                     onClick={() => setIsEditingMin(true)}
                                 >
-                                    {priceRange[0]} €
-                                </span>
+                        {priceRange[0]} €
+                    </span>
                             )}
-                            <span className="mx-2 text-gray-600">-</span>
+                            <span className={`mx-2 ${subTextColor}`}>-</span>
                             {isEditingMax ? (
                                 <input
                                     type="number"
@@ -464,52 +470,52 @@ const ProductFilter = ({
                                 />
                             ) : (
                                 <span
-                                    className="text-gray-600 cursor-pointer"
+                                    className={`ml-4 ${subTextColor} cursor-pointer`}
                                     onClick={() => setIsEditingMax(true)}
                                 >
-                                    {priceRange[1]} €
-                                </span>
+                        {priceRange[1]} €
+                    </span>
                             )}
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="mb-2 border bg-gray-100 shadow rounded-lg px-2 py-4">
+            <div className={`mb - 2 border  ${borderColor} ${BgColor} shadow rounded-lg px-2 py-4`}>
                 <h4
-                    className="text-lg font-medium text-gray-700 cursor-pointer flex justify-between items-center"
+                    className={`text-lg font-medium ${subTextColor} cursor-pointer flex justify-between items-center`}
                     onClick={() => setIsWeightOpen(!isWeightOpen)}
                 >
                     Poids
                     <span>
-                        {isWeightOpen ? (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ) : (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="w-5 h-5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        )}
-                    </span>
+            {isWeightOpen ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-5 h-5"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            )}
+        </span>
                 </h4>
                 {isWeightOpen && (
                     <div className="flex items-center mt-2">
@@ -523,12 +529,13 @@ const ProductFilter = ({
                             }
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                         />
-                        <span className="ml-4 text-gray-600">
-                            {weightRange[0]} - {weightRange[1]} kg
-                        </span>
+                        <span className={`ml-4 ${subTextColor}`}>
+                {weightRange[0]} - {weightRange[1]} kg
+            </span>
                     </div>
                 )}
             </div>
+
 
         </div>
     );
