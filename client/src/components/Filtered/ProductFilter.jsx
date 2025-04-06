@@ -541,7 +541,7 @@ const ProductFilter = ({
                                 handleWeightRangeChange([0, e.target.value])
                             }
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                            aria-label={`Filtrer par taille ${size}`}
+                            aria-label={`Filtrer par poids ${weightRange || 'Inconnue'}`}
                         />
                         <span className={`ml-4 ${subTextColor}`}>
                 {weightRange[0]} - {weightRange[1]} kg
