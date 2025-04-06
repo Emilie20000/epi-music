@@ -5,6 +5,7 @@ import CartSummary from "../../Cart/CartSummary";
 import Alert from "../../Alerts/Alert";
 import CartButton from "../../Buttons/CartButton";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../../context/ThemeContext";
 
 const CartPage = () => {
     const [items, setItems] = useState([]);
@@ -16,6 +17,9 @@ const CartPage = () => {
     const [orderId, setOrderId] = useState();
     const [alert, setAlert] = useState({ message: '', type: 'error' });
     const navigate = useNavigate();
+
+    const { isDark } = useTheme();
+    const textColor = isDark ? "text-slate-200" : "text-back";
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -136,7 +140,7 @@ const CartPage = () => {
     return (
         <div className="w-9/12 m-auto">
             <Alert message={alert.message} type={alert.type} />
-            <h1 className="text-center text-4xl font-bold my-4">
+            <h1 className={`text - center text-4xl font-bold my-4 ${textColor}`}>
                 Panier
             </h1>
             <div className="flex flex-wrap justify-evenly">
@@ -149,7 +153,7 @@ const CartPage = () => {
                         onDeleteItem={handleDeleteItem}    
                         />
                         <div className="w-full lg:w-1/2 xl:w-1/3 md:p-4 mb-4">
-                            <CartSummary total={total} quantity={quantity} promoReduction={promotionReduction} />
+                            <CartSummary total={total} quantity={quantity} promoReduction={promotionReduction} isDark={isDark} />
                             <CartButton 
                                 text="Valider mon panier"
                                 handleClick={getShippingCost}
@@ -157,7 +161,7 @@ const CartPage = () => {
                         </div>
                     </>
                     ) : (
-                        <div className="text-center mt-40 text-2xl">
+                        <div className={`text - center mt-40 text-2xl ${textColor}`}>
                             <p>Votre panier est vide</p>
                             <button
                                 className="bg-rose-600 text-2xl rounded-xl mt-8 text-black"
