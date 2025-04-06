@@ -44,6 +44,8 @@ const Navbar = () => {
     }, []);
 
     const textColor = isDark ? "text-white" : "text-black";
+    const BgColor = isDark ? "bg-slate-600/80" : "bg-gray-100/80";
+
 
     return (
         <nav className="top-0 z-50 w-full flex items-center justify-between flex-wrap bg-white/80 lg:bg-transparent py-2 px-4 lg:px-16 xl:px-48"  role="navigation">
@@ -100,7 +102,7 @@ const Navbar = () => {
                             initial={{ height: 0 }}
                             animate={{ height: "auto" }}
                             exit={{ height: 0 }}
-                            className="fixed top-0 left-0 right-0 bg-white/80 lg:bg-transparent z-50"
+                            className={`fixed top-0 left-0 right-0 ${BgColor} lg:bg-transparent z-50 pb-4`}
                         >
                             <div className="flex items-center justify-between px-4 py-2 lg:px-16 xl:px-48">
                                 <div className="flex items-center flex-shrink-0 text-black mr-6">
@@ -110,7 +112,7 @@ const Navbar = () => {
                                 </div>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="flex items-center px-3 py-2 border rounded text-black border-black hover:text-black hover:border-black lg:hidden"
+                                    className={`flex items-center px-3 py-2 border rounded text-black border-black hover:text-black hover:border-black lg:hidden`}
                                 >
                                     <svg
                                         className="fill-current h-5 w-5"
