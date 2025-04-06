@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Alert from "../../Alerts/Alert";
 import axios from "axios";
+import {useTheme} from "../../../context/ThemeContext";
+import { Helmet } from "react-helmet-async";
 
 const DeliveryHomePage = () => {
     const [alert, setAlert] = useState({ message: "", type: "error" });
@@ -33,11 +35,17 @@ const DeliveryHomePage = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const orderId = localStorage.getItem("orderId");
 
+    const { isDark } = useTheme();
+    const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+    const textColor = isDark ? "text-slate-200" : "text-gray-800";
+    const borderColor = isDark ?  "border-slate-600" : "border-gray-100";
+    const subTextColor = isDark ?  "text-slate-300" : "text-gray-600";
+
     useEffect(() => {
         const fetchAddresses = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/user/${user.id}/addresses` //localhost
+                    `http://localhost:8000/api/user/${user.id}/addresses`
                 );
                 setAddresses(response.data);
             } catch (error) {
@@ -82,7 +90,7 @@ const DeliveryHomePage = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/order/${orderId}/address`, //localhost
+                `http://localhost:8000/api/order/${orderId}/address`,
                 {
                     name: `${firstname} ${lastname}`,
                     telephone,
@@ -106,24 +114,32 @@ const DeliveryHomePage = () => {
     };
 
     return (
-        <div className="w-9/12 m-auto">
+      <>
+      <Helmet>
+        <title>Livraison | Epimusic</title>
+        <meta name="description" content="Sélectionnez votre adresse de livraison sur Epimusic." />
+      </Helmet>
+        <div className="lg:w-9/12 w-full m-auto">
             <Alert message={alert.message} type={alert.type} />
-            <h1 className="text-center text-4xl font-bold my-4">
+            <h1 className={`${textColor} text-center text-4xl font-bold my-4`}>
                 Livraison à domicile
             </h1>
             <div className="w-full">
                 <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-                    <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                        <p className="text-3xl font-bold leading-7 text-center text-black">
+                    <div className={`${BgColor} w-full shadow rounded p-8 sm:p-12`}>
+                        <p className={`text-3xl font-bold leading-7 text-center ${textColor}`}>
                             Adresse de livraison
                         </p>
                         {message && <p className="success">{message}</p>}
                         {error && <p className="error">{error}</p>}
-    
+
                         {displayState && (
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="address-select" className="text-gray-700">
+                                    <label
+                                        htmlFor="address-select"
+                                        className={`${subTextColor}`}
+                                    >
                                         Carnet d'adresses
                                     </label>
                                     <select
@@ -142,11 +158,16 @@ const DeliveryHomePage = () => {
                                 </div>
                             </div>
                         )}
-    
+
                         <form onSubmit={handleSubmit}>
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col md:w-1/2">
-                                    <label htmlFor="lastname" className="text-gray-700">Nom</label>
+                                    <label
+                                        htmlFor="lastname"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Nom
+                                    </label>
                                     <input
                                         type="text"
                                         id="lastname"
@@ -155,11 +176,16 @@ const DeliveryHomePage = () => {
                                         value={lastname}
                                         onChange={(e) => setLastname(e.target.value)}
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                                 <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
-                                    <label htmlFor="firstname" className="text-gray-700">Prénom</label>
+                                    <label
+                                        htmlFor="firstname"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Prénom
+                                    </label>
                                     <input
                                         type="text"
                                         id="firstname"
@@ -168,14 +194,18 @@ const DeliveryHomePage = () => {
                                         value={firstname}
                                         onChange={(e) => setFirstname(e.target.value)}
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="telephone" className="text-gray-700">Numéro de téléphone</label>
+                                    <label
+                                        htmlFor="telephone"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Numéro de téléphone
+                                    </label>
                                     <input
                                         type="text"
                                         id="telephone"
@@ -184,14 +214,18 @@ const DeliveryHomePage = () => {
                                         value={telephone}
                                         onChange={(e) => setTelephone(e.target.value)}
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="email" className="text-gray-700">Adresse e-mail</label>
+                                    <label
+                                        htmlFor="email"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Adresse e-mail
+                                    </label>
                                     <input
                                         type="text"
                                         id="email"
@@ -200,14 +234,18 @@ const DeliveryHomePage = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="address" className="text-gray-700">Adresse</label>
+                                    <label
+                                        htmlFor="address"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Adresse
+                                    </label>
                                     <input
                                         type="text"
                                         id="address"
@@ -216,71 +254,94 @@ const DeliveryHomePage = () => {
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="complement" className="text-gray-700">Complément d'adresse</label>
+                                    <label
+                                        htmlFor="complement"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Complément d'adresse
+                                    </label>
                                     <input
                                         type="text"
                                         id="complement"
-                                        aria-label="Complément d'adresse"
                                         placeholder="Entrez le complément d'adresse"
                                         value={complement}
-                                        onChange={(e) => setComplement(e.target.value)}
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        onChange={(e) =>
+                                            setComplement(e.target.value)
+                                        }
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col md:w-1/2">
-                                    <label htmlFor="postalCode" className="text-gray-700">Code postal</label>
+                                    <label
+                                        htmlFor="postalCode"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Code postal
+                                    </label>
                                     <input
                                         type="text"
                                         id="postalCode"
                                         aria-label="Code postal"
                                         placeholder="Entrez le code postal"
                                         value={postalCode}
-                                        onChange={(e) => setPostalCode(e.target.value)}
+                                        onChange={(e) =>
+                                            setPostalCode(e.target.value)
+                                        }
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                                 <div className="w-full flex flex-col md:w-1/2 md:ml-6 md:mt-0 mt-4">
-                                    <label htmlFor="city" className="text-gray-700">Ville</label>
+                                    <label
+                                        htmlFor="city"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Ville
+                                    </label>
                                     <input
                                         type="text"
                                         id="city"
                                         aria-label="Ville"
                                         placeholder="Entrez la ville"
                                         value={city}
-                                        onChange={(e) => setCity(e.target.value)}
+                                        onChange={(e) =>
+                                            setCity(e.target.value)
+                                        }
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <div className="md:flex items-center mt-4">
                                 <div className="w-full flex flex-col">
-                                    <label htmlFor="country" className="text-gray-700">Pays</label>
+                                    <label
+                                        htmlFor="country"
+                                        className={`${subTextColor}`}
+                                    >
+                                        Pays
+                                    </label>
                                     <input
                                         type="text"
                                         id="country"
                                         aria-label="Pays"
                                         placeholder="Entrez le pays"
                                         value={country}
-                                        onChange={(e) => setCountry(e.target.value)}
+                                        onChange={(e) =>
+                                            setCountry(e.target.value)
+                                        }
                                         required
-                                        className="leading-none text-gray-900 p-3 ..."
+                                        className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-2 bg-gray-100 border rounded border-gray-200"
                                     />
                                 </div>
                             </div>
-    
                             <button
                                 type="submit"
                                 aria-label="Valider et passer au paiement"
@@ -293,7 +354,8 @@ const DeliveryHomePage = () => {
                 </div>
             </div>
         </div>
+    </>
     );
-}    
+};
 
 export default DeliveryHomePage;

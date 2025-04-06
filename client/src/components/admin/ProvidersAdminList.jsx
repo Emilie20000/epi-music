@@ -3,6 +3,8 @@ import Alert from "../Alerts/Alert";
 import ProviderCreateModal from "../forms/ProviderCreateModal";
 import ProviderEditModal from "../forms/ProviderEditModal";
 import ProvidersProductsModal from "../Modals/ProvidersProductsModal";
+import { useTheme } from "../../context/ThemeContext";
+
 
 const ProvidersAdminList = () => {
     const [providers, setProviders] = useState([]);
@@ -11,6 +13,12 @@ const ProvidersAdminList = () => {
     const [isProviderEditModalOpen, setIsProviderEditModalOpen] = useState(false);
     const [isProvidersProductsModalOpen, setIsProvidersProductsModalOpen] = useState(false);
     const [selectedProviderId, setSelectedProviderId] = useState(null);
+
+    const { isDark } = useTheme();
+    const cardBg = isDark ? "bg-slate-600" : "bg-gray-100";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-300";
+    const subTextColor = isDark ?  "text-slate-300" : "text-black";
 
     const fetchProviders = async () => {
         try {
@@ -88,11 +96,13 @@ const ProvidersAdminList = () => {
 
     return (
         <div className="container mx-auto px-4" aria-label="Liste des prestataires">
-            <h2 className="text-2xl font-bold my-4">
+            <h2 className={`text-2xl font-bold my-4 ${textColor}`}>
                 Liste des Prestataires (Cliquez sur les noms des prestataires pour voir les produits éligibles)
             </h2>
-            <h3 className="text-xl my-4">
-                L'affichage des produits est fait en fonction du coût de transport, en sélectionnant le prestataire logistique le plus économique
+            <h3 className={`text-xl my-4 ${textColor}`}>
+                L'affichage des produits est fait en fonction du coût de
+                transport, en sélectionnant le prestataire logistique le plus
+                économique
             </h3>
             <button
                 onClick={() => setIsProviderCreateModalOpen(true)}
@@ -105,31 +115,31 @@ const ProvidersAdminList = () => {
                 <Alert message={alert.message} type={alert.type} />
             )}
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200" aria-label="Tableau des prestataires">
-                    <thead>
+                <table className={`min-w-full ${cardBg} ${borderColor}`}  aria-label="Tableau des prestataires">
+                <thead>
                         <tr>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Nom
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 EAN
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Longueur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Largeur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Hauteur (cm)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Prix (€)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Poids Max (kg)
                             </th>
-                            <th className="px-4 py-2 border border-gray-200 bg-gray-100" scope="col">
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`} scope="col">
                                 Action
                             </th>
                         </tr>
@@ -138,7 +148,7 @@ const ProvidersAdminList = () => {
                         {providers.map((provider) => (
                             <tr key={provider.id}>
                                 <td
-                                    className="px-4 py-2 border border-gray-200 hover:underline cursor-pointer"
+                                    className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor} hover:underline cursor-pointer`}
                                     onClick={() => {
                                         setSelectedProviderId(provider.id);
                                         setIsProvidersProductsModalOpen(true);
@@ -147,25 +157,25 @@ const ProvidersAdminList = () => {
                                 >
                                     {provider.name}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.EAN}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.length}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.width}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.height}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.price}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     {provider.MaxWeight}
                                 </td>
-                                <td className="px-4 py-2 border border-gray-200">
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${subTextColor}`}>
                                     <div className="flex space-x-2">
                                         <button
                                             onClick={() =>

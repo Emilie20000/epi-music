@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBoxOpen, FaShippingFast, FaCheckCircle, FaTimesCircle, FaDownload, FaTimes } from 'react-icons/fa';
-import { generateOrderPDF } from './pdfUtils';  // Importez la fonction depuis le fichier pdfUtils
+import { generateOrderPDF } from './pdfUtils';
+import { useTheme } from "../../context/ThemeContext";
 
 const UserOrdersList = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState("");
+    const { isDark } = useTheme();
+
+    const cardBg = isDark ? "bg-slate-700" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const buttonBg = isDark ? "bg-blue-600" : "bg-blue-500";
+    const buttonHoverBg = isDark ? "hover:bg-blue-500" : "hover:bg-blue-400";
+    const modalBg = isDark ? "bg-slate-800" : "bg-white";
+    const modalTextColor = isDark ? "text-slate-200" : "text-black";
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -75,7 +84,7 @@ const UserOrdersList = () => {
     const handleDownload = async (orderId) => {
         try {
             const response = await axios.get(`http://localhost:8000/api/order/${orderId}/details`);
-            generateOrderPDF(response.data);  // Utilisez la fonction importée pour générer le PDF
+            generateOrderPDF(response.data);
         } catch (error) {
             console.error("Erreur lors du téléchargement du PDF : ", error);
         }
@@ -84,25 +93,25 @@ const UserOrdersList = () => {
     return (
         <div className="w-full" aria-label="Liste de vos commandes">
             <div className="flex flex-col items-center mb-4">
-                <h2 className="text-xl font-bold mb-4" aria-label="Mes Commandes">Mes Commandes</h2>
+                <h2 className={`text-xl font-bold mb-4 ${textColor}`}  aria-label="Mes Commandes">Mes Commandes</h2>
             </div>
-    
+
             {error && (
                 <p className="text-red-500 text-center" role="alert">
                     {error}
                 </p>
             )}
-    
+
             <div className="flex flex-wrap justify-center gap-4">
                 {orders.length > 0 ? (
                     orders.map((order) => (
                         <div
                             key={order.id}
-                            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center"
+                            className={`shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center ${cardBg}`}
                             aria-label={`Commande numéro ${order.id}`}
                         >
                             <h3
-                                className="text-xl font-bold mb-2 cursor-pointer"
+                                className={`text-xl font-bold mb-2 cursor-pointer ${textColor}`}
                                 onClick={() => handleOrderClick(order.id)}
                                 aria-label={`Voir les détails de la commande numéro ${order.id}`}
                                 role="button"
@@ -110,32 +119,30 @@ const UserOrdersList = () => {
                             >
                                 Commande #{order.id}
                             </h3>
-                            <p><strong>Date :</strong> {order.createdAt}</p>
-                            <p className="flex items-center" aria-label={`Statut de la commande: ${order.status}`}>
-                                <strong>Statut :</strong>
+                            <p className={`${textColor}`}><strong>Date :</strong> {order.createdAt}</p>
+                            <p className="flex items-center"  aria-label={`Statut de la commande: ${order.status}`}>
+                                <strong className={`${textColor}`}>Statut :</strong>
                                 <span className="ml-2 flex items-center">
                                     {getStatusIcon(order.status)}
-                                    <span className={`ml-2 ${getStatusColor(order.status)}`}>
-                                        {order.status}
-                                    </span>
+                                    <span className={`ml-2 ${getStatusColor(order.status)} ${textColor}`}>{order.status}</span>
                                 </span>
                             </p>
                             <div className="flex mt-4">
                                 <button
-                                    className="mt-2 bg-blue-500 text-white p-3 rounded-full"
+                                    className={`mt-2 ${buttonBg} text-white p-3 rounded-full ${buttonHoverBg}`}
                                     onClick={() => handleDownload(order.id)}
                                     aria-label={`Télécharger la facture pour la commande numéro ${order.id}`}
                                 >
-                                    <FaDownload className="text-base" aria-hidden="true" />
+                                    <FaDownload className="text-base"  aria-hidden="true" />
                                 </button>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <p aria-label="Aucune commande trouvée">Aucune commande trouvée.</p>
+                    <p className={`${textColor}`}>Aucune commande trouvée.</p>
                 )}
             </div>
-    
+
             {isModalOpen && selectedOrderDetails && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
@@ -143,55 +150,45 @@ const UserOrdersList = () => {
                     aria-modal="true"
                     aria-labelledby="modalTitle"
                 >
-                    <div className="relative bg-white rounded-lg shadow-lg p-6 w-2/3 max-w-3xl">
+                    <div className={`relative ${modalBg} rounded-lg shadow-lg p-6 w-2/3 max-w-3xl`}>
                         <button
                             className="absolute top-4 right-4 p-2 rounded-full"
                             onClick={closeModal}
                             aria-label="Fermer le modal"
                         >
-                            <FaTimes aria-hidden="true" />
+                            <FaTimes className={`${modalTextColor}`} aria-hidden="true" />
                         </button>
-                        <h3 id="modalTitle" className="text-lg font-bold mb-4">
-                            Détails de la commande #{selectedOrderDetails.id}
-                        </h3>
-                        <table className="min-w-full bg-white" aria-label="Détails de la commande">
+                        <h3 className={`text-lg font-bold mb-4 ${modalTextColor}`}>Détails de la commande #{selectedOrderDetails.id}</h3>
+                        <table className="min-w-full"  aria-label="Détails de la commande">
                             <thead>
-                                <tr>
-                                    <th className="py-2 px-4 border-b border-gray-200">Produit</th>
-                                    <th className="py-2 px-4 border-b border-gray-200">Couleur</th>
-                                    <th className="py-2 px-4 border-b border-gray-200">Taille</th>
-                                    <th className="py-2 px-4 border-b border-gray-200">Quantité</th>
-                                </tr>
+                            <tr>
+                                <th className="py-2 px-4 border-b border-gray-200 text-left">Produit</th>
+                                <th className="py-2 px-4 border-b border-gray-200 text-center">Couleur</th>
+                                <th className="py-2 px-4 border-b border-gray-200 text-center">Taille</th>
+                                <th className="py-2 px-4 border-b border-gray-200 text-center">Quantité</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {selectedOrderDetails.items.map((item, index) => (
-                                    <tr key={index}>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-justify">
-                                            {item.productName}
-                                        </td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
-                                            {item.color || '-'}
-                                        </td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
-                                            {item.size || '-'}
-                                        </td>
-                                        <td className="py-2 px-4 border-b border-gray-200 text-center">
-                                            {item.quantity}
-                                        </td>
-                                    </tr>
-                                ))}
+                            {selectedOrderDetails.items.map((item, index) => (
+                                <tr key={index}>
+                                    <td className={`py-2 px-4 border-b border-gray-200 text-justify ${modalTextColor}`}>{item.productName}</td>
+                                    <td className={`py-2 px-4 border-b border-gray-200 text-center ${modalTextColor}`}>{item.color || '-'}</td>
+                                    <td className={`py-2 px-4 border-b border-gray-200 text-center ${modalTextColor}`}>{item.size || '-'}</td>
+                                    <td className={`py-2 px-4 border-b border-gray-200 text-center ${modalTextColor}`}>{item.quantity}</td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
-                        <div className="mt-4" aria-label={`Prix total de la commande : ${selectedOrderDetails.totalPrice} euros`}>
-                            <strong>Prix Total :</strong> {selectedOrderDetails.totalPrice} €
+                        <div className="mt-4">
+                            <strong className={`${modalTextColor}`}  aria-label={`Prix total de la commande : ${selectedOrderDetails.totalPrice} euros`}>Prix Total :</strong> {selectedOrderDetails.totalPrice} €
                         </div>
                         <div className="mt-4 flex justify-end">
                             <button
-                                className="bg-blue-500 text-white p-3 rounded-full"
+                                className={`mt-2 ${buttonBg} text-white p-3 rounded-full ${buttonHoverBg}`}
                                 onClick={() => handleDownload(selectedOrderDetails.id)}
                                 aria-label={`Télécharger la facture de la commande numéro ${selectedOrderDetails.id}`}
                             >
-                                <FaDownload className="text-base" aria-hidden="true" />
+                                <FaDownload className="text-base" aria-hidden="true"  />
                             </button>
                         </div>
                     </div>
@@ -199,6 +196,5 @@ const UserOrdersList = () => {
             )}
         </div>
     );
-}    
-
+};
 export default UserOrdersList;

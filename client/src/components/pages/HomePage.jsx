@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ProductList.css";
-import CategoryCard from "../cards/CategoryCard";
 import HomeCarousel from "../carousel/HomeCarousel";
-import vinyles from "../../assets/vinyles.jpg";
-import instruments from "../../assets/instruments.jpg";
-import goodies from "../../assets/goodies.jpeg";
+import vinyles from "../../assets/vinyles.webp";
+import instruments from "../../assets/instruments.webp";
+import goodies from "../../assets/goodies.webp";
 
 const HomePage = () => {
     const [categories, setCategories] = useState([]);
@@ -50,6 +50,10 @@ const HomePage = () => {
     }, []);
 
     return (
+        <>
+        <Helmet>
+            <title>Accueil | Epimusic</title>
+        </Helmet>
         <div aria-label="Page d'accueil">
             {message && <p className="success">{message}</p>}
             {error && <p className="error">{error}</p>}
@@ -58,6 +62,7 @@ const HomePage = () => {
                 {error && <p className="text-red-500" aria-label="Message d'erreur">{error}</p>}
             </div>
         </div>
+        </>
     );
 };
 

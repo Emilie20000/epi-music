@@ -30,7 +30,7 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-const PaymentForm = ({ orderPrice, orderId }) => {
+const PaymentForm = ({ orderPrice, orderId, isDark }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
@@ -40,6 +40,11 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   const [userId, setUserId] = useState();
   const [cartToken, setCartToken] = useState();
   const navigate = useNavigate();
+
+  const BgColor = isDark ? "bg-slate-600" : "bg-gray-100";
+  const textColor = isDark ? "text-slate-200" : "text-gray-800";
+  const borderColor = isDark ?  "border-slate-600" : "border-gray-300";
+  const subTextColor = isDark ?  "text-slate-300" : "text-gray-700";
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -144,89 +149,69 @@ const PaymentForm = ({ orderPrice, orderId }) => {
   return (
     <>
       {paymentSuccess ? (
-        <div
-          className="w-full h-full flex flex-col justify-center items-center text-center"
-          aria-label="Paiement réussi"
-        >
+        <div className="w-full h-full flex flex-col justify-center items-center text-center" aria-label="Paiement réussi">
           <FontAwesomeIcon
             icon={faCheckCircle}
             className="text-green-500 text-6xl"
-            aria-hidden="true"
+            aria-label="Paiement réussi"
           />
-          <p className="text-2xl mt-8 mb-4">Paiement réussi</p>
-          <p className="text-2xl">Merci d'avoir commandé chez Epimusic !</p>
-          <p className="text-xl mt-2">
-            Vous allez être redirigés dans quelques instants
-          </p>
+          <p className="text-xl mt-8 mb-4">Paiement réussi</p>
+          <p className="text-xl">Merci d'avoir commandé chez Epimusic !</p>
+          <p className="text-xl mt-2">Vous allez être redirigés dans quelques instants</p>
         </div>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6 max-w-md mx-auto"
-          aria-label="Formulaire de paiement"
-        >
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto" aria-label="Formulaire de paiement">
           <div>
-            <label
-              className="block text-gray-700 mb-2 text-2xl"
-              htmlFor="cardHolderName"
-            >
+            <label className="block text-gray-700 mb-2 text-xl" className={`block ${subTextColor} mb-2 text-2xl`} htmlFor="cardHolderName">
               Titulaire de la carte
             </label>
-            <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
+            <div className={`p-3 border border-gray-300 rounded-lg shadow-sm`}>
               <input
                 type="text"
-                id="cardHolderName"
                 value={cardHolderName}
                 onChange={(e) => setCardHolderName(e.target.value)}
                 placeholder="Nom du titulaire"
-                className="w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0"
+                className={`w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0 ${BgColor} ${textColor}`}
                 required
                 aria-label="Nom du titulaire de la carte"
               />
             </div>
           </div>
           <div>
-            <label
-              className="block text-gray-700 mb-2 text-2xl"
-              htmlFor="cardNumber"
-            >
+            <label className={`block ${textColor} mb-2 text-xl`}>
               Numéro de carte
             </label>
             <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
               <CardNumberElement
                 options={CARD_ELEMENT_OPTIONS}
-                className="w-full focus:outline-none"
+                className={`w-full focus:outline-none ${textColor}`}
+                htmlFor="cardNumber"
                 aria-label="Entrer le numéro de carte"
               />
+              <p className={`text-2xl mt-8 mb-4 ${textColor}`}>Paiement réussi</p>
+              <p className={`text-2xl ${textColor}`}>Merci d'avoir commandé chez Epimusic !</p>
+              <p className={`text-xl mt-2 ${subTextColor}`}>Vous allez être redirigés dans quelques instants</p>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex space-x-16">
             <div>
-              <label
-                className="block text-gray-700 mb-2 text-2xl"
-                htmlFor="cardExpiry"
-              >
+              <label className={`block ${textColor} mb-2 text-xl`} htmlFor="cardExpiry">
                 Date d'expiration
               </label>
               <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
                 <CardExpiryElement
                   options={CARD_ELEMENT_OPTIONS}
-                  className="w-full focus:outline-none"
+                  className={`w-2/3 focus:outline-none ${textColor}`}
                   aria-label="Entrer la date d'expiration"
                 />
               </div>
             </div>
-            <div className="w-1/6 ">
-              <label
-                className="block text-gray-700 mb-2 text-2xl"
-                htmlFor="cardCvc"
-              >
-                CVC
-              </label>
+            <div className="w-2/6 ">
+              <label className={`block ${textColor} mb-2 text-xl`} htmlFor="cardCvc">CVC</label>
               <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
                 <CardCvcElement
                   options={CARD_ELEMENT_OPTIONS}
-                  className="w-full focus:outline-none"
+                  className={`w-full focus:outline-none ${textColor}`}
                   aria-label="Entrer le code CVC"
                 />
               </div>
@@ -235,16 +220,13 @@ const PaymentForm = ({ orderPrice, orderId }) => {
           <button
             type="submit"
             disabled={!stripe || isProcessing}
-            className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
+            className="mt-4 p-2 bg-rose-600 text-white rounded flex items-center justify-center w-full text-xl"
             aria-label="Payer"
           >
             {isProcessing ? "Transaction en cours..." : "Payer"}
           </button>
           {isProcessing && (
-            <div
-              className="flex items-center justify-center p-4"
-              aria-label="Chargement"
-            >
+            <div className="flex items-center justify-center p-4" aria-label="Chargement">
               <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
             </div>
           )}

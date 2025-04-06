@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../Alerts/Alert";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
+import logoDark from "../../assets/logo-dark.webp";
+import { useTheme } from "../../context/ThemeContext";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -9,6 +11,7 @@ function Login() {
     const [message, setMessage] = useState("");
     const [alert, setAlert] = useState({ message: "", type: "error" });
     const navigate = useNavigate();
+    const { isDark } = useTheme();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,7 +22,7 @@ function Login() {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/api/login", { //localhost
+            const response = await fetch("http://localhost:8000/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,11 +59,13 @@ function Login() {
         }
     };
 
+    const logoToUse = isDark ? logoDark : logo;
+
     return (
         <div className="flex items-center justify-center overflow-hidden" aria-label="Page de connexion">
             <div className="max-w-md w-full mx-auto p-8 rounded-lg mb-16">
                 <div className="flex items-center justify-center py-16">
-                    <img src={logo} alt="Logo de l'application" className="w-64 h-64" />
+                    <img src={logoToUse} alt="Logo de l'application" className="w-64 h-64" />
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4" aria-label="Formulaire de connexion">
                     <div className="flex items-center text-lg mb-6 md:mb-8 relative">
@@ -104,18 +109,20 @@ function Login() {
                     {message && <p className="text-red-600" role="alert">{message}</p>}
                     <button
                         type="submit"
-                        className="w-full bg-white text-[#EEB829] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="w-full bg-[#F3F3F3] text-[#FF9300] py-4 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         aria-label="Se connecter à votre compte"
                     >
                         Se connecter
                     </button>
                 </form>
                 <Alert message={alert.message} type={alert.type} />
-                <p className="mt-4 text-white text-center">
+                <p className={`${isDark ? 'text-white' : 'text-black'} mt-4 text-center`}>
                     Vous n'avez pas de compte ?{" "}
                     <Link
                         to="/register"
-                        className="text-indigo-600 hover:text-indigo-800"
+                        className={`${
+                            isDark ? 'text-[#06C9F7] hover:text-[#0394B9]' : 'text-[#4F46E5] hover:text-[#4338CA]'
+                        }`}
                         aria-label="Accéder à la page d'inscription"
                     >
                         Inscription

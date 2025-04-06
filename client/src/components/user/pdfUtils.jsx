@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.webp';
 
 export const generateOrderPDF = (orderDetails) => {
     const doc = new jsPDF('p', 'mm', 'a4');
