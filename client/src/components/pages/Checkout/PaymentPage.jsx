@@ -68,7 +68,7 @@ const PaymentPage = () => {
           <div className={`w-full ${BgColor} p-4 rounded-lg`} aria-live="polite">
             {order && (
                 <>
-                  <p className= aria-label="Quantité de produits" {`text-lg ${textColor}`}>{order.itemsQuantity} produits</p>
+                  <p className={`text-lg ${textColor}`} aria-label="Quantité de produits" >{order.itemsQuantity} produits</p>
                   <hr className="mb-4" />
                   <div className={`w-full flex justify-between text-lg md:text-xl ${subTextColor}`}>
                     <p aria-label="Prix du panier" >Prix du panier :</p>
