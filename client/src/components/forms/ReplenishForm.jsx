@@ -27,7 +27,7 @@ const ReplenishForm = ({ product, onClose }) => {
         };
 
         axios.post("http://localhost:8000/api/admin/products/replenish", { products: [updatedProduct] })
-            .then((response) => {
+            .then(() => {
                 alert("Stocks mis à jour avec succès !");
                 onClose();
             })
@@ -44,9 +44,13 @@ const ReplenishForm = ({ product, onClose }) => {
                 <div key={index} className="mb-4">
                     <p>Couleur: {stock.color}</p>
                     <p>Taille: {stock.size}</p>
-                    <label className="block text-sm font-medium text-gray-700">Stock:</label>
+                    <label className="block text-sm font-medium text-gray-700" htmlFor={`stock-${index}`}>
+                        Stock:
+                    </label>
                     <input
                         type="number"
+                        id={`stock-${index}`}
+                        aria-label={`Modifier le stock pour la couleur ${stock.color} et la taille ${stock.size}`}
                         value={stock.stock}
                         onChange={(e) => handleStockChange(index, e.target.value)}
                         className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -56,12 +60,14 @@ const ReplenishForm = ({ product, onClose }) => {
             <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 onClick={handleSubmit}
+                aria-label="Mettre à jour les stocks du produit"
             >
                 Mettre à jour les stocks
             </button>
             <button
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-4"
                 onClick={onClose}
+                aria-label="Annuler la mise à jour des stocks"
             >
                 Annuler
             </button>

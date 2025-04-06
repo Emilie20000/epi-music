@@ -16,20 +16,16 @@ function SearchBar() {
         setSearchTerm(value);
 
         if (value.trim() === '') {
-         
             navigate(`/products`);
         } else if (!categoryName || !categoryId) {
-            
             navigate(`/products/search?query=${value}`);
         } else {
-           
             navigate(`/products/${categoryName}/${categoryId}/search?query=${value}`);
         }
     };
 
-
     return (
-        <div className="pt-2 flex flex-row relative mx-auto text-gray-600 w-1/2">
+        <div className="pt-2 flex flex-row relative mx-auto text-gray-600 w-[90%] md:w-1/2">
             <div className="relative w-full">
                 <input
                     className="border-2 border-gray-300 bg-white h-10 pl-5 pr-10 rounded-full text-sm focus:outline-none w-full"
@@ -38,10 +34,12 @@ function SearchBar() {
                     value={searchTerm}
                     onChange={handleSearchChange}
                     placeholder="Rechercher un article..."
+                    aria-label="Rechercher un article"
                 />
                 <button
                     type="submit"
                     className="absolute right-4 rounded-full bg-transparent top-2"
+                    aria-label="Lancer la recherche"
                 >
                     <svg
                         className="h-5 w-5 fill-current text-gray-600"
@@ -51,7 +49,6 @@ function SearchBar() {
                         x="0px"
                         y="0px"
                         viewBox="0 0 30.239 30.239"
-                        style={{ enableBackground: "new 0 0 30.239 30.239" }}
                         xmlSpace="preserve"
                         width="512px"
                         height="512px"

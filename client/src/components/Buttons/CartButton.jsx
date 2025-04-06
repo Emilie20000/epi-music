@@ -5,6 +5,7 @@ const CartButton = ({ text, handleClick }) => {
     <button
       className="mt-4 p-2 bg-rose-600 text-white rounded flex items-center justify-center w-full text-2xl"
       onClick={handleClick}
+      aria-label={text}
     >
       {text}
     </button>

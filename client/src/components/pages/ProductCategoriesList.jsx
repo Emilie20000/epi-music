@@ -25,8 +25,8 @@ const ProductCategoriesList = () => {
     }, []);
 
     return (
-        <div className="flex flex-wrap justify-center">
-            {error && <p className="text-red-500">{error}</p>}
+        <div className="flex flex-wrap justify-center" aria-label="Liste des catégories de produits">
+            {error && <p className="text-red-500" role="alert">{error}</p>}
             {categories.map((category) => (
                 <CategoryCard
                     key={category.id}

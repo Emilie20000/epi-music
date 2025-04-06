@@ -106,8 +106,12 @@ class AuthController extends AbstractController
 
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-            if (!$user || !$this->passwordHasher->isPasswordValid($user, $password)) {
-                return new JsonResponse(['message' => 'Email ou mot de passe incorrect'], Response::HTTP_UNAUTHORIZED);
+            if(!$user) {
+                return new JsonResponse(['message' => 'Utilisateur non trouvé. Veuillez vérfier le champ E-mail.'], Response::HTTP_UNAUTHORIZED);
+            }
+
+            if (!$this->passwordHasher->isPasswordValid($user, $password)) {
+                return new JsonResponse(['message' => 'Mot de passe incorrect. Veuillez vérfier votre mot de passe.'], Response::HTTP_UNAUTHORIZED);
             }
 
             $session = $this->requestStack->getSession();

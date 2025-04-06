@@ -96,11 +96,16 @@ const FilteredArticles = () => {
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" role="main" aria-label="Articles filtrés">
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-40 lg:hidden" onClose={setMobileFiltersOpen}>
+          <Dialog 
+            as="div" 
+            className="relative z-40 lg:hidden" 
+            onClose={setMobileFiltersOpen}
+            aria-label="Filtres mobiles"
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -123,13 +128,17 @@ const FilteredArticles = () => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                <Dialog.Panel 
+                  className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl"
+                  aria-label="Menu des filtres mobiles"
+                >
                   <div className="flex items-center justify-between px-4">
-                    <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                    <h2 className="text-lg font-medium text-gray-900" aria-label="Titre: Filtres">Filters</h2>
                     <button
                       type="button"
                       className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
                       onClick={() => setMobileFiltersOpen(false)}
+                      aria-label="Fermer le menu des filtres"
                     >
                       <span className="sr-only">Close menu</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -137,7 +146,7 @@ const FilteredArticles = () => {
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
+                  <form className="mt-4 border-t border-gray-200" aria-label="Formulaire de filtres">
                     {filters.map((section) => (
                       <FilterDisclosure key={section.id} section={section} />
                     ))}
@@ -148,14 +157,17 @@ const FilteredArticles = () => {
           </Dialog>
         </Transition.Root>
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Contenu principal des articles filtrés">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <div className="flex items-center">
-              <Menu as="div" className="relative inline-block text-left">
+              <Menu as="div" className="relative inline-block text-left" aria-label="Menu de tri">
                 <div>
-                  <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                  <MenuButton 
+                    className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                    aria-label="Ouvrir le menu de tri"
+                  >
                     Sort
-                    <FontAwesomeIcon icon={faChevronDown} className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" />
+                    <FontAwesomeIcon icon={faChevronDown} className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                   </MenuButton>
                 </div>
 
@@ -168,7 +180,10 @@ const FilteredArticles = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems 
+                    className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    aria-label="Options de tri"
+                  >
                     <div className="py-1">
                       {sortOptions.map((option) => (
                         <MenuItem key={option.name}>
@@ -180,6 +195,7 @@ const FilteredArticles = () => {
                                 active ? 'bg-gray-100' : '',
                                 'block px-4 py-2 text-sm'
                               )}
+                              aria-label={`Trier par ${option.name}`}
                             >
                               {option.name}
                             </a>
@@ -191,7 +207,11 @@ const FilteredArticles = () => {
                 </Transition>
               </Menu>
 
-              <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+              <button 
+                type="button" 
+                className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
+                aria-label="Afficher la vue en grille"
+              >
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
               </button>
@@ -199,6 +219,7 @@ const FilteredArticles = () => {
                 type="button"
                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
                 onClick={() => setMobileFiltersOpen(true)}
+                aria-label="Afficher les filtres"
               >
                 <span className="sr-only">Filters</span>
                 <FunnelIcon className="h-5 w-5" aria-hidden="true" />
@@ -213,10 +234,9 @@ const FilteredArticles = () => {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10">
               
-              <form className="hidden lg:block">
+              <form className="hidden lg:block" aria-label="Filtres avancés">
                 {filters.map((section) => (
                   <FilterDisclosure key={section.id} section={section} />
-                
                 ))}
               </form>
           
