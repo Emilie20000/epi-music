@@ -17,11 +17,13 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
     const sizeLabel = getSizeLabel();
     const shouldShowSize = sizeLabel && category.toLowerCase() !== 'instrument';
 
-
     const textColor = isDark ? "text-slate-200" : "text-black";
-    const subTextColor = isDark ? "text-slate-300" : "text-gray-600";
-    const cardBg = isDark ? "text-slate-600" : "bg-white";
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
     const borderColor = isDark ? "text-slate-600" : "bg-white";
+
+    const stockColor = stock > 0
+        ? (isDark ? "text-green-400" : "text-green-600")
+        : (isDark ? "text-red-400" : "text-red-600");
 
     return (
         <div className={`p-6 ${cardBg} ${borderColor} rounded-lg shadow-md`}>
@@ -29,7 +31,7 @@ const ProductDescription = ({ category, description, stock, color, size, price, 
             <p className={`mb-4 ${textColor}`}>{description}</p>
             <div className="flex items-center mb-2">
                 <span className={`font-semibold mr-2 ${textColor}`}>Stock:</span>
-                <span className={stock > 0 ? "text-green-600" : "text-red-600"}>
+                <span className={stockColor}>
                     {stock > 0 ? `${stock}` : 'Bientôt disponible'}
                 </span>
             </div>
