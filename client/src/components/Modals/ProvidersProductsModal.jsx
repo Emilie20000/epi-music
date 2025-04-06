@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Alert from '../Alerts/Alert';
+import { useTheme } from "../../context/ThemeContext";
 
 const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
     const [products, setProducts] = useState([]);
     const [alert, setAlert] = useState({ type: '', message: '' });
+
+    const { isDark } = useTheme();
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-200";
 
     useEffect(() => {
         if (isOpen && providerId) {
@@ -38,31 +44,31 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
-            <div className="bg-white p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                <h2 className="text-xl font-bold mb-4">Produits éligibles</h2>
+            <div className={`p-6 rounded-lg z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto ${cardBg}`}>
+                <h2 className={`text-xl font-bold mb-4 ${textColor}`}>Produits éligibles</h2>
                 {alert.message && <Alert message={alert.message} type={alert.type} />}
-                
+
                 {products.length > 0 ? (
-                    <table className="min-w-full bg-white border border-gray-200">
+                    <table className={`min-w-full ${cardBg} ${borderColor}`}>
                         <thead>
-                            <tr>
-                                <th className="px-4 py-2 border border-gray-200 bg-gray-100">Nom du Produit</th>
-                                <th className="px-4 py-2 border border-gray-200 bg-gray-100">Poids (kg)</th>
-                            </tr>
+                        <tr>
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${textColor}`}>Nom du Produit</th>
+                            <th className={`px-4 py-2 border ${borderColor} ${cardBg} ${textColor}`}>Poids (kg)</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {products.map((product) => (
-                                <tr key={product.id}>
-                                    <td className="px-4 py-2 border border-gray-200">{product.name}</td>
-                                    <td className="px-4 py-2 border border-gray-200">{product.weights}</td>
-                                </tr>
-                            ))}
+                        {products.map((product) => (
+                            <tr key={product.id}>
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${textColor}`}>{product.name}</td>
+                                <td className={`px-4 py-2 border ${borderColor} ${cardBg} ${textColor}`}>{product.weights}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 ) : (
-                    <p className="text-center text-red-500 font-bold">Aucun produit trouvé</p>
+                    <p className={`text-center text-red-500 font-bold ${textColor}`}>Aucun produit trouvé</p>
                 )}
-    
+
                 <div className="flex justify-end mt-4">
                     <button
                         type="button"
@@ -75,7 +81,6 @@ const ProvidersProductsModal = ({ isOpen, onClose, providerId }) => {
             </div>
         </div>
     );
-    
 };
 
 export default ProvidersProductsModal;

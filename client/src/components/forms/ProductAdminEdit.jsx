@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "../../styles/ProductForm.css";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProductAdminEdit = () => {
     const { id } = useParams();
@@ -32,12 +33,20 @@ const ProductAdminEdit = () => {
     const [models, setModels] = useState([]);
     const [currentModelIndex, setCurrentModelIndex] = useState(0);
     const [stocks, setStocks] = useState([]);
-   
 
 
     const searchParams = new URLSearchParams(location.search);
     const selectedProductIds = searchParams.get('selectedProducts')?.split(',') || [];
     const currentEditIndex = parseInt(searchParams.get('currentEditIndex')) || 0;
+
+    const { isDark } = useTheme();
+
+    const cardBg = isDark ? "bg-slate-600" : "bg-white";
+    const textColor = isDark ? "text-slate-200" : "text-black";
+    const inputBg = isDark ? "bg-slate-700" : "bg-gray-100";
+    const borderColor = isDark ? "border-slate-400" : "border-gray-200";
+    const buttonBg = isDark ? "bg-blue-700 hover:bg-blue-600" : "bg-blue-700 hover:bg-blue-600";
+    const buttonTextColor = isDark ? "text-white" : "text-white";
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/admin/products/${id}`)
@@ -292,359 +301,338 @@ const ProductAdminEdit = () => {
     if (!product) return <div>Chargement...</div>;
 
     return (
-    <div className="w-full">
-        <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
-            <div className="bg-white w-full shadow rounded p-8 sm:p-12">
-                <p className="text-3xl font-bold leading-7 text-center text-black">
-                    Mettre à jour le produit
-                </p>
-                {message && <p className="success">{message}</p>}
-                {error && <p className="error">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div className="md:flex items-center mt-12">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="name"
-                            >
-                                Nom
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                placeholder="Entrez le nom du produit"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            />
+        <div className="w-full">
+            <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mt-8 mb-8">
+                <div className={`${cardBg} w-full shadow rounded p-8 sm:p-12`}>
+                    <p className={`${textColor} text-3xl font-bold leading-7 text-center`}>
+                        Mettre à jour le produit
+                    </p>
+                    {message && <p className="success">{message}</p>}
+                    {error && <p className="error">{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="md:flex items-center mt-12">
+                            <div className="w-full flex flex-col">
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="name"
+                                >
+                                    Nom
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    placeholder="Entrez le nom du produit"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="description"
-                            >
-                                Description
-                            </label>
-                            <textarea
-                                id="description"
-                                placeholder="Entrez la description du produit"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                rows="5"
-                            />
-                        </div>
-                    </div>
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="category"
-                            >
-                                Catégorie
-                            </label>
-                            <select
-                                id="category"
-                                value={category}
-                                onChange={(e) => handleCategoryChange(e.target.value)}
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            >
-                                <option value="" className="text-gray-500">
-                                    Sélectionnez une catégorie
-                                </option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    {category === "1" && (
                         <div className="md:flex items-center mt-8">
                             <div className="w-full flex flex-col">
-                                <label className="font-semibold leading-none text-black" htmlFor="brand">
-                                    Marque
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="description"
+                                >
+                                    Description
                                 </label>
-                                <input
-                                    type="text"
-                                    id="brand"
-                                    placeholder="Entrez le nom de la marque"
-                                    value={brand}
-                                    onChange={(e) => setBrand(e.target.value)}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                <textarea
+                                    id="description"
+                                    placeholder="Entrez la description du produit"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    rows="5"
                                 />
                             </div>
                         </div>
-                    )}
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label className="font-semibold leading-none text-black" htmlFor="tags">
-                                Tags
-                            </label>
-                            <div className="flex">
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label
+                                    className={`${textColor} font-semibold leading-none`}
+                                    htmlFor="category"
+                                >
+                                    Catégorie
+                                </label>
+                                <select
+                                    id="category"
+                                    value={category}
+                                    onChange={(e) => handleCategoryChange(e.target.value)}
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                >
+                                    <option value="" className="text-gray-500">
+                                        Sélectionnez une catégorie
+                                    </option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        {category === "1" && (
+                            <div className="md:flex items-center mt-8">
+                                <div className="w-full flex flex-col">
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="brand">
+                                        Marque
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="brand"
+                                        placeholder="Entrez le nom de la marque"
+                                        value={brand}
+                                        onChange={(e) => setBrand(e.target.value)}
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    />
+                                </div>
+                            </div>
+                        )}
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="tags">
+                                    Tags
+                                </label>
+                                <div className="flex">
+                                    <input
+                                        type="text"
+                                        id="tags"
+                                        placeholder="Entrez un tag"
+                                        value={tagInput}
+                                        onChange={handleTagInputChange}
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleAddTag}
+                                        className="bg-blue-700 text-white px-4 py-2 rounded ml-2"
+                                    >
+                                        Ajouter
+                                    </button>
+                                </div>
+                                <div className="flex flex-wrap mt-2">
+                                    {tags.map((tag, index) => (
+                                        <div key={index} className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mt-2">
+                                            {tag}
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveTag(index)}
+                                                className="ml-2 text-red-600"
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="weight">
+                                    Poids
+                                </label>
                                 <input
-                                    type="text"
-                                    id="tags"
-                                    placeholder="Entrez un tag"
-                                    value={tagInput}
-                                    onChange={handleTagInputChange}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200 flex-grow"
-                                />
+                                    type="number"
+                                    id="weight"
+                                    placeholder="Entrez le poids du produit en Kg"
+                                    value={weight}
+                                    onChange={(e) => setWeight(e.target.value)}
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}                                />
+                            </div>
+                        </div>
+
+                        {models.length > 1 && (
+                            <div className="flex items-center justify-center w-full mt-8">
                                 <button
                                     type="button"
-                                    onClick={handleAddTag}
-                                    className="bg-blue-700 text-white px-4 py-2 rounded ml-2"
+                                    onClick={() => {
+                                        saveCurrentModelData();
+                                        handlePreviousModel();
+                                    }}
+                                    disabled={currentModelIndex === 0}
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
-                                    Ajouter
+                                    Modèle Précédent
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        saveCurrentModelData();
+                                        handleNextModel();
+                                    }}
+                                    disabled={currentModelIndex === models.length - 1}
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                >
+                                    Modèle Suivant
                                 </button>
                             </div>
-                            <div className="flex flex-wrap mt-2">
-                                {tags.map((tag, index) => (
-                                    <div key={index} className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mt-2">
-                                        {tag}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveTag(index)}
-                                            className="ml-2 text-red-600"
-                                        >
-                                            &times;
-                                        </button>
-                                    </div>
-                                ))}
+                        )}
+
+                        {shouldDisplayColor(category) && (
+                            <div className="md:flex items-center mt-8">
+                                <div className="w-full md:w-1/2 flex flex-col">
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="color">
+                                        Couleur
+                                    </label>
+                                    <select
+                                        id="color"
+                                        value={color}
+                                        onChange={(e) => setColor(e.target.value)}
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                    >
+                                        <option value="" className="text-gray-500">
+                                            Sélectionnez une couleur
+                                        </option>
+                                        {colors.map((clr) => (
+                                            <option key={clr.id} value={clr.id}>
+                                                {clr.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
+                        {shouldDisplaySize(category) && (
+                            <div className="md:flex items-center mt-8">
+                                <div className="w-full md:w-1/2 flex flex-col">
+                                    <label className={`${textColor} font-semibold leading-none`} htmlFor="size">
+                                        Taille
+                                    </label>
+                                    <select
+                                        id="size"
+                                        value={size}
+                                        onChange={(e) => setSize(e.target.value)}
+                                        className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                    >
+                                        <option value="" className="text-gray-500">
+                                            Sélectionnez une taille
+                                        </option>
+                                        {sizes.map((sz) => (
+                                            <option key={sz.id} value={sz.id}>
+                                                {sz.value}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="price">
+                                    Prix
+                                </label>
+                                <input
+                                    type="number"
+                                    id="price"
+                                    placeholder="Entrez le prix du produit"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    min="0.01"
+                                    step="0.01"
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                />
                             </div>
                         </div>
-                    </div>
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="weight"
-                            >
-                                Poids
-                            </label>
-                            <input
-                                type="number"
-                                id="weight"
-                                placeholder="Entrez le poids du produit en Kg"
-                                value={weight}
-                                onChange={(e) => setWeight(e.target.value)}
-                                min="0"
-                                step="0.01"
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            />
+
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="stock">
+                                    Stock
+                                </label>
+                                <input
+                                    type="number"
+                                    id="stock"
+                                    placeholder="Entrez le stock du produit"
+                                    value={stock}
+                                    onChange={(e) => setStock(e.target.value)}
+                                    min="0"
+                                    required
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    
-                    {models.length > 1 && (
+
+                        <div className="md:flex items-center mt-8">
+                            <div className="w-full flex flex-col">
+                                <label className={`${textColor} font-semibold leading-none`} htmlFor="photos">
+                                    Photos
+                                </label>
+                                <input
+                                    type="file"
+                                    id="photos"
+                                    multiple
+                                    onChange={handlePhotoChange}
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
+                                />
+                                <div className="flex flex-col mt-4">
+                                    {photoPaths.map((path, index) => (
+                                        <div key={index} className="flex items-center mt-2">
+                                            <p className={`mr-4 ${textColor}`}>{path}</p>
+                                            <button
+                                                type="button"
+                                                className={`mr-4 px-3 py-1 rounded ${mainImageIndex === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                                                onClick={() => setMainImageIndex(index)}
+                                            >
+                                                {mainImageIndex === index ? 'Image principale' : 'Définir comme principale'}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="ml-2 text-red-600"
+                                                onClick={() => handleRemovePhoto(index)}
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="flex items-center justify-center w-full mt-8">
                             <button
-                                type="button"
+                                type="submit"
+                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
                                 onClick={() => {
                                     saveCurrentModelData();
-                                    handlePreviousModel(); 
                                 }}
-                                disabled={currentModelIndex === 0}
-                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
                             >
-                                Modèle Précédent
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    saveCurrentModelData();
-                                    handleNextModel(); 
-                                }}
-                                disabled={currentModelIndex === models.length - 1}
-                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
-                            >
-                                Modèle Suivant
+                                Mettre à jour le produit
                             </button>
                         </div>
-                    )}
-
-                    {shouldDisplayColor(category) && (
-                        <div className="md:flex items-center mt-8">
-                            <div className="w-full md:w-1/2 flex flex-col">
-                                <label
-                                    className="font-semibold leading-none text-black"
-                                    htmlFor="color"
+                        {selectedProductIds.length > 1 && (
+                            <div className="flex items-center justify-center w-full mt-8">
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex - 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex - 1}`)}
+                                    disabled={currentEditIndex === 0}
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
-                                    Couleur
-                                </label>
-                                <select
-                                    id="color"
-                                    value={color}
-                                    onChange={(e) => setColor(e.target.value)}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
+                                    Précédent
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex + 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex + 1}`)}
+                                    disabled={currentEditIndex === selectedProductIds.length - 1}
+                                    className={`${inputBg} ${textColor} leading-none p-3 focus:outline-none focus:border-blue-700 mt-4 border rounded ${borderColor}`}
                                 >
-                                    <option value="" className="text-gray-500">
-                                        Sélectionnez une couleur
-                                    </option>
-                                    {colors.map((clr) => (
-                                        <option key={clr.id} value={clr.id}>
-                                            {clr.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                    Suivant
+                                </button>
                             </div>
-                        </div>
-                    )}
-
-                    {shouldDisplaySize(category) && (
-                        <div className="md:flex items-center mt-8">
-                            <div className="w-full md:w-1/2 flex flex-col">
-                                <label
-                                    className="font-semibold leading-none text-black"
-                                    htmlFor="size"
-                                >
-                                    Taille
-                                </label>
-                                <select
-                                    id="size"
-                                    value={size}
-                                    onChange={(e) => setSize(e.target.value)}
-                                    className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                                >
-                                    <option value="" className="text-gray-500">
-                                        Sélectionnez une taille
-                                    </option>
-                                    {sizes.map((sz) => (
-                                        <option key={sz.id} value={sz.id}>
-                                            {sz.value}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="price"
-                            >
-                                Prix
-                            </label>
-                            <input
-                                type="number"
-                                id="price"
-                                placeholder="Entrez le prix du produit"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                min="0.01"
-                                step="0.01"
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="stock"
-                            >
-                                Stock
-                            </label>
-                            <input
-                                type="number"
-                                id="stock"
-                                placeholder="Entrez le stock du produit"
-                                value={stock}
-                                onChange={(e) => setStock(e.target.value)}
-                                min="0"
-                                required
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="md:flex items-center mt-8">
-                        <div className="w-full flex flex-col">
-                            <label
-                                className="font-semibold leading-none text-black"
-                                htmlFor="photos"
-                            >
-                                Photos
-                            </label>
-                            <input
-                                type="file"
-                                id="photos"
-                                multiple
-                                onChange={handlePhotoChange}
-                                className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
-                            />
-                            <div className="flex flex-col mt-4">
-                                {photoPaths.map((path, index) => (
-                                    <div key={index} className="flex items-center mt-2">
-                                        <p className="mr-4">{path}</p>
-                                        <button
-                                            type="button"
-                                            className={`mr-4 px-3 py-1 rounded ${mainImageIndex === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-                                            onClick={() => setMainImageIndex(index)}
-                                        >
-                                            {mainImageIndex === index ? 'Image principale' : 'Définir comme principale'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="ml-2 text-red-600"
-                                            onClick={() => handleRemovePhoto(index)}
-                                        >
-                                            &times;
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-center w-full mt-8">
-                        <button
-                            type="submit"
-                            className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
-                            onClick={() => {
-                                saveCurrentModelData();
-                            }}
-                        >
-                            Mettre à jour le produit
-                        </button>
-                    </div>
-                    {selectedProductIds.length > 1 && (
-                        <div className="flex items-center justify-center w-full mt-8">
-                            <button
-                                type="button"
-                                onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex - 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex - 1}`)}
-                                disabled={currentEditIndex === 0}
-                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
-                            >
-                                Précédent
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => navigate(`/admin/edit-product/${selectedProductIds[currentEditIndex + 1]}?selectedProducts=${selectedProductIds.join(',')}&currentEditIndex=${currentEditIndex + 1}`)}
-                                disabled={currentEditIndex === selectedProductIds.length - 1}
-                                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
-                            >
-                                Suivant
-                            </button>
-                        </div>
-                    )}
-                </form>
+                        )}
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
 
-    
+
+
 };
 
 export default ProductAdminEdit;

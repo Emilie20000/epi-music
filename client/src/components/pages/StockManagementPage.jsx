@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../styles/ProductList.css";  
+import "../../styles/ProductList.css";
+import { useTheme } from "../../context/ThemeContext";
 
 const StockManagementPage = () => {
     const [products, setProducts] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+
+    const { isDark } = useTheme();
+    const textColor = isDark ? "text-slate-200" : "text-black";
+
 
     useEffect(() => {
         fetchProducts();
@@ -85,7 +90,7 @@ const StockManagementPage = () => {
         <div className="container mx-auto p-4">
             {message && <p className="text-green-500 mb-4">{message}</p>}
             {error && <p className="text-red-500 mb-4">{error}</p>}
-            <h1 className="text-2xl font-bold mb-4">Liste des Produits</h1>
+            <h1 className={`text-2xl font-bold mb-4 ${textColor}`}>Liste des Produits</h1>
             <div className="mb-4 flex gap-4">
                 <button
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"

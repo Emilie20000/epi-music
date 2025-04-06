@@ -13,10 +13,15 @@ import CategoriesAdminList from "../admin/CategoriesAdminList";
 import CategoryAdminForm from "../forms/CategoryAdminForm";
 import CategoryAdminEdit from "../forms/CategoryAdminEdit";
 import StockManagementPage from "./StockManagementPage";
+import { useTheme } from "../../context/ThemeContext";
+
 
 const AdminPanel = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+    const { isDark } = useTheme();
+    const textColor = isDark ? "text-slate-200" : "text-black";
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("user"));
@@ -38,7 +43,7 @@ const AdminPanel = () => {
 
     return (
         <div className="flex flex-col items-center p-6">
-            <h1 className="text-2xl font-bold mb-6 text-center">Admin Panel</h1>
+            <h1 className={`text-2xl font-bold mb-6 text-center ${textColor}`}>Admin Panel</h1>
             <AdminTabs />
             <Routes>
                 <Route path="products" element={<ProductAdminList />} />
