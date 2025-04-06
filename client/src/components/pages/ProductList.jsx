@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Link, useParams, useLocation } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faFilter } from "@fortawesome/free-solid-svg-icons";
 import ProductColors from "../ProductDetails/ProductColors";
 import ProductSizes from "../ProductDetails/ProductSizes";
 import ProductFilter from "../Filtered/ProductFilter";
@@ -27,6 +28,7 @@ const ProductList = () => {
         weightRange: [0, 50],
         categories: []
     });
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const [availableFilterBrands, setAvailableBrands] = useState([]);
     const [availableFilterColors, setAvailableColors] = useState([]);
@@ -303,7 +305,7 @@ const ProductList = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="relative container mx-auto p-4">
             {error && (
                 <p className="text-red-500 font-bold text-center mb-4">
                     {error}
@@ -318,38 +320,69 @@ const ProductList = () => {
                 <h1 className="text-center text-4xl font-bold my-4">
                     {formattedCategory}
                 </h1>
-
-             ) : (
+            ) : (
                 <h1 className="text-center text-4xl font-bold my-4">
                     Tous les produits
                 </h1>
-             )}
-            
+            )}
+    
+            <AnimatePresence>
+                {isFilterVisible && (
+                    <>
+                        <motion.div
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsFilterVisible(false)}
+                        />
+                        <motion.div
+                            className="fixed top-0 left-0 lg:w-3/4 w-5/6 max-w-sm h-full bg-white z-50 shadow-lg p-4"
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "tween", duration: 0.3 }}
+                        >
+                            <ProductFilter
+                                categories={availableFilterCategories}
+                                brands={availableFilterBrands}
+                                colors={availableFilterColors}
+                                sizes={availableFilterSizes}
+                                maxPrice={maxPrice}
+                                maxWeight={maxWeight}
+                                onFiltersChange={setFilters}
+                            />
+                            <button
+                                className="mt-4 bg-red-500 text-white p-2 rounded w-full"
+                                onClick={() => setIsFilterVisible(false)}
+                            >
+                                Fermer
+                            </button>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+    
             <div className="flex">
-                <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
-                    <ProductFilter
-                        categories={availableFilterCategories}
-                        brands={availableFilterBrands}
-                        colors={availableFilterColors}
-                        sizes={availableFilterSizes}
-                        maxPrice={maxPrice}
-                        maxWeight={maxWeight}
-                        onFiltersChange={setFilters}
-                    />
-                </div>
-                <div className="w-3/4 flex-1 p-4">
+                <div className="w-full flex-1 p-4">
+                <button
+    className="text-white p-3 bg-gray-500 rounded-full shadow-lg flex items-center justify-center mb-4 space-x-2"
+    onClick={() => setIsFilterVisible(true)}
+>
+    <FontAwesomeIcon icon={faFilter} size="lg" />
+    <span>Filtrer les produits</span>
+</button>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => {
-                                const selectedColor =
-                                    selectedColors[product.id];
+                                const selectedColor = selectedColors[product.id];
                                 const selectedSize = selectedSizes[product.id];
                                 const filteredModel = product.models.find(
                                     (model) =>
                                         model.color === selectedColor &&
                                         model.size === selectedSize
                                 );
-
+    
                                 const uniqueColors = Array.from(
                                     new Set(
                                         product.models.map(
@@ -370,12 +403,12 @@ const ProductList = () => {
                                           )
                                       )
                                     : [];
-
+    
                                 const promotion =
                                     product.promotions.length > 0
                                         ? product.promotions[0]
                                         : null;
-
+    
                                 return (
                                     <div
                                         key={product.id}
@@ -387,8 +420,7 @@ const ProductList = () => {
                                         >
                                             <div className="flex-1 flex justify-center items-center mb-1">
                                                 {filteredModel?.images &&
-                                                filteredModel.images.length >
-                                                    0 ? (
+                                                filteredModel.images.length > 0 ? (
                                                     <img
                                                         src={`http://localhost:8000${
                                                             filteredModel.images.find(
@@ -422,7 +454,7 @@ const ProductList = () => {
                                                 {product.description}
                                             </p>
                                             <p className="line-clamp-3 mb-2">
-                                               Poids : {product.weight}
+                                                Poids : {product.weight}
                                             </p>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex-1">
@@ -431,9 +463,7 @@ const ProductList = () => {
                                                         selectedColor={
                                                             selectedColor
                                                         }
-                                                        onColorSelect={(
-                                                            color
-                                                        ) =>
+                                                        onColorSelect={(color) =>
                                                             handleColorSelect(
                                                                 product.id,
                                                                 color
@@ -442,9 +472,7 @@ const ProductList = () => {
                                                     />
                                                     <ProductSizes
                                                         sizes={availableSizes}
-                                                        selectedSize={
-                                                            selectedSize
-                                                        }
+                                                        selectedSize={selectedSize}
                                                         onSizeSelect={(size) =>
                                                             handleSizeSelect(
                                                                 product.id,
@@ -454,7 +482,6 @@ const ProductList = () => {
                                                     />
                                                 </div>
                                                 <div className="w-1/3 ml-4">
-                                                    {" "}
                                                     {filteredModel?.stock !==
                                                         undefined && (
                                                         <>
@@ -470,7 +497,8 @@ const ProductList = () => {
                                                                         }
                                                                     </p>
                                                                     <p className="text-orange-500 font-bold">
-                                                                        Bientôt épuisé
+                                                                        Bientôt
+                                                                        épuisé
                                                                     </p>
                                                                 </>
                                                             ) : filteredModel.stock >
@@ -496,7 +524,7 @@ const ProductList = () => {
                                                     )}
                                                 </div>
                                             </div>
-
+    
                                             {promotion ? (
                                                 <div className="flex flex-col mb-2">
                                                     <span className="text-gray-500 line-through text-lg">
@@ -510,8 +538,8 @@ const ProductList = () => {
                                                     </span>
                                                     <p className="text-sm text-red-600 font-bold">
                                                         Promotion du{" "}
-                                                        {promotion.start_date}{" "}
-                                                        au {promotion.end_date}
+                                                        {promotion.start_date} au{" "}
+                                                        {promotion.end_date}
                                                     </p>
                                                 </div>
                                             ) : (
@@ -523,7 +551,7 @@ const ProductList = () => {
                                                 </p>
                                             )}
                                         </div>
-
+    
                                         <button
                                             className={`mt-4 py-2 px-4 rounded w-full flex items-center justify-center ${
                                                 filteredModel?.stock > 0
@@ -533,7 +561,9 @@ const ProductList = () => {
                                             onClick={() =>
                                                 handleAddToCart(product)
                                             }
-                                            disabled={filteredModel?.stock <= 0}
+                                            disabled={
+                                                filteredModel?.stock <= 0
+                                            }
                                         >
                                             <FontAwesomeIcon
                                                 icon={faShoppingCart}
