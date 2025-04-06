@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Link, useParams, useLocation } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faFilter } from "@fortawesome/free-solid-svg-icons";
 import ProductColors from "../ProductDetails/ProductColors";
 import ProductSizes from "../ProductDetails/ProductSizes";
 import ProductFilter from "../Filtered/ProductFilter";
@@ -28,6 +29,7 @@ const ProductList = () => {
         weightRange: [0, 50],
         categories: []
     });
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const [availableFilterBrands, setAvailableBrands] = useState([]);
     const [availableFilterColors, setAvailableColors] = useState([]);
@@ -309,7 +311,7 @@ const ProductList = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="relative container mx-auto p-4">
             {error && (
                 <p className="text-red-500 font-bold text-center mb-4" role="alert">
                     {error}
@@ -329,31 +331,64 @@ const ProductList = () => {
                     Tous les produits
                 </h1>
             )}
-
+    
+            <AnimatePresence>
+                {isFilterVisible && (
+                    <>
+                        <motion.div
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsFilterVisible(false)}
+                        />
+                        <motion.div
+                            className="fixed top-0 left-0 lg:w-3/4 w-5/6 max-w-sm h-full bg-white z-50 shadow-lg p-4"
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "tween", duration: 0.3 }}
+                        >
+                            <ProductFilter
+                                categories={availableFilterCategories}
+                                brands={availableFilterBrands}
+                                colors={availableFilterColors}
+                                sizes={availableFilterSizes}
+                                maxPrice={maxPrice}
+                                maxWeight={maxWeight}
+                                onFiltersChange={setFilters}
+                            />
+                            <button
+                                className="mt-4 bg-red-500 text-white p-2 rounded w-full"
+                                onClick={() => setIsFilterVisible(false)}
+                            >
+                                Fermer
+                            </button>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+    
             <div className="flex">
-                <div className="w-1/4 min-w-[300px] h-screen top-0 p-4">
-                    <ProductFilter
-                        categories={availableFilterCategories}
-                        brands={availableFilterBrands}
-                        colors={availableFilterColors}
-                        sizes={availableFilterSizes}
-                        maxPrice={maxPrice}
-                        maxWeight={maxWeight}
-                        onFiltersChange={setFilters}
-                    />
-                </div>
-                <div className="w-3/4 flex-1 p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">                        {filteredProducts.length > 0 ? (
+                <div className="w-full flex-1 p-4">
+                <button
+    className="text-white p-3 bg-gray-500 rounded-full shadow-lg flex items-center justify-center mb-4 space-x-2"
+    onClick={() => setIsFilterVisible(true)}
+>
+    <FontAwesomeIcon icon={faFilter} size="lg" />
+    <span>Filtrer les produits</span>
+</button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => {
-                                const selectedColor =
-                                    selectedColors[product.id];
+                                const selectedColor = selectedColors[product.id];
                                 const selectedSize = selectedSizes[product.id];
                                 const filteredModel = product.models.find(
                                     (model) =>
                                         model.color === selectedColor &&
                                         model.size === selectedSize
                                 );
-
+    
                                 const uniqueColors = Array.from(
                                     new Set(
                                         product.models.map(
@@ -374,12 +409,11 @@ const ProductList = () => {
                                           )
                                       )
                                     : [];
-
+    
                                 const promotion =
                                     product.promotions.length > 0
                                         ? product.promotions[0]
                                         : null;
-
 
                                 return (
                                     <div
@@ -391,11 +425,13 @@ const ProductList = () => {
 
                                         }}
                                     >
-                                        <Link to={`/product/${product.id}`} className="flex flex-col h-full">
-                                            <div className="flex-1 flex justify-center items-center mb-1"
-                                                 aria-label={`Voir les détails du produit ${product.name}`}
-                                            >
-                                                {filteredModel?.images && filteredModel.images.length > 0 ? (
+                                        <Link
+                                            to={`/product/${product.id}`}
+                                            className="flex flex-col h-full"
+                                        >
+                                            <div className="flex-1 flex justify-center items-center mb-1" aria-label={`Voir les détails du produit ${product.name}`}>
+                                                {filteredModel?.images &&
+                                                filteredModel.images.length > 0 ? (
                                                     <img
                                                         src={`http://localhost:8000${filteredModel.images.find(
                                                             (img) => img.is_main
@@ -466,7 +502,7 @@ const ProductList = () => {
                                                     )}
                                                 </div>
                                             </div>
-
+    
                                             {promotion ? (
                                                 <div className="flex flex-col mb-2">
                                                 <span className="text-gray-500 line-through text-lg">
@@ -483,7 +519,7 @@ const ProductList = () => {
                                                 </p>
                                             )}
                                         </div>
-
+    
                                         <button
                                             className={`mt-4 py-2 px-4 rounded w-full flex items-center justify-center ${
                                                 filteredModel?.stock > 0

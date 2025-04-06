@@ -147,114 +147,92 @@ const PaymentForm = ({ orderPrice, orderId, isDark }) => {
   }, [paymentSuccess]);
 
   return (
-      <>
-        {paymentSuccess ? (
-            <div
-                className="w-full h-full flex flex-col justify-center items-center text-center"
-                aria-label="Paiement réussi"
-            >
-              <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  className="text-green-500 text-6xl"
-                  aria-hidden="true"
+    <>
+      {paymentSuccess ? (
+        <div className="w-full h-full flex flex-col justify-center items-center text-center" aria-label="Paiement réussi">
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            className="text-green-500 text-6xl"
+            aria-label="Paiement réussi"
+          />
+          <p className="text-xl mt-8 mb-4">Paiement réussi</p>
+          <p className="text-xl">Merci d'avoir commandé chez Epimusic !</p>
+          <p className="text-xl mt-2">Vous allez être redirigés dans quelques instants</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto" aria-label="Formulaire de paiement">
+          <div>
+            <label className="block text-gray-700 mb-2 text-xl" className={`block ${subTextColor} mb-2 text-2xl`} htmlFor="cardHolderName">
+              Titulaire de la carte
+            </label>
+            <div className={`p-3 border border-gray-300 rounded-lg shadow-sm`}>
+              <input
+                type="text"
+                value={cardHolderName}
+                onChange={(e) => setCardHolderName(e.target.value)}
+                placeholder="Nom du titulaire"
+                className={`w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0 ${BgColor} ${textColor}`}
+                required
+                aria-label="Nom du titulaire de la carte"
+              />
+            </div>
+          </div>
+          <div>
+            <label className={`block ${textColor} mb-2 text-xl`}>
+              Numéro de carte
+            </label>
+            <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
+              <CardNumberElement
+                options={CARD_ELEMENT_OPTIONS}
+                className={`w-full focus:outline-none ${textColor}`}
+                htmlFor="cardNumber"
+                aria-label="Entrer le numéro de carte"
               />
               <p className={`text-2xl mt-8 mb-4 ${textColor}`}>Paiement réussi</p>
               <p className={`text-2xl ${textColor}`}>Merci d'avoir commandé chez Epimusic !</p>
               <p className={`text-xl mt-2 ${subTextColor}`}>Vous allez être redirigés dans quelques instants</p>
             </div>
-        ) : (
-            <form
-                onSubmit={handleSubmit}
-                className="space-y-6 max-w-md mx-auto"
-                aria-label="Formulaire de paiement"
-            >
-              <div>
-                <label
-                    className={`block ${subTextColor} mb-2 text-2xl`}
-                    htmlFor="cardHolderName"
-                >
-                  Titulaire de la carte
-                </label>
-                <div className={`p-3 border border-gray-300 rounded-lg shadow-sm`}>
-                  <input
-                      type="text"
-                      id="cardHolderName"
-                      value={cardHolderName}
-                      onChange={(e) => setCardHolderName(e.target.value)}
-                      placeholder="Nom du titulaire"
-                      className={`w-full focus:outline-none focus:ring-0 focus:border-transparent border-none p-0 m-0 ${BgColor} ${textColor}`}
-                      required
-                      aria-label="Nom du titulaire de la carte"
-                  />
-                </div>
+          </div>
+          <div className="flex space-x-16">
+            <div>
+              <label className={`block ${textColor} mb-2 text-xl`} htmlFor="cardExpiry">
+                Date d'expiration
+              </label>
+              <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
+                <CardExpiryElement
+                  options={CARD_ELEMENT_OPTIONS}
+                  className={`w-2/3 focus:outline-none ${textColor}`}
+                  aria-label="Entrer la date d'expiration"
+                />
               </div>
-              <div>
-                <label className={`block ${textColor} mb-2 text-2xl`}>
-                  Numéro de carte
-                </label>
-                <div
-                    className="p-3 border border-gray-300 rounded-lg shadow-sm"
-                    htmlFor="cardNumber"
-                >
-                  <CardNumberElement
-                      options={CARD_ELEMENT_OPTIONS}
-                      className={`w-full focus:outline-none ${textColor}`}
-                      aria-label="Entrer le numéro de carte"
-
-                  />
-                </div>
+            </div>
+            <div className="w-2/6 ">
+              <label className={`block ${textColor} mb-2 text-xl`} htmlFor="cardCvc">CVC</label>
+              <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
+                <CardCvcElement
+                  options={CARD_ELEMENT_OPTIONS}
+                  className={`w-full focus:outline-none ${textColor}`}
+                  aria-label="Entrer le code CVC"
+                />
               </div>
-              <div className="flex justify-between">
-                <div>
-                  <label
-                      className={`block ${textColor} mb-2 text-2xl`}
-                      htmlFor="cardExpiry"
-                  >
-                    Date d'expiration
-                  </label>
-                  <div className="p-3 border border-gray-300 rounded-lg shadow-sm">
-                    <CardExpiryElement
-                        options={CARD_ELEMENT_OPTIONS}
-                        className={`w-full focus:outline-none ${textColor}`}
-                        aria-label="Entrer la date d'expiration"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/6 ">
-                  <label
-                        className={`block ${textColor} mb-2 text-2xl`}
-                         htmlFor="cardCvc"
-                  >
-                    CVC
-                  </label>
-                  <div className="p-3 w-full border border-gray-300 rounded-lg shadow-sm">
-                    <CardCvcElement
-                        options={CARD_ELEMENT_OPTIONS}
-                        className={`w-full focus:outline-none ${textColor}`}
-                        aria-label="Entrer le code CVC"
-                    />
-                  </div>
-                </div>
-              </div>
-              <button
-                  type="submit"
-                  disabled={!stripe || isProcessing}
-                  className="bg-rose-600 w-full text-2xl rounded-xl mt-8 text-black"
-                  aria-label="Payer"
-              >
-                {isProcessing ? "Transaction en cours..." : "Payer"}
-              </button>
-              {isProcessing && (
-                  <div
-                      className="flex items-center justify-center p-4"
-                      aria-label="Chargement"
-                  >
-                    <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-                  </div>
-              )}
-            </form>
-        )}
-      </>
+            </div>
+          </div>
+          <button
+            type="submit"
+            disabled={!stripe || isProcessing}
+            className="mt-4 p-2 bg-rose-600 text-white rounded flex items-center justify-center w-full text-xl"
+            aria-label="Payer"
+          >
+            {isProcessing ? "Transaction en cours..." : "Payer"}
+          </button>
+          {isProcessing && (
+            <div className="flex items-center justify-center p-4" aria-label="Chargement">
+              <div className="w-16 h-16 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+            </div>
+          )}
+        </form>
+      )}
+    </>
   );
 };
 
