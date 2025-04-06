@@ -19,17 +19,22 @@ const UserTabs = () => {
 
     return (
         <div className="flex space-x-4 mb-4" role="tablist" aria-label="Navigation par onglets du profil utilisateur">
-            {tabs.map((tab) => (
-                <Link
-                    key={tab.name}
-                    to={tab.path}
-                    role="tab"
-                    aria-selected={isSelected ? "true" : "false"}
-                    className={`p-2 rounded ${location.pathname === tab.path ? activeTabBg : inactiveTabBg} ${textColor}`}
-                >
-                    {tab.name}
-                </Link>
-            ))}
+            {tabs.map((tab) => {
+                const isSelected = location.pathname === tab.path;
+
+                return (
+                    <Link
+                        key={tab.name}
+                        to={tab.path}
+                        role="tab"
+                        aria-selected={isSelected ? "true" : "false"}
+                        className={`p-2 rounded ${isSelected ? activeTabBg : inactiveTabBg} ${textColor}`}
+                    >
+                        {tab.name}
+                    </Link>
+                );
+            })}
+
         </div>
     );
 };
