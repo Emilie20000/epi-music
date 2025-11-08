@@ -16,7 +16,6 @@ class PaymentController extends AbstractController
     #[Route('/create-intent', name: 'create-payment-intent', methods:['POST'])]
     public function createPaymentIntent(Request $request)
     {
-        Stripe::setApiKey("sk_test_51PqupeCKzysEQIbTeDU0FloDUU4YxhVxfwuSqp3IbmhnyJNlO4bgWyMYUXYSkxp317SjsWAGhMfopQsylbu5Le6M00A2pV7vDc");
 
         $data = json_decode($request->getContent(), true);
         $amount = $data["amount"];
